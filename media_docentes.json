@@ -1,17 +1,32 @@
 [
     {
-        "Docente": "ANDR\u00c9 FIGUEIRA RIKER",
-        "M\u00e9dia": 8.05,
-        "Mediana": 5.0
+        "Docente": "CLAUDOMIRO DE SOUZA DE SALES JUNIOR",
+        "M\u00e9dia": 28.575,
+        "Mediana": 13.537500000000001
     },
     {
-        "Docente": "MARCOS TULIO AMARIS GONZ\u00c1LEZ",
-        "M\u00e9dia": 2.6,
-        "Mediana": 5.0
+        "Docente": "DIONNE CAVALCANTE MONTEIRO",
+        "M\u00e9dia": 6.625,
+        "Mediana": 13.537500000000001
     },
     {
-        "Docente": "VICTOR HUGO SANTIAGO COSTA PINTO",
-        "M\u00e9dia": 5.0,
-        "Mediana": 5.0
+        "Docente": "FILIPE DE OLIVEIRA SARAIVA",
+        "M\u00e9dia": 14.425,
+        "Mediana": 13.537500000000001
+    },
+    {
+        "Docente": "JEFFERSON MAGALH\u00c3ES DE MORAIS",
+        "M\u00e9dia": 17.0,
+        "Mediana": 13.537500000000001
+    },
+    {
+        "Docente": "RENATO HIDAKA TORRES",
+        "M\u00e9dia": 5.275,
+        "Mediana": 13.537500000000001
+    },
+    {
+        "Docente": "ROBERTO SAMARONE DOS SANTOS ARA\u00daJO",
+        "M\u00e9dia": 12.65,
+        "Mediana": 13.537500000000001
     }
 ]

@@ -6,5 +6,6 @@ pip install xlrd
 pip3 install -r requirements.txt
 pip install PyPDF2
 pip install matplotlib
+pip install flask_sqlalchemy
 
 echo BIBLIOTECAS INSTALADAS!

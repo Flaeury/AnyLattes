@@ -27,9 +27,19 @@
 </div>
 
 <div class="card-header" id="card-header">
-    <i class="fas fa-chart-bar me-1"></i>
-    Grafo de Colaboração entre Docentes
+    <div>
+
+        <i class="fas fa-chart-bar me-1"></i>
+        <span class="">Grafo de Colaboração entre Docentes</span>
+       
+   
+        <span class="info-cards">
+            <i class="fas fa-circle-info" style="color: #000000;"></i>
+            Gráfico sobre a colaboração entre os professores em projetos</span>
+       
+    </div>
 </div>
+
 
 <div class="card-body" >
     <div class="row">
@@ -40,7 +50,7 @@
         </div>
     
         <div class="col-sm-2">
-            <label>Tipo de Grafo:</label>
+            <label class="mb-2">Tipo de Grafo:</label>
             <select class="form-select form-select-sm mb-3"  name="tipo_grafo" id="tipo_grafo" onchange="javascript:tipoGrafo(this);" > 
                 <option value="circular">Circular</option>
                 <option value="kamada_kawai">Kamada Kawai</option>
@@ -53,11 +63,11 @@
 </div>
 
 <div class="row">
-    <div class="card-header col-sm-8">
+    <div class="card-header col-sm-8" id="card-header">
         <i class="fas fa-table me-1"></i>
         Quantidade Publicações por Ano
     </div>
-    <div class="card-header col-sm-4">
+    <div class="card-header col-sm-4 info-cards">
         <i class="fas fa-chart-pie me-1"></i>
         Periódico x Conferência
     </div>

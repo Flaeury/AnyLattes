@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # import mysql.connector
 from flask import Flask,jsonify, redirect, render_template, request, flash
+from flask_cors import CORS
 import glob
 import os
 from werkzeug.utils import secure_filename
@@ -21,6 +22,7 @@ from zipfile import ZipFile
 
 
 app = Flask(__name__)
+CORS(app)
 app.app_context().push()
 
 

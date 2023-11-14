@@ -81,6 +81,7 @@ def insert_pontuacoes():
             print(e)
     else:
         print("Valores já inseridos")
+        
 # def tabela_periodicos():
 #     sql ="""
 #             CREATE TABLE periodicos(

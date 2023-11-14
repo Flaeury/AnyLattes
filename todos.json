@@ -1,87 +1,387 @@
 [
     {
-        "Ano": "2020",
+        "Ano": "2010",
         "Estratos": "-",
-        "Quantidade": 1
-    },
-    {
-        "Ano": "2020",
-        "Estratos": "A2",
-        "Quantidade": 3
-    },
-    {
-        "Ano": "2020",
-        "Estratos": "B4",
         "Quantidade": 2
     },
     {
-        "Ano": "2021",
-        "Estratos": "-",
-        "Quantidade": 4
-    },
-    {
-        "Ano": "2021",
+        "Ano": "2010",
         "Estratos": "A1",
         "Quantidade": 2
     },
     {
-        "Ano": "2021",
-        "Estratos": "A2",
-        "Quantidade": 2
-    },
-    {
-        "Ano": "2021",
+        "Ano": "2010",
         "Estratos": "A3",
-        "Quantidade": 2
+        "Quantidade": 1
     },
     {
-        "Ano": "2021",
+        "Ano": "2010",
         "Estratos": "A4",
         "Quantidade": 1
     },
     {
-        "Ano": "2021",
-        "Estratos": "B1",
+        "Ano": "2011",
+        "Estratos": "-",
         "Quantidade": 2
     },
     {
-        "Ano": "2021",
-        "Estratos": "C",
+        "Ano": "2011",
+        "Estratos": "A1",
         "Quantidade": 1
     },
     {
-        "Ano": "2022",
+        "Ano": "2011",
+        "Estratos": "A4",
+        "Quantidade": 3
+    },
+    {
+        "Ano": "2011",
+        "Estratos": "B2",
+        "Quantidade": 1
+    },
+    {
+        "Ano": "2011",
+        "Estratos": "B3",
+        "Quantidade": 1
+    },
+    {
+        "Ano": "2011",
+        "Estratos": "B4",
+        "Quantidade": 3
+    },
+    {
+        "Ano": "2012",
         "Estratos": "-",
         "Quantidade": 3
     },
     {
-        "Ano": "2022",
-        "Estratos": "A2",
-        "Quantidade": 2
+        "Ano": "2012",
+        "Estratos": "A1",
+        "Quantidade": 1
     },
     {
-        "Ano": "2022",
+        "Ano": "2012",
         "Estratos": "A3",
         "Quantidade": 2
     },
     {
-        "Ano": "2022",
+        "Ano": "2012",
         "Estratos": "A4",
         "Quantidade": 3
     },
     {
-        "Ano": "2022",
+        "Ano": "2012",
+        "Estratos": "B1",
+        "Quantidade": 1
+    },
+    {
+        "Ano": "2012",
         "Estratos": "B4",
         "Quantidade": 1
     },
     {
+        "Ano": "2013",
+        "Estratos": "-",
+        "Quantidade": 7
+    },
+    {
+        "Ano": "2013",
+        "Estratos": "A3",
+        "Quantidade": 3
+    },
+    {
+        "Ano": "2013",
+        "Estratos": "A4",
+        "Quantidade": 2
+    },
+    {
+        "Ano": "2013",
+        "Estratos": "B1",
+        "Quantidade": 1
+    },
+    {
+        "Ano": "2013",
+        "Estratos": "B2",
+        "Quantidade": 1
+    },
+    {
+        "Ano": "2014",
+        "Estratos": "-",
+        "Quantidade": 5
+    },
+    {
+        "Ano": "2014",
+        "Estratos": "A1",
+        "Quantidade": 1
+    },
+    {
+        "Ano": "2014",
+        "Estratos": "A3",
+        "Quantidade": 1
+    },
+    {
+        "Ano": "2014",
+        "Estratos": "A4",
+        "Quantidade": 1
+    },
+    {
+        "Ano": "2014",
+        "Estratos": "B1",
+        "Quantidade": 1
+    },
+    {
+        "Ano": "2014",
+        "Estratos": "B4",
+        "Quantidade": 2
+    },
+    {
+        "Ano": "2015",
+        "Estratos": "A1",
+        "Quantidade": 3
+    },
+    {
+        "Ano": "2015",
+        "Estratos": "A2",
+        "Quantidade": 1
+    },
+    {
+        "Ano": "2015",
+        "Estratos": "A3",
+        "Quantidade": 1
+    },
+    {
+        "Ano": "2015",
+        "Estratos": "A4",
+        "Quantidade": 2
+    },
+    {
+        "Ano": "2015",
+        "Estratos": "B2",
+        "Quantidade": 1
+    },
+    {
+        "Ano": "2015",
+        "Estratos": "B4",
+        "Quantidade": 1
+    },
+    {
+        "Ano": "2016",
+        "Estratos": "-",
+        "Quantidade": 8
+    },
+    {
+        "Ano": "2016",
+        "Estratos": "A1",
+        "Quantidade": 3
+    },
+    {
+        "Ano": "2016",
+        "Estratos": "B1",
+        "Quantidade": 6
+    },
+    {
+        "Ano": "2016",
+        "Estratos": "B3",
+        "Quantidade": 2
+    },
+    {
+        "Ano": "2016",
+        "Estratos": "B4",
+        "Quantidade": 3
+    },
+    {
+        "Ano": "2017",
+        "Estratos": "-",
+        "Quantidade": 3
+    },
+    {
+        "Ano": "2017",
+        "Estratos": "A1",
+        "Quantidade": 3
+    },
+    {
+        "Ano": "2017",
+        "Estratos": "A2",
+        "Quantidade": 1
+    },
+    {
+        "Ano": "2017",
+        "Estratos": "A4",
+        "Quantidade": 3
+    },
+    {
+        "Ano": "2017",
+        "Estratos": "B1",
+        "Quantidade": 3
+    },
+    {
+        "Ano": "2017",
+        "Estratos": "C",
+        "Quantidade": 1
+    },
+    {
+        "Ano": "2018",
+        "Estratos": "-",
+        "Quantidade": 5
+    },
+    {
+        "Ano": "2018",
+        "Estratos": "A1",
+        "Quantidade": 4
+    },
+    {
+        "Ano": "2018",
+        "Estratos": "A2",
+        "Quantidade": 2
+    },
+    {
+        "Ano": "2018",
+        "Estratos": "A3",
+        "Quantidade": 2
+    },
+    {
+        "Ano": "2018",
+        "Estratos": "A4",
+        "Quantidade": 5
+    },
+    {
+        "Ano": "2018",
+        "Estratos": "B1",
+        "Quantidade": 2
+    },
+    {
+        "Ano": "2018",
+        "Estratos": "B4",
+        "Quantidade": 2
+    },
+    {
+        "Ano": "2019",
+        "Estratos": "-",
+        "Quantidade": 9
+    },
+    {
+        "Ano": "2019",
+        "Estratos": "A1",
+        "Quantidade": 3
+    },
+    {
+        "Ano": "2019",
+        "Estratos": "A2",
+        "Quantidade": 1
+    },
+    {
+        "Ano": "2019",
+        "Estratos": "A3",
+        "Quantidade": 2
+    },
+    {
+        "Ano": "2019",
+        "Estratos": "A4",
+        "Quantidade": 3
+    },
+    {
+        "Ano": "2019",
+        "Estratos": "B1",
+        "Quantidade": 4
+    },
+    {
+        "Ano": "2019",
+        "Estratos": "C",
+        "Quantidade": 2
+    },
+    {
+        "Ano": "2020",
+        "Estratos": "-",
+        "Quantidade": 4
+    },
+    {
+        "Ano": "2020",
+        "Estratos": "A1",
+        "Quantidade": 3
+    },
+    {
+        "Ano": "2020",
+        "Estratos": "A3",
+        "Quantidade": 4
+    },
+    {
+        "Ano": "2020",
+        "Estratos": "A4",
+        "Quantidade": 2
+    },
+    {
+        "Ano": "2020",
+        "Estratos": "B3",
+        "Quantidade": 3
+    },
+    {
+        "Ano": "2020",
+        "Estratos": "B4",
+        "Quantidade": 1
+    },
+    {
+        "Ano": "2021",
+        "Estratos": "-",
+        "Quantidade": 2
+    },
+    {
+        "Ano": "2021",
+        "Estratos": "A1",
+        "Quantidade": 5
+    },
+    {
+        "Ano": "2021",
+        "Estratos": "A4",
+        "Quantidade": 6
+    },
+    {
+        "Ano": "2021",
+        "Estratos": "B4",
+        "Quantidade": 3
+    },
+    {
+        "Ano": "2022",
+        "Estratos": "-",
+        "Quantidade": 2
+    },
+    {
+        "Ano": "2022",
+        "Estratos": "A2",
+        "Quantidade": 4
+    },
+    {
+        "Ano": "2022",
+        "Estratos": "A4",
+        "Quantidade": 3
+    },
+    {
+        "Ano": "2022",
+        "Estratos": "C",
+        "Quantidade": 1
+    },
+    {
         "Ano": "2023",
         "Estratos": "-",
+        "Quantidade": 2
+    },
+    {
+        "Ano": "2023",
+        "Estratos": "A1",
         "Quantidade": 1
     },
     {
         "Ano": "2023",
         "Estratos": "A2",
+        "Quantidade": 1
+    },
+    {
+        "Ano": "2023",
+        "Estratos": "A3",
+        "Quantidade": 2
+    },
+    {
+        "Ano": "2023",
+        "Estratos": "B4",
         "Quantidade": 1
     }
 ]
