@@ -1,98 +1,148 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-
-<head>
+  <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
     <meta name="description" content="" />
     <meta name="author" content="Alex Cirilo" />
-    <link rel="icon" href="{{url_for('static',filename= 'assets/favicon.ico') }}">
+    <link
+      rel="icon"
+      href="{{url_for('static',filename= 'assets/favicon.ico') }}"
+    />
     <title>{% block title %}{% endblock %}</title>
     <script src="{{url_for('static',filename= 'js/plotly.min.js') }}"></script>
-    <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
-    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css" />
-    <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css" />
+    <script
+      src="https://use.fontawesome.com/releases/v6.1.0/js/all.js"
+      crossorigin="anonymous"
+    ></script>
+    <link
+      href="https://fonts.googleapis.com/css?family=Montserrat:400,700"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic"
+      rel="stylesheet"
+      type="text/css"
+    />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
-    <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script type="text/javascript" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
-    <link href="{{url_for('static',filename= 'css/styles.css') }}" rel="stylesheet" />
-    <link href="{{url_for('static',filename= 'css/estilos.css') }}" rel="stylesheet" />
-    <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
-    
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/css/bootstrap-datepicker.css" rel="stylesheet"/>
-    
-</head>
-<body class="sb-nav-fixed">
+    <link
+      rel="stylesheet"
+      href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css"
+    />
+    <script
+      type="text/javascript"
+      src="https://code.jquery.com/jquery-3.6.0.min.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"
+    ></script>
+    <link
+      href="{{url_for('static',filename= 'css/styles.css') }}"
+      rel="stylesheet"
+    />
+    <link
+      href="{{url_for('static',filename= 'css/estilos.css') }}"
+      rel="stylesheet"
+    />
+    <script
+      src="https://use.fontawesome.com/releases/v6.1.0/js/all.js"
+      crossorigin="anonymous"
+    ></script>
 
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/css/bootstrap-datepicker.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="sb-nav-fixed">
     <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark ps-3">
-        <button class="btn btn-link  btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
-        <!-- Navbar Brand-->
-        <a class="navbar-brand ps-3" href="{{url_for('index')}}">AnyLattes</a>
-        <!-- Sidebar Toggle-->
-       
-        
+      <button
+        class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0"
+        id="sidebarToggle"
+        href="#!"
+      >
+        <i class="fas fa-bars"></i>
+      </button>
+      <!-- Navbar Brand-->
+      <a class="navbar-brand ps-3" href="{{url_for('index')}}">AnyLattes</a>
+      <!-- Sidebar Toggle-->
     </nav>
     <div id="layoutSidenav">
-        <div id="layoutSidenav_nav">
-            <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
-                <div class="sb-sidenav-menu">
-                    <div class="nav">
-                        <div class="sb-sidenav-menu-heading">Arquivos</div>
-                        <a class="nav-link" href="{{url_for('index')}}">
-                            <div class="sb-nav-link-icon"><i class="fas fa-file-upload"></i></div>
-                            Currículos
-                        </a>
-                        <a class="nav-link" href="{{url_for('imports')}}">
-                            <div class="sb-nav-link-icon"><i class="fas fa-file-upload"></i></div>
-                            Importar Qualis
-                        </a>
-                        <div class="sb-sidenav-menu-heading">Resultados</div>
-                        <a class="nav-link" href="{{url_for('resultado_total')}}">
-                            <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                            Resultado Geral
-                        </a>
+      <div id="layoutSidenav_nav">
+        <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+          <div class="sb-sidenav-menu">
+            <div class="nav">
+              <div class="sb-sidenav-menu-heading">Arquivos</div>
+              <a class="nav-link" href="{{url_for('index')}}">
+                <div class="sb-nav-link-icon">
+                  <i class="fas fa-file-upload"></i>
+                </div>
+                Currículos
+              </a>
+              <a class="nav-link" href="{{url_for('imports')}}">
+                <div class="sb-nav-link-icon">
+                  <i class="fas fa-file-upload"></i>
+                </div>
+                Importar Qualis
+              </a>
+              <div class="sb-sidenav-menu-heading">Resultados</div>
+              <a class="nav-link" href="{{url_for('resultado_total')}}">
+                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                Resultado Geral
+              </a>
 
-                        <a class="nav-link" href="{{url_for('resultado_por_docente')}}">
-                            <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                            Resultados por Docente
-                        </a> 
-                        <a class="nav-link" href="{{url_for('wordcloud')}}">
-                            <div class="sb-nav-link-icon"><i class="fas fa-cloud"></i></div>
-                            Nuvem de Palavras
-                        </a>
-                        <div class="sb-sidenav-menu-heading">Configurações</div>
-                        <a class="nav-link" href="{{url_for('configuracoes')}}">
-                            <div class="sb-nav-link-icon"><i class="fas fa-gear"></i></div>
-                            Configurações
-                        </a>
-                    </div>
-                </div>
-                <div class="sb-sidenav-footer">
-                    <div class="small">A project with name:</div>
-                    <h6 style="text-align: center;">AnyLattes</h6>
-                </div>
-            </nav>
-        </div>
-        <div id="layoutSidenav_content">
-            <main>
-                    <div class="container-fluid px-4">
-                        <div class="spinner-wrapper">
-                            <div class="spinner-border text-primary" role="status">
-                                <span class="visually-hidden">Loading...</span>
-                            </div>
-                        </div>
-                        <div class="container" style="text-align: center;">
-                            {% for messages in get_flashed_messages() %}
-                                <div id="alert" class="alert alert-primary alert-dismissible fade show" role="alert">{{messages}}</div>
-                            {%endfor%}
-                        </div>
-                        {% block content %} 
-                        
-                        {% endblock %}
-                        
-                    </div>
-            </main>         
-            <!-- Footer-->
-            {%extends 'footer.html'%}
+              <a class="nav-link" href="{{url_for('resultado_por_docente')}}">
+                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                Resultados por Docente
+              </a>
+              <a class="nav-link" href="{{url_for('wordcloud')}}">
+                <div class="sb-nav-link-icon"><i class="fas fa-cloud"></i></div>
+                Nuvem de Palavras
+              </a>
+              <div class="sb-sidenav-menu-heading">Configurações</div>
+              <a class="nav-link" href="{{url_for('configuracoes')}}">
+                <div class="sb-nav-link-icon"><i class="fas fa-gear"></i></div>
+                Configurações
+              </a>
+            </div>
+          </div>
+          <div class="sb-sidenav-footer">
+            <div class="small">A project with name:</div>
+            <h6 style="text-align: center">AnyLattes</h6>
+          </div>
+        </nav>
+      </div>
+      <div id="layoutSidenav_content">
+        <main>
+          <div class="container-fluid px-4">
+            <div class="spinner-wrapper">
+              <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+            </div>
+            <div class="container" style="text-align: center">
+              {% for messages in get_flashed_messages() %}
+              <div
+                id="alert"
+                class="alert alert-primary alert-dismissible fade show"
+                role="alert"
+              >
+                {{messages}}
+              </div>
+              {%endfor%}
+            </div>
+            {% block content %} {% endblock %}
+          </div>
+        </main>
+        <!-- Footer-->
+        {%extends 'footer.html'%}
+      </div>
+    </div>
+  </body>
+</html>

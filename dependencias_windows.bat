@@ -7,5 +7,7 @@ pip3 install -r requirements.txt
 pip install PyPDF2
 pip install matplotlib
 pip install flask_sqlalchemy
+pip install wordcloud
+pip install flask_cors
 
 echo BIBLIOTECAS INSTALADAS!
