@@ -1,18 +1,43 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Poppins:wght@400;500&family=Rubik:wght@400;500&display=swap');
+
+
 h1 {
   display: block;
   margin-block-start: 0.67em;
   margin-block-end: 0.67em;
   margin-inline-start: 0px;
   margin-inline-end: 0px;
+  font-family: 'Rubik', sans-serif;
+  font-weight: 500;
 }
 h2 {
   text-align: center;
   margin: 5px;
   padding: 5px;
+  font-family: 'Rubik', sans-serif;
+  font-weight: 500;
 }
 #resultado {
   font-size: 14px;
 }
+
+.pathname {
+  font-family: 'Rubik', sans-serif;
+  font-weight: 400;
+}
+
+body {
+  background-color: #EBEBEB;
+}
+
+.card-link {
+  max-width: 50vw !important;
+}
+
+.section-import {
+  background-color: #F8F8F8;
+}
+
 #forms {
   position: relative;
   text-align: center;
@@ -109,3 +134,5 @@ h2 {
   margin: 1px 1px 1px 1px;
   padding: 1px 1px 1px 1px;
 }
+
+

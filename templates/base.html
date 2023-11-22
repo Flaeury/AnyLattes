@@ -10,7 +10,7 @@
     <meta name="author" content="Alex Cirilo" />
     <link
       rel="icon"
-      href="{{url_for('static',filename= 'assets/favicon.ico') }}"
+      href="{{url_for('static',filename= 'assets/favicon.icon') }}"
     />
     <title>{% block title %}{% endblock %}</title>
     <script src="{{url_for('static',filename= 'js/plotly.min.js') }}"></script>
@@ -79,34 +79,34 @@
           <div class="sb-sidenav-menu">
             <div class="nav">
               <div class="sb-sidenav-menu-heading">Arquivos</div>
-              <a class="nav-link" href="{{url_for('index')}}">
+              <a class="nav-link pathname" href="{{url_for('index')}}">
                 <div class="sb-nav-link-icon">
                   <i class="fas fa-file-upload"></i>
                 </div>
-                Currículos
+                Impotar dados
               </a>
-              <a class="nav-link" href="{{url_for('imports')}}">
+              <a class="nav-link pathname" href="{{url_for('imports')}}">
                 <div class="sb-nav-link-icon">
                   <i class="fas fa-file-upload"></i>
                 </div>
                 Importar Qualis
               </a>
               <div class="sb-sidenav-menu-heading">Resultados</div>
-              <a class="nav-link" href="{{url_for('resultado_total')}}">
+              <a class="nav-link pathname" href="{{url_for('resultado_total')}}">
                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                 Resultado Geral
               </a>
 
-              <a class="nav-link" href="{{url_for('resultado_por_docente')}}">
+              <a class="nav-link pathname" href="{{url_for('resultado_por_docente')}}">
                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                 Resultados por Docente
               </a>
-              <a class="nav-link" href="{{url_for('wordcloud')}}">
+              <a class="nav-link pathname" href="{{url_for('wordcloud')}}">
                 <div class="sb-nav-link-icon"><i class="fas fa-cloud"></i></div>
                 Nuvem de Palavras
               </a>
               <div class="sb-sidenav-menu-heading">Configurações</div>
-              <a class="nav-link" href="{{url_for('configuracoes')}}">
+              <a class="nav-link pathname" href="{{url_for('configuracoes')}}">
                 <div class="sb-nav-link-icon"><i class="fas fa-gear"></i></div>
                 Configurações
               </a>

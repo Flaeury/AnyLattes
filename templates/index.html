@@ -18,8 +18,35 @@
 </div>
 
 <form action="{{ url_for('upload') }}" method="post" id="forms" enctype="multipart/form-data" class="form-inline">
+    <div class="card-body mb-4 d-flex align-items-center justify-content-center">
+        <div class="rounded w-50 mx-auto">
+            <div class="col section-import h-100 p-5 rounded card-link d-flex align-items-center">
+                <div class="card-body">
+                    <div class="row rounded mt-4 mb-4">
+                        <div class="col-9 ">
+                           
+                            <input class="form-control" type="text" name="files[]" id="file" multiple required>
+                        </div>
+                        <div class="col-2">
+                            <input class="btn btn-success w-100" type="submit" value="Enviar">
+                        </div>
+                        
+                    </div>
+                    <div class="text-center mt-4">
+                        <p>Cole o link disponível após a escolha do docente. Ex: http://lattes.cnpq.br/id-do-docente</p>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    
+    
 
-    <div class="card mb-4">
+
+  
+
+    <!-- <div class="card mb-4">
         <div class="row">
             <div class="col">
                 <div class="card-header">
@@ -58,11 +85,9 @@
             <input class="btn btn-success" type="submit" value="Enviar">
         </div>
         <br>
-    </div>
+    </div> -->
     
-
-
-    <br>
+   
 </form>
 
 
