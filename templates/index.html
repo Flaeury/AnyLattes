@@ -1,94 +1,60 @@
-{% extends 'base.html' %}
-{%block content%}
+{% extends 'base.html' %} {% block content %}
 
+<h1 hidden>{% block title %}AnyLattes - Início {% endblock %}</h1>
 
-<h1 hidden>{%block title%}AnyLattes - Início {%endblock%}</h1>
+<h2 class="text-center mt-lg-4 mb-lg-4">Currículos Lattes</h2>
 
-<h1 style="text-align: center;">Currículos Lattes</h1>
-<!-- <div class="spinner-wrapper">
-    <div class="spinner-border text-primary" role="status">
-        <span class="visually-hidden">Loading...</span>
+<div class="col-md-8"></div>
+
+<form
+  action="{{ url_for('upload') }}"
+  method="post"
+  id="forms"
+  enctype="multipart/form-data"
+  class="form-inline"
+>
+  <div class="container-fluid">
+    <div
+      class="card-body mb-4 d-flex align-items-center justify-content-center custom-card"
+    >
+      <div
+        class="rounded w-100 mx-auto d-flex align-items-center justify-content-center"
+      >
+        <div
+          class="col section-import h-100 p-3 rounded card-link d-flex flex-column align-items-center"
+        >
+          <div class="card-body">
+            <div class="row rounded mb-4">
+              <div class="text-center mt-2 mb-4">
+                <p>
+                  Cole o link disponível após a escolha do docente. Ex:
+                  http://lattes.cnpq.br/id-do-docente
+                </p>
+              </div>
+              <div class="col-md-8 col-12 mb-2">
+                <input
+                  class="form-control"
+                  type="text"
+                  name="files[]"
+                  id="file"
+                  multiple
+                  required
+                />
+              </div>
+
+              <div class="col-md-3 col-12">
+                <input
+                  class="btn btn-success w-100"
+                  type="submit"
+                  value="Enviar"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-</div> -->
-<div class="col-md-8">
-    <ol class="breadcrumb mb-4">
-        <li class="breadcrumb-item"><a href="{{url_for('index')}}">Dashboard</a></li>
-        <li class="breadcrumb-item active">Home</li>
-    </ol>
-</div>
-
-<form action="{{ url_for('upload') }}" method="post" id="forms" enctype="multipart/form-data" class="form-inline">
-    <div class="card-body mb-4 d-flex align-items-center justify-content-center">
-        <div class="rounded w-50 mx-auto">
-            <div class="col section-import h-100 p-5 rounded card-link d-flex align-items-center">
-                <div class="card-body">
-                    <div class="row rounded mt-4 mb-4">
-                        <div class="col-9 ">
-                           
-                            <input class="form-control" type="text" name="files[]" id="file" multiple required>
-                        </div>
-                        <div class="col-2">
-                            <input class="btn btn-success w-100" type="submit" value="Enviar">
-                        </div>
-                        
-                    </div>
-                    <div class="text-center mt-4">
-                        <p>Cole o link disponível após a escolha do docente. Ex: http://lattes.cnpq.br/id-do-docente</p>
-                    </div>
-                </div>
-                
-            </div>
-        </div>
-    </div>
-    
-    
-
-
-  
-
-    <!-- <div class="card mb-4">
-        <div class="row">
-            <div class="col">
-                <div class="card-header">
-                    <i class="fas fa-upload me-1"></i>
-                    Importar currículos no formato XML
-                </div>
-                <div class="card-body">
-                    <br>
-                    <input class="form-control" type="file" name="files[]" id="file" multiple required>
-                </div>
-            </div>
-            <div class="col">
-
-                <div class="card-header">
-                    <i class="fas fa-table me-1"></i>
-                    Período
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="form-group">
-                            <label for="anos" class="form-label">
-                                De:
-                                <input type="number" class="form-control" name="ano_inicio" min="2010" minlength="4" maxlength="4" required>
-                            </label>
-    
-                            <label for="anos" class="form-label">
-                                Até:
-                                <input type="number" class="form-control" name="ano_fim" min="2010" minlength="4" maxlength="4" required>
-                            </label>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div>
-            <input class="btn btn-success" type="submit" value="Enviar">
-        </div>
-        <br>
-    </div> -->
-    
-   
+  </div>
 </form>
 
-
-{%endblock%}
+{% endblock %}
