@@ -30,7 +30,8 @@ from selenium.webdriver.firefox.options import Options
 import speech_recognition as sr
 import urllib
 import pydub
-
+import shutil
+from pathlib import Path
 
 app = Flask(__name__)
 CORS(app)
@@ -170,6 +171,8 @@ def imports():
                 time.sleep(1)
                 driver.find_element(By.ID, 'submitBtn').click()
                 print('[INFO] Firefox: download zip file OK\n')
+
+                shutil.move(str(Path.home()) + "/Downloads/" + idcnpq + ".zip", os.getcwd() + "/xml/" + idcnpq + ".zip")
 
             else:  
                 print('[INFO] Firefox: no recaptcha to solve for {}'.format(idcnpq))
