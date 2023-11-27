@@ -1,60 +1,46 @@
-{% extends 'base.html' %} {% block content %}
+{% extends 'base.html' %}
+
+{% block content %}
 
 <h1 hidden>{% block title %}AnyLattes - Início {% endblock %}</h1>
 
 <h2 class="text-center mt-lg-4 mb-lg-4">Currículos Lattes</h2>
 
-<div class="col-md-8"></div>
-
-<form
-  action="{{ url_for('upload') }}"
-  method="post"
-  id="forms"
-  enctype="multipart/form-data"
-  class="form-inline"
->
-  <div class="container-fluid">
-    <div
-      class="card-body mb-4 d-flex align-items-center justify-content-center custom-card"
+<div class="container">
+  <div class="row justify-content-center">
+    <form
+      action="{{ url_for('imports') }}"
+      method="post"
+      id="forms"
+      enctype="multipart/form-data"
+      class="form-inline"
     >
-      <div
-        class="rounded w-100 mx-auto d-flex align-items-center justify-content-center"
-      >
-        <div
-          class="col section-import h-100 p-3 rounded card-link d-flex flex-column align-items-center"
-        >
-          <div class="card-body">
-            <div class="row rounded mb-4">
-              <div class="text-center mt-2 mb-4">
-                <p>
-                  Cole o link disponível após a escolha do docente. Ex:
-                  http://lattes.cnpq.br/id-do-docente
-                </p>
-              </div>
-              <div class="col-md-8 col-12 mb-2">
-                <input
-                  class="form-control"
-                  type="text"
-                  name="files[]"
-                  id="file"
-                  multiple
-                  required
-                />
-              </div>
+      <div class="card-body mb-4 d-flex align-items-center justify-content-center custom-card">
+        <div class="rounded w-100 mx-auto d-flex align-items-center justify-content-center">
+          <div class="col section-import h-100 p-3 rounded card-link d-flex flex-column align-items-center">
+            <div class="card-body">
+              <div class="row rounded mb-4">
+                <div class="text-center mt-2 mb-4">
+                  <p>
+                    Cole o ID disponível no Lattes do docente. Ex:
+                    1234567890123456
+                  </p>
+                </div>
+                <div class="col-md-8 col-11 mb-2">
+                  <label class="d-none" for="lattes_id"></label>
+                  <input type="text" class="form-control" id="lattes_id" name="lattes_id" required>
+                </div>
 
-              <div class="col-md-3 col-12">
-                <input
-                  class="btn btn-success w-100"
-                  type="submit"
-                  value="Enviar"
-                />
+                <div class="col-md-3 col-11">
+                  <button type="submit" class="btn btn-md btn-success w-100">Enviar</button>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </form>
   </div>
-</form>
+</div>
 
 {% endblock %}

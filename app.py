@@ -19,6 +19,17 @@ import models.BaseDeCorrecoes
 import models.connection as database
 from flask_sqlalchemy import SQLAlchemy
 from zipfile import ZipFile
+import os
+import time
+import random
+import pyautogui
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.firefox.options import Options
+import speech_recognition as sr
+import urllib
+import pydub
 
 
 app = Flask(__name__)
@@ -50,55 +61,126 @@ else:
     os.mkdir('static/images')
     os.mkdir('static/images/nuvem_docente')
 
-# chave para validar sessão quando ocorre alteração de dados de cookie
+
 app.secret_key = 'lattes4web'
 
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER  # atribuição da pasta
-
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER 
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
-
 
 @app.route("/")
 def index():
     return render_template('index.html')
 
-
 @app.route("/imports", methods=['GET', 'POST'])  # upload arquivos qualis
+
 def imports():
     if request.method == 'POST':
-        files = request.files.getlist('files[]')
-        print(files)
-        for file in files:
-            if file.filename == '':
-                flash("No Selected file(s)")
-            else:
-                if file and allowed_file(file.filename):
-                    filename = secure_filename(file.filename)
-                    file.save(os.path.join(
-                        'arquivos/' + filename))
-                    f = file.filename.rsplit('.', 1)[1].lower()
-                    dir = 'arquivos/'
-                    if f == 'pdf' or f == 'PDF':
-                        old = os.path.join(dir, filename)
-                        new = os.path.join(dir, 'QUALIS_novo.pdf')
-                        os.rename(old, new)
 
-                    elif f == 'xls' or f == 'xlsx':
-                        old = os.path.join(dir, filename)
-                        new = os.path.join(dir, 'QualisConferencias.xlsx')
-                        os.rename(old, new)
-                    else:
-                        flash("Erro no sistema")
-                    flash('File(s) uploaded successfully')
-                else:
-                    flash(
-                        "Não foi possível efetuar upload. Arquivo com extensão inválida")
-    return render_template('imports.html')
+        lattes = []  
+        lattes_id = request.form.get('lattes_id')
+
+        if not lattes_id:
+            flash("Lattes ID is required.")
+            return redirect(url_for('index'))
+
+        lattes.append(lattes_id)
+
+        path_to_download = os.getcwd() + '/outputs'
+
+        options = Options()
+
+        options.set_preference('browser.download.folderList', 2)  
+        options.set_preference('browser.download.dir',
+                            path_to_download)  
+
+        options.set_preference('browser.helperApps.alwaysAsk.force', False)
+
+        options.set_preference('browser.download.manager.showWhenStarting', False)
+        options.set_preference('browser.helperApps.neverAsk.saveToDisk',
+                            'application/zip')  
+        print('[INFO] Preferences: OK')
+
+        driver = webdriver.Firefox(options=options)
+        
+        print('[INFO] Firefox: opened OK')
+
+        lattes_url = 'http://buscatextual.cnpq.br/buscatextual/download.do?metodo=apresentar&idcnpq='
+
+        for idcnpq in lattes:
+            location = lattes_url + idcnpq
+            driver.get(location)
+            print('[INFO] Firefox: page loaded OK')
+
+            frames = driver.find_elements(By.TAG_NAME, 'iframe')
+            driver.switch_to.frame(frames[0])
+
+            driver.find_element(By.CLASS_NAME, 'recaptcha-checkbox-border').click()
+            driver.switch_to.default_content()
+
+            button = driver.find_element(By.ID, 'submitBtn')
+            time.sleep(random.randint(1, 2))
+
+            if not button.is_enabled():
+                print('[INFO] Firefox: solve recaptcha for idcnpq {}'.format(idcnpq))
+
+                frames = driver.find_element(
+                    By.XPATH, '/html/body/div[2]/div[4]').find_elements(By.TAG_NAME, 'iframe')
+                driver.switch_to.frame(frames[0])
 
 
-@app.route("/upload", methods=['GET', 'POST'])  # upload currículos
+                time.sleep(random.randint(1, 2))
+                driver.find_element(By.ID, 'recaptcha-audio-button').click()
+
+                driver.switch_to.default_content()
+
+                frames = driver.find_elements(By.TAG_NAME, 'iframe')
+                driver.switch_to.frame(frames[-1])
+
+                time.sleep(1)
+                driver.find_element(
+                    By.XPATH, '/html/body/div/div/div[3]/div/button').click()
+
+                # Download mp3 file
+                src = driver.find_element(By.ID, 'audio-source').get_attribute('src')
+                file_name = path_to_download + '/sample.mp3'
+                urllib.request.urlretrieve(src, file_name)
+                print('[INFO] Firefox: download audio OK')
+
+
+                sound = pydub.AudioSegment.from_mp3(file_name)
+                file_name = file_name.replace('.mp3', '.wav')
+                sound.export(file_name, format='wav')
+                print('[INFO] Firefox: converted audio OK')
+
+
+                sample_audio = sr.AudioFile(file_name)
+                r = sr.Recognizer()
+                with sample_audio as source:
+                    audio = r.record(source)
+
+                key = r.recognize_google(audio)
+                print('[INFO] Recaptcha code: {}'.format(key))
+
+                driver.find_element(By.ID, 'audio-response').send_keys(key.lower())
+                driver.find_element(By.ID, 'audio-response').send_keys(Keys.ENTER)
+                driver.switch_to.default_content()
+
+                time.sleep(1)
+                driver.find_element(By.ID, 'submitBtn').click()
+                print('[INFO] Firefox: download zip file OK\n')
+
+            else:  
+                print('[INFO] Firefox: no recaptcha to solve for {}'.format(idcnpq))
+                time.sleep(1)
+                button.click()
+                print('[INFO] Firefox: download zip file OK\n')
+
+        driver.quit()
+    return render_template('index.html')
+
+@app.route("/upload", methods=['GET', 'POST'])  
 def upload():
     if request.method == 'POST':
         for f in os.listdir(app.config['UPLOAD_FOLDER']):
