@@ -4,8 +4,10 @@ from flask import Flask, jsonify, redirect, render_template, request, flash
 from flask_cors import CORS
 import glob
 import os
+import zipfile
 from werkzeug.utils import secure_filename
 from models.import_projetos import import_project
+from flask import send_from_directory
 from models.consulta import *
 from models.docente import *
 from models.crud import *
@@ -174,11 +176,43 @@ def imports():
 
                 shutil.move(str(Path.home()) + "/Downloads/" + idcnpq + ".zip", os.getcwd() + "/xml/" + idcnpq + ".zip")
 
+                path_to_zipfile = os.getcwd() + "/xml/" + idcnpq + ".zip"
+
+                destino_arquivo = "xml/"
+
+                if os.path.exists(path_to_zipfile):
+                    with zipfile.ZipFile(path_to_zipfile, 'r') as zip_ref:
+                        zip_ref.extractall(destino_arquivo)
+                    print(f'Arquivo ZIP {path_to_zipfile} descompactado com sucesso em {destino_arquivo}')
+
+                  
+                    os.remove(path_to_zipfile)
+                    print(f'Arquivo ZIP {path_to_zipfile} removido após extração.')
+                else:
+                    print(f'O arquivo ZIP {path_to_zipfile} não foi encontrado.')
+
             else:  
                 print('[INFO] Firefox: no recaptcha to solve for {}'.format(idcnpq))
                 time.sleep(1)
                 button.click()
                 print('[INFO] Firefox: download zip file OK\n')
+
+                shutil.move(str(Path.home()) + "/Downloads/" + idcnpq + ".zip", os.getcwd() + "/xml/" + idcnpq + ".zip")
+
+                path_to_zipfile = os.getcwd() + "/xml/" + idcnpq + ".zip"
+
+                destino_arquivo = "xml/"
+
+                if os.path.exists(path_to_zipfile):
+                    with zipfile.ZipFile(path_to_zipfile, 'r') as zip_ref:
+                        zip_ref.extractall(destino_arquivo)
+                    print(f'Arquivo ZIP {path_to_zipfile} descompactado com sucesso em {destino_arquivo}')
+
+                    
+                    os.remove(path_to_zipfile)
+                    print(f'Arquivo ZIP {path_to_zipfile} removido após extração.')
+                else:
+                    print(f'O arquivo ZIP {path_to_zipfile} não foi encontrado.')
 
         driver.quit()
     return render_template('index.html')
@@ -188,33 +222,19 @@ def upload():
     if request.method == 'POST':
         for f in os.listdir(app.config['UPLOAD_FOLDER']):
             os.remove(os.path.join(app.config['UPLOAD_FOLDER'], f))
-        files = request.files.getlist('files[]')
-        # print(files)
-        for file in files:
-            if file.filename == '':
-                flash("No Selected file(s)")
-            else:
-                if file and allowed_file(file.filename):
-                    filename = secure_filename(file.filename)
-                    f = file.filename.rsplit('.', 1)[1].lower()
-                    dir = 'curriculos/'
-                    if f == 'xml' or f == 'XML':
-                        file.save(os.path.join(
-                            app.config['UPLOAD_FOLDER'], filename))
-                        flash('File(s) uploaded successfully')
-                    elif f == 'zip' or f == 'ZIP':
-                        nomeArquivoZip = file.filename.replace('.zip', '')
-                        print(nomeArquivoZip)
 
-                        with ZipFile(file, 'r') as z:
-                            z.extractall()
+        xml_files = [f for f in os.listdir("xml") if f.endswith(".xml")]
 
-                            os.rename('curriculo.xml', dir +
-                                      nomeArquivoZip+'.xml')
-                        flash('File(s) uploaded successfully')
-                    else:
-                        flash(
-                            "Não foi possível efetuar upload. Arquivo com extensão inválida")
+
+        for xml_file in xml_files:
+            file_path = os.path.join("xml", xml_file)
+
+            with open(file_path, 'r', encoding='utf-8') as file:
+
+                xml_content = file.read()
+                print(f"Processing XML file: {xml_file}")
+                print(xml_content)
+
         anos = []
         result = []
         ano_inicio = request.form.get('ano_inicio')
