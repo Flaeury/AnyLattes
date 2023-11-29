@@ -34,6 +34,7 @@ import urllib
 import pydub
 import shutil
 from pathlib import Path
+import datetime
 
 app = Flask(__name__)
 CORS(app)
@@ -46,12 +47,12 @@ ALLOWED_EXTENSIONS = {'xml', 'XML', 'pdf', 'xls',
                       'xlsx', 'zip', 'ZIP'}  # extensões validas
 
 # verifica se pasta existe
-if os.path.isdir('xml'):
-    UPLOAD_FOLDER = 'xml'
+if os.path.isdir('curriculos'):
+    UPLOAD_FOLDER = 'curriculos'
     print('Existe a pasta Currículos')
 else:
-    os.mkdir('xml')
-    UPLOAD_FOLDER = 'xml'
+    os.mkdir('curriculos')
+    UPLOAD_FOLDER = 'curriculos'
 
 if os.path.isdir('arquivos'):
     print('Existe a pasta Arquivos')
@@ -81,14 +82,11 @@ def index():
 def imports():
     if request.method == 'POST':
 
-        lattes = []  
-        lattes_id = request.form.get('lattes_id')
+        lattes = request.form.get('lattes_id', "").split(";")
 
-        if not lattes_id:
+        if len(lattes) == 0:
             flash("Lattes ID is required.")
             return redirect(url_for('index'))
-
-        lattes.append(lattes_id)
 
         path_to_download = os.getcwd() + '/outputs'
 
@@ -111,7 +109,8 @@ def imports():
 
         lattes_url = 'http://buscatextual.cnpq.br/buscatextual/download.do?metodo=apresentar&idcnpq='
 
-        for idcnpq in lattes:
+        for idlattes in lattes:
+            idcnpq = str.strip(idlattes)
             location = lattes_url + idcnpq
             driver.get(location)
             print('[INFO] Firefox: page loaded OK')
@@ -124,6 +123,8 @@ def imports():
 
             button = driver.find_element(By.ID, 'submitBtn')
             time.sleep(random.randint(1, 2))
+
+            worked = True
 
             if not button.is_enabled():
                 print('[INFO] Firefox: solve recaptcha for idcnpq {}'.format(idcnpq))
@@ -174,11 +175,11 @@ def imports():
                 driver.find_element(By.ID, 'submitBtn').click()
                 print('[INFO] Firefox: download zip file OK\n')
 
-                shutil.move(str(Path.home()) + "/Downloads/" + idcnpq + ".zip", os.getcwd() + "/xml/" + idcnpq + ".zip")
+                shutil.move(str(Path.home()) + "/Downloads/" + idcnpq + ".zip", os.getcwd() + "/curriculos/" + idcnpq + ".zip")
 
-                path_to_zipfile = os.getcwd() + "/xml/" + idcnpq + ".zip"
+                path_to_zipfile = os.getcwd() + "/curriculos/" + idcnpq + ".zip"
 
-                destino_arquivo = "xml/"
+                destino_arquivo = "curriculos/"
 
                 if os.path.exists(path_to_zipfile):
                     with zipfile.ZipFile(path_to_zipfile, 'r') as zip_ref:
@@ -188,7 +189,11 @@ def imports():
                   
                     os.remove(path_to_zipfile)
                     print(f'Arquivo ZIP {path_to_zipfile} removido após extração.')
+
+
+
                 else:
+                    worked = False
                     print(f'O arquivo ZIP {path_to_zipfile} não foi encontrado.')
 
             else:  
@@ -197,11 +202,11 @@ def imports():
                 button.click()
                 print('[INFO] Firefox: download zip file OK\n')
 
-                shutil.move(str(Path.home()) + "/Downloads/" + idcnpq + ".zip", os.getcwd() + "/xml/" + idcnpq + ".zip")
+                shutil.move(str(Path.home()) + "/Downloads/" + idcnpq + ".zip", os.getcwd() + "/curriculos/" + idcnpq + ".zip")
 
-                path_to_zipfile = os.getcwd() + "/xml/" + idcnpq + ".zip"
+                path_to_zipfile = os.getcwd() + "/curriculos/" + idcnpq + ".zip"
 
-                destino_arquivo = "xml/"
+                destino_arquivo = "curriculos/"
 
                 if os.path.exists(path_to_zipfile):
                     with zipfile.ZipFile(path_to_zipfile, 'r') as zip_ref:
@@ -210,11 +215,28 @@ def imports():
 
                     os.remove(path_to_zipfile)
                     print(f'Arquivo ZIP {path_to_zipfile} removido após extração.')
+
+
+
                 else:
+                    worked = False
                     print(f'O arquivo ZIP {path_to_zipfile} não foi encontrado.')
 
+            if not worked:
+                continue
+            
+            shutil.move(os.getcwd() + "/curriculos/curriculo.xml", os.getcwd() + "/curriculos/" + idcnpq + ".xml")    
+
+
         driver.quit()
-    return render_template('index.html')
+    page = "upload"
+
+    # A data início é referencia, usa-se 1800 para pegar todas as contribuições
+    # Não é possível que tenha alguem antes de 1800 nisso
+    start_date = "1800"
+    end_date = str(datetime.date.today().year)
+
+    return render_template('loading.html', inicio=start_date, fim=end_date, page=page)
 
 
 @app.route("/upload", methods=['GET', 'POST'])  

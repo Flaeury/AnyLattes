@@ -1,27 +1,32 @@
 [
     {
+        "Docente": "BENEDITO DE JESUS PINHEIRO FERREIRA",
+        "M\u00e9dia": 9.25,
+        "Mediana": 11.8375
+    },
+    {
         "Docente": "CLAUDOMIRO DE SOUZA DE SALES JUNIOR",
         "M\u00e9dia": 28.575,
-        "Mediana": 14.425
+        "Mediana": 11.8375
     },
     {
         "Docente": "DIONNE CAVALCANTE MONTEIRO",
         "M\u00e9dia": 6.625,
-        "Mediana": 14.425
+        "Mediana": 11.8375
     },
     {
         "Docente": "FILIPE DE OLIVEIRA SARAIVA",
         "M\u00e9dia": 14.425,
-        "Mediana": 14.425
+        "Mediana": 11.8375
     },
     {
         "Docente": "JEFFERSON MAGALH\u00c3ES DE MORAIS",
         "M\u00e9dia": 17.0,
-        "Mediana": 14.425
+        "Mediana": 11.8375
     },
     {
         "Docente": "RENATO HIDAKA TORRES",
         "M\u00e9dia": 5.275,
-        "Mediana": 14.425
+        "Mediana": 11.8375
     }
 ]
