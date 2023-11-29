@@ -82,7 +82,7 @@ def index():
 def imports():
     if request.method == 'POST':
 
-        lattes = request.form.get('lattes_id', "").split(";")
+        lattes = ",".join(request.form.get('lattes_id', "").split(";")).split(",")
 
         if len(lattes) == 0:
             flash("Lattes ID is required.")
@@ -231,8 +231,6 @@ def imports():
         driver.quit()
     page = "upload"
 
-    # A data início é referencia, usa-se 1800 para pegar todas as contribuições
-    # Não é possível que tenha alguem antes de 1800 nisso
     start_date = "1800"
     end_date = str(datetime.date.today().year)
 
