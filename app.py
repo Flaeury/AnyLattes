@@ -46,12 +46,12 @@ ALLOWED_EXTENSIONS = {'xml', 'XML', 'pdf', 'xls',
                       'xlsx', 'zip', 'ZIP'}  # extensões validas
 
 # verifica se pasta existe
-if os.path.isdir('curriculos'):
-    UPLOAD_FOLDER = 'curriculos'
+if os.path.isdir('xml'):
+    UPLOAD_FOLDER = 'xml'
     print('Existe a pasta Currículos')
 else:
-    os.mkdir('curriculos')
-    UPLOAD_FOLDER = 'curriculos'
+    os.mkdir('xml')
+    UPLOAD_FOLDER = 'xml'
 
 if os.path.isdir('arquivos'):
     print('Existe a pasta Arquivos')
@@ -208,7 +208,6 @@ def imports():
                         zip_ref.extractall(destino_arquivo)
                     print(f'Arquivo ZIP {path_to_zipfile} descompactado com sucesso em {destino_arquivo}')
 
-                    
                     os.remove(path_to_zipfile)
                     print(f'Arquivo ZIP {path_to_zipfile} removido após extração.')
                 else:
@@ -217,6 +216,7 @@ def imports():
         driver.quit()
     return render_template('index.html')
 
+
 @app.route("/upload", methods=['GET', 'POST'])  
 def upload():
     if request.method == 'POST':
@@ -224,7 +224,6 @@ def upload():
             os.remove(os.path.join(app.config['UPLOAD_FOLDER'], f))
 
         xml_files = [f for f in os.listdir("xml") if f.endswith(".xml")]
-
 
         for xml_file in xml_files:
             file_path = os.path.join("xml", xml_file)
