@@ -109,10 +109,13 @@ def imports():
 
         lattes_url = 'http://buscatextual.cnpq.br/buscatextual/download.do?metodo=apresentar&idcnpq='
 
-        for idlattes in lattes:
+        
+        while len(lattes) > 0:
+            idlattes = lattes[0]
             idcnpq = str.strip(idlattes)
             location = lattes_url + idcnpq
             driver.get(location)
+            print(f"Lattes dentro do while: {lattes}")
             print('[INFO] Firefox: page loaded OK')
 
             frames = driver.find_elements(By.TAG_NAME, 'iframe')
@@ -126,6 +129,7 @@ def imports():
 
             worked = True
 
+            
             if not button.is_enabled():
                 print('[INFO] Firefox: solve recaptcha for idcnpq {}'.format(idcnpq))
 
@@ -186,7 +190,7 @@ def imports():
                         zip_ref.extractall(destino_arquivo)
                     print(f'Arquivo ZIP {path_to_zipfile} descompactado com sucesso em {destino_arquivo}')
 
-                  
+                
                     os.remove(path_to_zipfile)
                     print(f'Arquivo ZIP {path_to_zipfile} removido após extração.')
 
@@ -223,13 +227,18 @@ def imports():
                     print(f'O arquivo ZIP {path_to_zipfile} não foi encontrado.')
 
             if not worked:
+                
                 continue
-            
-            shutil.move(os.getcwd() + "/curriculos/curriculo.xml", os.getcwd() + "/curriculos/" + idcnpq + ".xml")    
-
+            shutil.move(os.getcwd() + "/curriculos/curriculo.xml", os.getcwd() + "/curriculos/" + idcnpq + ".xml") 
+    
+            if worked:
+                lattes = lattes.pop(0)
+                #lattes.pop(0)
+                print(f"Lattes do loop while: {lattes}")
 
         driver.quit()
     page = "upload"
+    lattes = []
 
     start_date = "1800"
     end_date = str(datetime.date.today().year)
