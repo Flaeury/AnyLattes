@@ -40,6 +40,7 @@ app = Flask(__name__)
 CORS(app)
 app.app_context().push()
 
+idLattes = ''
 
 # configurações de upload arquivos
 
@@ -49,18 +50,18 @@ ALLOWED_EXTENSIONS = {'xml', 'XML', 'pdf', 'xls',
 # verifica se pasta existe
 if os.path.isdir('curriculos'):
     UPLOAD_FOLDER = 'curriculos'
-    print('Existe a pasta Currículos')
+    print('Currículos')
 else:
     os.mkdir('curriculos')
     UPLOAD_FOLDER = 'curriculos'
 
 if os.path.isdir('arquivos'):
-    print('Existe a pasta Arquivos')
+    print('Arquivos')
 else:
     os.mkdir('arquivos')
 
 if os.path.isdir('static/images'):
-    print('Existe a pasta Images')
+    print('Images')
 else:
     os.mkdir('static/images')
     os.mkdir('static/images/nuvem_docente')
@@ -87,85 +88,92 @@ def imports():
         lattes = []
 
         lattes = ",".join(request.form.get(
-            'lattes_id', "").split(";")).split(",")
+             'lattes_id', "").split(";")).split(",")
+
+        #lattes_raw = request.form.get('lattes_id', "")
+        #lattes = [str(value) for value in lattes_raw.split(";") if value]
 
         if len(lattes) == 0:
             flash("Lattes ID is required.")
             return redirect(url_for('index'))
 
+       # Define download path
         path_to_download = os.getcwd() + '/outputs'
 
+        # Define a new instance of firefox with specific options
         options = Options()
-
-        options.set_preference('browser.download.folderList', 2)
-        options.set_preference('browser.download.dir',
-                               path_to_download)
-
-        options.set_preference('browser.helperApps.alwaysAsk.force', False)
-
-        options.set_preference(
-            'browser.download.manager.showWhenStarting', False)
-        options.set_preference('browser.helperApps.neverAsk.saveToDisk',
-                               'application/zip')
+        # options.headless = True # Hide firefox window
+        options.set_preference('browser.download.folderList', 2) # use specific folder
+        options.set_preference('browser.download.dir', path_to_download) # Se path to download
+        options.set_preference('browser.helperApps.alwaysAsk.force', False) # Do not ask anything (no pop up)
+        options.set_preference('browser.download.manager.showWhenStarting', False) # Do not show anything (no pop up)
+        options.set_preference('browser.helperApps.neverAsk.saveToDisk', 'application/zip') # MIME type for zip
         print('[INFO] Preferences: OK')
 
-        driver = webdriver.Firefox(options=options)
-
+        # Define a new firefox instance
+        driver = webdriver.Firefox(options = options)
+        width = height = 800
+        ss_w, ss_h= pyautogui.size() # Cross-platform to get screen resolution
+        driver.set_window_size(width, height)
+        driver.set_window_position(ss_w / 2 - width / 2, ss_h / 2 - height / 2) # Center the window
         print('[INFO] Firefox: opened OK')
 
         lattes_url = 'http://buscatextual.cnpq.br/buscatextual/download.do?metodo=apresentar&idcnpq='
 
-        while len(lattes) > 0:
-            idlattes = lattes[0]
-            idcnpq = str.strip(idlattes)
+        for idcnpq in lattes:
             location = lattes_url + idcnpq
             driver.get(location)
-            print(f"Lattes dentro do while: {lattes}")
             print('[INFO] Firefox: page loaded OK')
 
+            # Find iframe tag and switch to that iframe context
             frames = driver.find_elements(By.TAG_NAME, 'iframe')
             driver.switch_to.frame(frames[0])
 
-            driver.find_element(
-                By.CLASS_NAME, 'recaptcha-checkbox-border').click()
+            # Click on recaptcha checkbox and switch to default context
+            driver.find_element(By.CLASS_NAME, 'recaptcha-checkbox-border').click()
             driver.switch_to.default_content()
 
+            # Investigate submit button
             button = driver.find_element(By.ID, 'submitBtn')
             time.sleep(random.randint(1, 2))
-
             worked = True
 
             if not button.is_enabled():
                 print('[INFO] Firefox: solve recaptcha for idcnpq {}'.format(idcnpq))
-
-                frames = driver.find_element(
-                    By.XPATH, '/html/body/div[2]/div[4]').find_elements(By.TAG_NAME, 'iframe')
+                # Find iframe tag and switch to that iframe context
+                frames = driver.find_element(By.XPATH, '/html/body/div[2]/div[4]').find_elements(By.TAG_NAME, 'iframe')
                 driver.switch_to.frame(frames[0])
 
+                # Click on recaptcha audio button (alternative way to solve recaptcha)
                 time.sleep(random.randint(1, 2))
                 driver.find_element(By.ID, 'recaptcha-audio-button').click()
 
+                # Switch to default context again
                 driver.switch_to.default_content()
 
+                # Find iframe tag and switch to the last context
                 frames = driver.find_elements(By.TAG_NAME, 'iframe')
                 driver.switch_to.frame(frames[-1])
 
+                # [Optional] Wait 1 second and play audio
                 time.sleep(1)
-                driver.find_element(
-                    By.XPATH, '/html/body/div/div/div[3]/div/button').click()
+                driver.find_element(By.XPATH, '/html/body/div/div/div[3]/div/button').click()
+
+             
 
                 # Download mp3 file
-                src = driver.find_element(
-                    By.ID, 'audio-source').get_attribute('src')
+                src = driver.find_element(By.ID, 'audio-source').get_attribute('src')
                 file_name = path_to_download + '/sample.mp3'
                 urllib.request.urlretrieve(src, file_name)
-                print('[INFO] Firefox: download audio OK')
+             
 
+                # Get file and convert to wav extension
                 sound = pydub.AudioSegment.from_mp3(file_name)
                 file_name = file_name.replace('.mp3', '.wav')
-                sound.export(file_name, format='wav')
-                print('[INFO] Firefox: converted audio OK')
+                sound.export(file_name, format = 'wav')
+              
 
+                # Submit audio to a speechrecognition algorithm from Google
                 sample_audio = sr.AudioFile(file_name)
                 r = sr.Recognizer()
                 with sample_audio as source:
@@ -174,15 +182,14 @@ def imports():
                 key = r.recognize_google(audio)
                 print('[INFO] Recaptcha code: {}'.format(key))
 
-                driver.find_element(
-                    By.ID, 'audio-response').send_keys(key.lower())
-                driver.find_element(
-                    By.ID, 'audio-response').send_keys(Keys.ENTER)
+                # Send string (key) back to recaptcha page and switch to default context again
+                driver.find_element(By.ID, 'audio-response').send_keys(key.lower())
+                driver.find_element(By.ID, 'audio-response').send_keys(Keys.ENTER)
                 driver.switch_to.default_content()
 
+                # Submit solution by clicking the button
                 time.sleep(1)
                 driver.find_element(By.ID, 'submitBtn').click()
-                print('[INFO] Firefox: download zip file OK\n')
 
                 shutil.move(str(Path.home()) + "/Downloads/" + idcnpq +
                             ".zip", os.getcwd() + "/curriculos/" + idcnpq + ".zip")
@@ -210,7 +217,6 @@ def imports():
                 print('[INFO] Firefox: no recaptcha to solve for {}'.format(idcnpq))
                 time.sleep(1)
                 button.click()
-                print('[INFO] Firefox: download zip file OK\n')
 
                 shutil.move(str(Path.home()) + "/Downloads/" + idcnpq +
                             ".zip", os.getcwd() + "/curriculos/" + idcnpq + ".zip")
@@ -237,26 +243,19 @@ def imports():
             if not worked:
 
                 continue
+
             shutil.move(os.getcwd() + "/curriculos/curriculo.xml",
-                        os.getcwd() + "/curriculos/" + idcnpq + ".xml")
-
-            if worked:
-                nova_lista = lattes.pop(0)
-                # lattes.pop(0)
-                print(f"Lattes do loop while: {nova_lista}, e {lattes}")
-                # searchId = findIdLattes(nova_lista)
-
-                # if searchId == 0:
-                #     saveID(nova_lista)
+                         os.getcwd() + "/curriculos/" + idcnpq + ".xml")
 
         driver.quit()
-    page = "upload"
-    lattes = []
+    #page = "upload"
+   
 
     start_date = "1800"
     end_date = str(datetime.date.today().year)
 
-    return render_template('loading.html', inicio=start_date, fim=end_date, page=page)
+    #render_template('loading.html', inicio=start_date, fim=end_date, page=page)
+    return start_date, end_date
 
 
 @app.route("/upload", methods=['GET', 'POST'])
