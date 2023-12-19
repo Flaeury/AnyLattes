@@ -88,10 +88,10 @@ def imports():
         lattes = []
 
         lattes = ",".join(request.form.get(
-             'lattes_id', "").split(";")).split(",")
+            'lattes_id', "").split(";")).split(",")
 
-        #lattes_raw = request.form.get('lattes_id', "")
-        #lattes = [str(value) for value in lattes_raw.split(";") if value]
+        # lattes_raw = request.form.get('lattes_id', "")
+        # lattes = [str(value) for value in lattes_raw.split(";") if value]
 
         if len(lattes) == 0:
             flash("Lattes ID is required.")
@@ -103,19 +103,26 @@ def imports():
         # Define a new instance of firefox with specific options
         options = Options()
         # options.headless = True # Hide firefox window
-        options.set_preference('browser.download.folderList', 2) # use specific folder
-        options.set_preference('browser.download.dir', path_to_download) # Se path to download
-        options.set_preference('browser.helperApps.alwaysAsk.force', False) # Do not ask anything (no pop up)
-        options.set_preference('browser.download.manager.showWhenStarting', False) # Do not show anything (no pop up)
-        options.set_preference('browser.helperApps.neverAsk.saveToDisk', 'application/zip') # MIME type for zip
+        # use specific folder
+        options.set_preference('browser.download.folderList', 2)
+        options.set_preference('browser.download.dir',
+                               path_to_download)  # Se path to download
+        # Do not ask anything (no pop up)
+        options.set_preference('browser.helperApps.alwaysAsk.force', False)
+        # Do not show anything (no pop up)
+        options.set_preference(
+            'browser.download.manager.showWhenStarting', False)
+        options.set_preference(
+            'browser.helperApps.neverAsk.saveToDisk', 'application/zip')  # MIME type for zip
         print('[INFO] Preferences: OK')
 
         # Define a new firefox instance
-        driver = webdriver.Firefox(options = options)
+        driver = webdriver.Firefox(options=options)
         width = height = 800
-        ss_w, ss_h= pyautogui.size() # Cross-platform to get screen resolution
+        ss_w, ss_h = pyautogui.size()  # Cross-platform to get screen resolution
         driver.set_window_size(width, height)
-        driver.set_window_position(ss_w / 2 - width / 2, ss_h / 2 - height / 2) # Center the window
+        driver.set_window_position(
+            ss_w / 2 - width / 2, ss_h / 2 - height / 2)  # Center the window
         print('[INFO] Firefox: opened OK')
 
         lattes_url = 'http://buscatextual.cnpq.br/buscatextual/download.do?metodo=apresentar&idcnpq='
@@ -130,7 +137,8 @@ def imports():
             driver.switch_to.frame(frames[0])
 
             # Click on recaptcha checkbox and switch to default context
-            driver.find_element(By.CLASS_NAME, 'recaptcha-checkbox-border').click()
+            driver.find_element(
+                By.CLASS_NAME, 'recaptcha-checkbox-border').click()
             driver.switch_to.default_content()
 
             # Investigate submit button
@@ -141,7 +149,8 @@ def imports():
             if not button.is_enabled():
                 print('[INFO] Firefox: solve recaptcha for idcnpq {}'.format(idcnpq))
                 # Find iframe tag and switch to that iframe context
-                frames = driver.find_element(By.XPATH, '/html/body/div[2]/div[4]').find_elements(By.TAG_NAME, 'iframe')
+                frames = driver.find_element(
+                    By.XPATH, '/html/body/div[2]/div[4]').find_elements(By.TAG_NAME, 'iframe')
                 driver.switch_to.frame(frames[0])
 
                 # Click on recaptcha audio button (alternative way to solve recaptcha)
@@ -157,21 +166,19 @@ def imports():
 
                 # [Optional] Wait 1 second and play audio
                 time.sleep(1)
-                driver.find_element(By.XPATH, '/html/body/div/div/div[3]/div/button').click()
-
-             
+                driver.find_element(
+                    By.XPATH, '/html/body/div/div/div[3]/div/button').click()
 
                 # Download mp3 file
-                src = driver.find_element(By.ID, 'audio-source').get_attribute('src')
+                src = driver.find_element(
+                    By.ID, 'audio-source').get_attribute('src')
                 file_name = path_to_download + '/sample.mp3'
                 urllib.request.urlretrieve(src, file_name)
-             
 
                 # Get file and convert to wav extension
                 sound = pydub.AudioSegment.from_mp3(file_name)
                 file_name = file_name.replace('.mp3', '.wav')
-                sound.export(file_name, format = 'wav')
-              
+                sound.export(file_name, format='wav')
 
                 # Submit audio to a speechrecognition algorithm from Google
                 sample_audio = sr.AudioFile(file_name)
@@ -183,8 +190,10 @@ def imports():
                 print('[INFO] Recaptcha code: {}'.format(key))
 
                 # Send string (key) back to recaptcha page and switch to default context again
-                driver.find_element(By.ID, 'audio-response').send_keys(key.lower())
-                driver.find_element(By.ID, 'audio-response').send_keys(Keys.ENTER)
+                driver.find_element(
+                    By.ID, 'audio-response').send_keys(key.lower())
+                driver.find_element(
+                    By.ID, 'audio-response').send_keys(Keys.ENTER)
                 driver.switch_to.default_content()
 
                 # Submit solution by clicking the button
@@ -245,16 +254,15 @@ def imports():
                 continue
 
             shutil.move(os.getcwd() + "/curriculos/curriculo.xml",
-                         os.getcwd() + "/curriculos/" + idcnpq + ".xml")
+                        os.getcwd() + "/curriculos/" + idcnpq + ".xml")
 
         driver.quit()
-    #page = "upload"
-   
+    # page = "upload"
 
     start_date = "1800"
     end_date = str(datetime.date.today().year)
 
-    #render_template('loading.html', inicio=start_date, fim=end_date, page=page)
+    # render_template('loading.html', inicio=start_date, fim=end_date, page=page)
     return start_date, end_date
 
 
@@ -666,5 +674,5 @@ if __name__ == "__main__":
     database.tabela_pontuacoes()
     database.insert_pontuacoes()
 
-    app.run(debug=True)
+    # app.run(debug=True)
     app.run(host='0.0.0.0')
