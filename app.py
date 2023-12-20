@@ -128,6 +128,7 @@ def imports():
         lattes_url = 'http://buscatextual.cnpq.br/buscatextual/download.do?metodo=apresentar&idcnpq='
 
         for idcnpq in lattes:
+            idcnpq = idcnpq.strip()
             location = lattes_url + idcnpq
             driver.get(location)
             print('[INFO] Firefox: page loaded OK')
@@ -257,13 +258,13 @@ def imports():
                         os.getcwd() + "/curriculos/" + idcnpq + ".xml")
 
         driver.quit()
-    # page = "upload"
+    page = "upload"
 
     start_date = "1800"
     end_date = str(datetime.date.today().year)
 
-    # render_template('loading.html', inicio=start_date, fim=end_date, page=page)
-    return start_date, end_date
+    return render_template('loading.html', inicio=start_date, fim=end_date, page=page)
+    
 
 
 @app.route("/upload", methods=['GET', 'POST'])
