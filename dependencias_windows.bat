@@ -9,5 +9,13 @@ pip install matplotlib
 pip install flask_sqlalchemy
 pip install wordcloud
 pip install flask_cors
+pip install openpyxl
+pip install plotly
+pip install pandas
+pip install networkx
+pip install nltk
+pip install PyAutoGUI
+pip install SpeechRecognition
+pip install pydub
 
 echo BIBLIOTECAS INSTALADAS!
