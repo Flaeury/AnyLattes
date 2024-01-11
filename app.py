@@ -264,7 +264,6 @@ def imports():
     end_date = str(datetime.date.today().year)
 
     return render_template('loading.html', inicio=start_date, fim=end_date, page=page)
-    
 
 
 @app.route("/upload", methods=['GET', 'POST'])
@@ -675,5 +674,5 @@ if __name__ == "__main__":
     database.tabela_pontuacoes()
     database.insert_pontuacoes()
 
-    # app.run(debug=True)
+    app.run(debug=True)
     app.run(host='0.0.0.0')

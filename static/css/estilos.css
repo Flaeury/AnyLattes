@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Poppins:wght@400;500&family=Rubik:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
 
 
 h1 {
@@ -7,14 +8,14 @@ h1 {
   margin-block-end: 0.67em;
   margin-inline-start: 0px;
   margin-inline-end: 0px;
-  font-family: 'Rubik', sans-serif;
+  font-family: 'Roboto', sans-serif;
   font-weight: 500;
 }
 h2 {
   text-align: center;
   margin: 5px;
   padding: 5px;
-  font-family: 'Rubik', sans-serif;
+  font-family: 'Roboto', sans-serif;
   font-weight: 500;
 }
 #resultado {
@@ -22,18 +23,26 @@ h2 {
 }
 
 .pathname {
-  font-family: 'Rubik', sans-serif;
+  font-family: 'Roboto', sans-serif;
   font-weight: 400;
 }
 
 body {
   background-color: #EBEBEB;
+  align-items: center;
 }
 
 .card-link {
   max-width: 50vw !important;
 }
 
+#layoutSidenav_content {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+  max-width: 90%;
+}
 .section-import {
   background-color: #F8F8F8;
 }
