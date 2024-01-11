@@ -27,6 +27,14 @@ h2 {
   font-weight: 400;
 }
 
+.cards {
+  box-shadow: 15px 15px 30px #bebebe,
+  -15px -15px 30px rgb(254, 254, 254);
+  background-color: transparent;
+  margin: 3.5rem 0.1rem;
+
+}
+
 body {
   background-color: #EBEBEB;
   align-items: center;

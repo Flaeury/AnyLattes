@@ -17,124 +17,132 @@
 <!-- <script src='https://cdn.plot.ly/plotly-latest.min.js'></script> -->
 <!-- <script src="{{url_for('static',filename= 'js/plotly.min.js') }}"></script> -->
 
-<div class="card-header" id="card-header">
-    <i class="fas fa-chart-bar me-1"></i>
-    Média Por Docente
-</div>
-
-<div class="card-body">
-    <div id="media" class="media"> </div>
-</div>
-
-<div class="card-header" id="card-header">
-    <div>
+<div class="cards"> 
+    <div class="card-header" id="card-header">
         <i class="fas fa-chart-bar me-1"></i>
-        <span class="">Grafo de Colaboração entre Docentes</span>
-       
-        <span class="info-cards">
-            <i class="fas fa-circle-info" style="color: #000000;"></i>
-            Gráfico sobre a colaboração entre os professores em projetos
-        </span>
-       
+        Média Por Docente
+    </div>
+
+    <div class="card-body">
+        <div id="media" class="media"> </div>
     </div>
 </div>
 
+<div class="cards">
+    <div class="card-header" id="card-header">
+        <div>
+            <i class="fas fa-chart-bar me-1"></i>
+            <span class="">Grafo de Colaboração entre Docentes</span>
+        
+            <span class="info-cards">
+                <i class="fas fa-circle-info" style="color: #000000;"></i>
+                Gráfico sobre a colaboração entre os professores em projetos
+            </span>
+        
+        </div>
+    </div>
+    <div class="card-body" >
+        <div class="row">
+            <div class="colaboracao col-sm-10">
+                <div id="div-imagem">
+                    <img src="{{url_for('static', filename='images/matriz_colaboracao_circular.png')}}" id="colaboracao" class="colaboracao" alt="Matriz de Colaboração">
+                </div> 
+            </div>
+        
+            <div class="col-sm-2">
+                <label class="mb-2">Tipo de Grafo:</label>
+                <select class="form-select form-select-sm mb-3"  name="tipo_grafo" id="tipo_grafo" onchange="javascript:tipoGrafo(this);" > 
+                    <option value="circular">Circular</option>
+                    <option value="kamada_kawai">Kamada Kawai</option>
+                    <option value="planar">Planar</option>
+                    <option value="random">Random</option>
+                </select>
+            </div>
+    
+        </div>
+    </div>
+</div>
 
-<div class="card-body" >
+<div class="cards">
+
     <div class="row">
-        <div class="colaboracao col-sm-10">
-            <div id="div-imagem">
-                <img src="{{url_for('static', filename='images/matriz_colaboracao_circular.png')}}" id="colaboracao" class="colaboracao" alt="Matriz de Colaboração">
-            </div> 
+        <div class="card-header col-sm-8" id="card-header">
+            <i class="fas fa-table me-1"></i>
+            Quantidade Publicações por Ano
+        </div>
+        <div class="card-header col-sm-4 info-cards">
+            <i class="fas fa-chart-pie me-1"></i>
+            Periódico x Conferência
         </div>
     
-        <div class="col-sm-2">
-            <label class="mb-2">Tipo de Grafo:</label>
-            <select class="form-select form-select-sm mb-3"  name="tipo_grafo" id="tipo_grafo" onchange="javascript:tipoGrafo(this);" > 
-                <option value="circular">Circular</option>
-                <option value="kamada_kawai">Kamada Kawai</option>
-                <option value="planar">Planar</option>
-                <option value="random">Random</option>
-            </select>
+    </div>
+    
+    
+    <div class="card-body">
+    
+        <div class="row">
+            <div class="col-sm-8" id="chart">
+    
+            </div>
+    
+            <div class="col-sm-4" id="pizza">
+    
+            </div>
+    
         </div>
-
+    
     </div>
 </div>
 
-<div class="row">
-    <div class="card-header col-sm-8" id="card-header">
+
+
+
+<div class="cards">
+    
+    <div class="card-header">
         <i class="fas fa-table me-1"></i>
-        Quantidade Publicações por Ano
+        Relação das publicações
     </div>
-    <div class="card-header col-sm-4 info-cards">
-        <i class="fas fa-chart-pie me-1"></i>
-        Periódico x Conferência
+    <div class="card-body container">
+        <table id="resultados" class="table table-sm responsive" style="font-size: small;">
+            <thead class="table-dark">
+                <tr>
+                    <th>Docente</th>
+                    <th>Tipo:</th>
+                    <th>Ano:</th>
+                    <th>Título:</th>
+                    <th>Estratos:</th>
+                    <th>Notas:</th>
+                    <th>Editar</th>
+                    <th>DOI</th>
+                    
+                </tr>
+            </thead>
+    
+            <tbody>
+                {%for lista in listar%}
+                <tr>
+    
+                    <td>{{lista[1].split()[0]}} {{lista[1].split()[-1]}}</td>
+                    <td>{{lista[2]}}</td>
+                    <td>{{lista[3]}}</td>
+                    
+                    <td><a class="link-offset-2" data-bs-toggle="modal" onclick='visualizaDados({{lista[0]}})'
+                        data-bs-target="#exampleModal" data-bs-whatever="{{lista[4]}}">{{lista[4]}}</a></td>
+                    <td>{{lista[9]}}</td>
+                    <td>{{lista[10]}}</td>
+                    <td><a href="{{url_for('edita_publicacao',id=lista[0])}}"><i class="fas fa-pen me-1"></i></a></td>
+    
+                    {%if lista[5] != '-': %}
+                        <td><a href="http://dx.doi.org/{{lista[5]}}" target="_blank">DOI</a> </td>
+                    {%else%}
+                        <td> - </td>
+                    {%endif%}
+                </tr>
+                {%endfor%}
+            </tbody>
+        </table>
     </div>
-
-</div>
-
-
-<div class="card-body">
-
-    <div class="row">
-        <div class="col-sm-8" id="chart">
-
-        </div>
-
-        <div class="col-sm-4" id="pizza">
-
-        </div>
-
-    </div>
-
-</div>
-
-
-
-
-<div class="card-header">
-    <i class="fas fa-table me-1"></i>
-    Relação das publicações
-</div>
-<div class="card-body container">
-    <table id="resultados" class="table table-sm responsive" style="font-size: small;">
-        <thead class="table-dark">
-            <tr>
-                <th>Docente</th>
-                <th>Tipo:</th>
-                <th>Ano:</th>
-                <th>Título:</th>
-                <th>Estratos:</th>
-                <th>Notas:</th>
-                <th>Editar</th>
-                <th>DOI</th>
-                
-            </tr>
-        </thead>
-
-        <tbody>
-            {%for lista in listar%}
-            <tr>
-
-                <td>{{lista[1].split()[0]}} {{lista[1].split()[-1]}}</td>
-                <td>{{lista[2]}}</td>
-                <td>{{lista[3]}}</td>
-                
-                <td><a class="link-offset-2" data-bs-toggle="modal" onclick='visualizaDados({{lista[0]}})'
-                    data-bs-target="#exampleModal" data-bs-whatever="{{lista[4]}}">{{lista[4]}}</a></td>
-                <td>{{lista[9]}}</td>
-                <td>{{lista[10]}}</td>
-                <td><a href="{{url_for('edita_publicacao',id=lista[0])}}"><i class="fas fa-pen me-1"></i></a></td>
-
-                {%if lista[5] != '-': %}
-                    <td><a href="http://dx.doi.org/{{lista[5]}}" target="_blank">DOI</a> </td>
-                {%else%}
-                    <td> - </td>
-                {%endif%}
-            </tr>
-            {%endfor%}
-        </tbody>
-    </table>
 </div>
 
 <!-- modal para exibir dados faltantes dos títulos-->
