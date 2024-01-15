@@ -8,11 +8,13 @@
         <span class="visually-hidden">Loading...</span>
     </div>
 </div> -->
-<div class="col-md-8">
-    <ol class="breadcrumb mb-4">
-        <li class="breadcrumb-item"><a href="{{url_for('index')}}">Dashboard</a></li>
-        <li class="breadcrumb-item active">Resultados</li>
-    </ol>
+<div class="col-md-5">
+    <button class="buttonAtualizar">
+        <div class="svg-wrapper-1">
+            <i class="fa-solid fa-rotate-right"></i>
+        </div>
+        <span>Atualizar dados</span>
+      </button>
 </div>
 <!-- <script src='https://cdn.plot.ly/plotly-latest.min.js'></script> -->
 <!-- <script src="{{url_for('static',filename= 'js/plotly.min.js') }}"></script> -->
@@ -64,36 +66,39 @@
 </div>
 
 <div class="cards">
-
     <div class="row">
-        <div class="card-header col-sm-8" id="card-header">
+      <!-- First Column -->
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-header" id="card-header">
             <i class="fas fa-table me-1"></i>
             Quantidade Publicações por Ano
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-sm-11" id="chart"></div>
+            </div>
+          </div>
         </div>
-        <div class="card-header col-sm-4 info-cards">
+      </div>
+  
+      <!-- Second Column -->
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-header info-cards">
             <i class="fas fa-chart-pie me-1"></i>
             Periódico x Conferência
-        </div>
-    
-    </div>
-    
-    
-    <div class="card-body">
-    
-        <div class="row">
-            <div class="col-sm-8" id="chart">
-    
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-sm-11" id="pizza"></div>
             </div>
-    
-            <div class="col-sm-4" id="pizza">
-    
-            </div>
-    
+          </div>
         </div>
-    
+      </div>
     </div>
-</div>
-
+  </div>
+  
 
 
 
@@ -179,34 +184,38 @@
 <!-- fim modal -->
 <br>
 
-<div class="card-header">
-    <i class="fas fa-table me-1"></i>
-    Tabela de Colaboração
-</div>
-<div class="card-body container">
-    <table id="res" class="table table-sm table-responsive" style="font-size: small;">
-        <thead class="table-dark">
-            <tr>
-                <th>Título:</th>
-                <th style="text-align: center;">Colaboradores</th>
-            </tr>
-        </thead>
+<div class="cards"> 
+    <div class="card-header">
+        <i class="fas fa-table me-1"></i>
+        Tabela de Colaboração
+    </div>
+    <div class="card-body container">
+        <table id="res" class="table table-sm table-responsive" style="font-size: small;">
+            <thead class="table-dark">
+                <tr>
+                    <th>Título:</th>
+                    <th style="text-align: center;">Colaboradores</th>
+                </tr>
+            </thead>
 
-        <tbody>
-            {%for lista in titulosRepetidos%}
-            <tr>
-                <td>
-                    <input type="button" class="btn btn-outline btn-sm rep" id="{{lista[0]}}"  data-bs-toggle="modal" 
-                    data-bs-target="#eModal" data-bs-whatever="{{lista[0]}}" onclick="visualizarDados(this.value)" value="{{lista[0]}}">
-                </td>
-                <td align="center"><a class="link-offset-2" data-bs-toggle="modal"
-                    data-bs-target="#eModal" data-bs-whatever="{{lista[4]}}" onclick="dados(document.getElementById('{{lista[0]}}').value);"><i class="fas fa-user"></i></a>
-                </td>               
-            </tr>
-            {%endfor%}
-        </tbody>
-    </table>
+            <tbody>
+                {%for lista in titulosRepetidos%}
+                <tr>
+                    <td>
+                        <input type="button" class="btn btn-outline btn-sm rep" id="{{lista[0]}}"  data-bs-toggle="modal" 
+                        data-bs-target="#eModal" data-bs-whatever="{{lista[0]}}" onclick="visualizarDados(this.value)" value="{{lista[0]}}">
+                    </td>
+                    <td align="center"><a class="link-offset-2" data-bs-toggle="modal"
+                        data-bs-target="#eModal" data-bs-whatever="{{lista[4]}}" onclick="dados(document.getElementById('{{lista[0]}}').value);"><i class="fas fa-user"></i></a>
+                    </td>               
+                </tr>
+                {%endfor%}
+            </tbody>
+        </table>
+    </div>
 </div>
+
+<div class="col-md-6"></div>
 
 <!-- modal para exibir dados faltantes dos títulos-->
 

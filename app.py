@@ -294,6 +294,7 @@ def upload():
 
 @app.route('/resultado_total')
 def resultado_total():
+    upload()
 
     dados = todosContador()
 
@@ -675,4 +676,4 @@ if __name__ == "__main__":
     database.insert_pontuacoes()
 
     app.run(debug=True)
-    app.run(host='0.0.0.0')
+    # app.run(host='0.0.0.0')
