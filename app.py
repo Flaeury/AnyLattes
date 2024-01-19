@@ -81,189 +81,174 @@ def index():
     return render_template('index.html')
 
 
-@app.route("/imports", methods=['GET', 'POST'])  # upload arquivos qualis
+@app.route("/imports", methods=['GET', 'POST'])
 def imports():
     if request.method == 'POST':
+        if 'lattes_id' in request.form:
+            lattes = ",".join(request.form.get(
+                'lattes_id', "").split(";")).split(",")
 
-        lattes = []
+            if len(lattes) == 0:
+                flash("Lattes ID is required.")
+                return redirect(url_for('index'))
 
-        lattes = ",".join(request.form.get(
-            'lattes_id', "").split(";")).split(",")
+            path_to_download = os.getcwd() + '/outputs'
+            options = Options()
+            options.set_preference('browser.download.folderList', 2)
+            options.set_preference('browser.download.dir', path_to_download)
+            options.set_preference('browser.helperApps.alwaysAsk.force', False)
+            options.set_preference(
+                'browser.download.manager.showWhenStarting', False)
+            options.set_preference(
+                'browser.helperApps.neverAsk.saveToDisk', 'application/zip')
 
-        # lattes_raw = request.form.get('lattes_id', "")
-        # lattes = [str(value) for value in lattes_raw.split(";") if value]
+            driver = webdriver.Firefox(options=options)
+            width = height = 800
+            ss_w, ss_h = pyautogui.size()
+            driver.set_window_size(width, height)
+            driver.set_window_position(
+                ss_w / 2 - width / 2, ss_h / 2 - height / 2)
 
-        if len(lattes) == 0:
-            flash("Lattes ID is required.")
-            return redirect(url_for('index'))
+            lattes_url = 'http://buscatextual.cnpq.br/buscatextual/download.do?metodo=apresentar&idcnpq='
 
-       # Define download path
-        path_to_download = os.getcwd() + '/outputs'
+            for idcnpq in lattes:
+                idcnpq = idcnpq.strip()
+                location = lattes_url + idcnpq
+                driver.get(location)
 
-        # Define a new instance of firefox with specific options
-        options = Options()
-        # options.headless = True # Hide firefox window
-        # use specific folder
-        options.set_preference('browser.download.folderList', 2)
-        options.set_preference('browser.download.dir',
-                               path_to_download)  # Se path to download
-        # Do not ask anything (no pop up)
-        options.set_preference('browser.helperApps.alwaysAsk.force', False)
-        # Do not show anything (no pop up)
-        options.set_preference(
-            'browser.download.manager.showWhenStarting', False)
-        options.set_preference(
-            'browser.helperApps.neverAsk.saveToDisk', 'application/zip')  # MIME type for zip
-        print('[INFO] Preferences: OK')
-
-        # Define a new firefox instance
-        driver = webdriver.Firefox(options=options)
-        width = height = 800
-        ss_w, ss_h = pyautogui.size()  # Cross-platform to get screen resolution
-        driver.set_window_size(width, height)
-        driver.set_window_position(
-            ss_w / 2 - width / 2, ss_h / 2 - height / 2)  # Center the window
-        print('[INFO] Firefox: opened OK')
-
-        lattes_url = 'http://buscatextual.cnpq.br/buscatextual/download.do?metodo=apresentar&idcnpq='
-
-        for idcnpq in lattes:
-            idcnpq = idcnpq.strip()
-            location = lattes_url + idcnpq
-            driver.get(location)
-            print('[INFO] Firefox: page loaded OK')
-
-            # Find iframe tag and switch to that iframe context
-            frames = driver.find_elements(By.TAG_NAME, 'iframe')
-            driver.switch_to.frame(frames[0])
-
-            # Click on recaptcha checkbox and switch to default context
-            driver.find_element(
-                By.CLASS_NAME, 'recaptcha-checkbox-border').click()
-            driver.switch_to.default_content()
-
-            # Investigate submit button
-            button = driver.find_element(By.ID, 'submitBtn')
-            time.sleep(random.randint(1, 2))
-            worked = True
-
-            if not button.is_enabled():
-                print('[INFO] Firefox: solve recaptcha for idcnpq {}'.format(idcnpq))
-                # Find iframe tag and switch to that iframe context
-                frames = driver.find_element(
-                    By.XPATH, '/html/body/div[2]/div[4]').find_elements(By.TAG_NAME, 'iframe')
+                frames = driver.find_elements(By.TAG_NAME, 'iframe')
                 driver.switch_to.frame(frames[0])
 
-                # Click on recaptcha audio button (alternative way to solve recaptcha)
+                driver.find_element(
+                    By.CLASS_NAME, 'recaptcha-checkbox-border').click()
+                driver.switch_to.default_content()
+
+                button = driver.find_element(By.ID, 'submitBtn')
                 time.sleep(random.randint(1, 2))
-                driver.find_element(By.ID, 'recaptcha-audio-button').click()
+                worked = True
 
-                # Switch to default context again
-                driver.switch_to.default_content()
+                if not button.is_enabled():
+                    frames = driver.find_element(
+                        By.XPATH, '/html/body/div[2]/div[4]').find_elements(By.TAG_NAME, 'iframe')
+                    driver.switch_to.frame(frames[0])
 
-                # Find iframe tag and switch to the last context
-                frames = driver.find_elements(By.TAG_NAME, 'iframe')
-                driver.switch_to.frame(frames[-1])
+                    time.sleep(random.randint(1, 2))
+                    driver.find_element(
+                        By.ID, 'recaptcha-audio-button').click()
+                    driver.switch_to.default_content()
 
-                # [Optional] Wait 1 second and play audio
-                time.sleep(1)
-                driver.find_element(
-                    By.XPATH, '/html/body/div/div/div[3]/div/button').click()
+                    frames = driver.find_elements(By.TAG_NAME, 'iframe')
+                    driver.switch_to.frame(frames[-1])
 
-                # Download mp3 file
-                src = driver.find_element(
-                    By.ID, 'audio-source').get_attribute('src')
-                file_name = path_to_download + '/sample.mp3'
-                urllib.request.urlretrieve(src, file_name)
+                    time.sleep(1)
+                    driver.find_element(
+                        By.XPATH, '/html/body/div/div/div[3]/div/button').click()
 
-                # Get file and convert to wav extension
-                sound = pydub.AudioSegment.from_mp3(file_name)
-                file_name = file_name.replace('.mp3', '.wav')
-                sound.export(file_name, format='wav')
+                    src = driver.find_element(
+                        By.ID, 'audio-source').get_attribute('src')
+                    file_name = path_to_download + '/sample.mp3'
+                    urllib.request.urlretrieve(src, file_name)
 
-                # Submit audio to a speechrecognition algorithm from Google
-                sample_audio = sr.AudioFile(file_name)
-                r = sr.Recognizer()
-                with sample_audio as source:
-                    audio = r.record(source)
+                    sound = pydub.AudioSegment.from_mp3(file_name)
+                    file_name = file_name.replace('.mp3', '.wav')
+                    sound.export(file_name, format='wav')
 
-                key = r.recognize_google(audio)
-                print('[INFO] Recaptcha code: {}'.format(key))
+                    sample_audio = sr.AudioFile(file_name)
+                    r = sr.Recognizer()
+                    with sample_audio as source:
+                        audio = r.record(source)
 
-                # Send string (key) back to recaptcha page and switch to default context again
-                driver.find_element(
-                    By.ID, 'audio-response').send_keys(key.lower())
-                driver.find_element(
-                    By.ID, 'audio-response').send_keys(Keys.ENTER)
-                driver.switch_to.default_content()
+                    key = r.recognize_google(audio)
 
-                # Submit solution by clicking the button
-                time.sleep(1)
-                driver.find_element(By.ID, 'submitBtn').click()
+                    driver.find_element(
+                        By.ID, 'audio-response').send_keys(key.lower())
+                    driver.find_element(
+                        By.ID, 'audio-response').send_keys(Keys.ENTER)
+                    driver.switch_to.default_content()
 
-                shutil.move(str(Path.home()) + "/Downloads/" + idcnpq +
-                            ".zip", os.getcwd() + "/curriculos/" + idcnpq + ".zip")
+                    time.sleep(1)
+                    driver.find_element(By.ID, 'submitBtn').click()
 
-                path_to_zipfile = os.getcwd() + "/curriculos/" + idcnpq + ".zip"
+                    shutil.move(str(Path.home()) + "/Downloads/" + idcnpq +
+                                ".zip", os.getcwd() + "/curriculos/" + idcnpq + ".zip")
 
-                destino_arquivo = "curriculos/"
+                    path_to_zipfile = os.getcwd() + "/curriculos/" + idcnpq + ".zip"
+                    destino_arquivo = "curriculos/"
 
-                if os.path.exists(path_to_zipfile):
-                    with zipfile.ZipFile(path_to_zipfile, 'r') as zip_ref:
-                        zip_ref.extractall(destino_arquivo)
-                    print(
-                        f'Arquivo ZIP {path_to_zipfile} descompactado com sucesso em {destino_arquivo}')
-
-                    os.remove(path_to_zipfile)
-                    print(
-                        f'Arquivo ZIP {path_to_zipfile} removido após extração.')
+                    if os.path.exists(path_to_zipfile):
+                        with zipfile.ZipFile(path_to_zipfile, 'r') as zip_ref:
+                            zip_ref.extractall(destino_arquivo)
+                        os.remove(path_to_zipfile)
+                    else:
+                        worked = False
 
                 else:
-                    worked = False
-                    print(
-                        f'O arquivo ZIP {path_to_zipfile} não foi encontrado.')
+                    time.sleep(1)
+                    button.click()
 
-            else:
-                print('[INFO] Firefox: no recaptcha to solve for {}'.format(idcnpq))
-                time.sleep(1)
-                button.click()
+                    shutil.move(str(Path.home()) + "/Downloads/" + idcnpq +
+                                ".zip", os.getcwd() + "/curriculos/" + idcnpq + ".zip")
 
-                shutil.move(str(Path.home()) + "/Downloads/" + idcnpq +
-                            ".zip", os.getcwd() + "/curriculos/" + idcnpq + ".zip")
+                    path_to_zipfile = os.getcwd() + "/curriculos/" + idcnpq + ".zip"
+                    destino_arquivo = "curriculos/"
 
-                path_to_zipfile = os.getcwd() + "/curriculos/" + idcnpq + ".zip"
+                    if os.path.exists(path_to_zipfile):
+                        with zipfile.ZipFile(path_to_zipfile, 'r') as zip_ref:
+                            zip_ref.extractall(destino_arquivo)
+                        os.remove(path_to_zipfile)
+                    else:
+                        worked = False
 
-                destino_arquivo = "curriculos/"
+                if not worked:
+                    continue
 
-                if os.path.exists(path_to_zipfile):
-                    with zipfile.ZipFile(path_to_zipfile, 'r') as zip_ref:
-                        zip_ref.extractall(destino_arquivo)
-                    print(
-                        f'Arquivo ZIP {path_to_zipfile} descompactado com sucesso em {destino_arquivo}')
+                shutil.move(os.getcwd() + "/curriculos/curriculo.xml",
+                            os.getcwd() + "/curriculos/" + idcnpq + ".xml")
 
-                    os.remove(path_to_zipfile)
-                    print(
-                        f'Arquivo ZIP {path_to_zipfile} removido após extração.')
+            driver.quit()
+            page = "upload"
+            start_date = "1800"
+            end_date = str(datetime.date.today().year)
+            return render_template('loading.html', inicio=start_date, fim=end_date, page=page)
 
+        elif 'files[]' in request.files:
+            files = request.files.getlist('files[]')
+            for file in files:
+                if file.filename == '':
+                    flash("No Selected file(s)")
                 else:
-                    worked = False
-                    print(
-                        f'O arquivo ZIP {path_to_zipfile} não foi encontrado.')
+                    if file and allowed_file(file.filename):
+                        filename = secure_filename(file.filename)
+                        file.save(os.path.join('arquivos/' + filename))
+                        f = file.filename.rsplit('.', 1)[1].lower()
+                        dir = 'arquivos/'
 
-            if not worked:
+                        if f == 'pdf' or f == 'PDF':
+                            old = os.path.join(dir, filename)
+                            new = os.path.join(dir, 'QUALIS_novo.pdf')
+                            os.rename(old, new)
+                        elif f == 'xls' or f == 'xlsx':
+                            old = os.path.join(dir, filename)
+                            new = os.path.join(dir, 'QualisConferencias.xlsx')
+                            os.rename(old, new)
+                        else:
+                            flash("Erro no sistema")
 
-                continue
+                        flash('File(s) uploaded successfully')
 
-            shutil.move(os.getcwd() + "/curriculos/curriculo.xml",
-                        os.getcwd() + "/curriculos/" + idcnpq + ".xml")
+                    else:
+                        flash(
+                            "Não foi possível efetuar upload. Arquivo com extensão inválida")
 
-        driver.quit()
-    page = "upload"
+            page = "upload"
+            start_date = "1800"
+            end_date = str(datetime.date.today().year)
+            return render_template('loading.html', inicio=start_date, fim=end_date, page=page)
 
-    start_date = "1800"
-    end_date = str(datetime.date.today().year)
+        else:
+            flash("Invalid form data")
 
-    return render_template('loading.html', inicio=start_date, fim=end_date, page=page)
+    return render_template('imports.html')
 
 
 @app.route("/upload", methods=['GET', 'POST'])
@@ -285,11 +270,10 @@ def upload():
 
         anos = []
         result = []
-        ano_inicio = request.form.get('ano_inicio')
-        ano_fim = request.form.get('ano_fim')
-
         page = "upload"
-        return render_template('loading.html', inicio=ano_inicio, fim=ano_fim, page=page)
+        start_date = "1800"
+        end_date = str(datetime.date.today().year)
+        return render_template('loading.html', inicio=start_date, fim=end_date, page=page)
 
 
 @app.route('/resultado_total')

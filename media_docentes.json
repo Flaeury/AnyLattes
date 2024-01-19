@@ -1,42 +1,137 @@
 [
     {
+        "Docente": "ALDEBARO BARRETO DA ROCHA KLAUTAU J\u00daNIOR",
+        "M\u00e9dia": 67.375,
+        "Mediana": 17.875
+    },
+    {
+        "Docente": "ANDR\u00c9 FIGUEIRA RIKER",
+        "M\u00e9dia": 17.875,
+        "Mediana": 17.875
+    },
+    {
+        "Docente": "ANTONIO JORGE GOMES ABEL\u00c9M",
+        "M\u00e9dia": 44.725,
+        "Mediana": 17.875
+    },
+    {
         "Docente": "BENEDITO DE JESUS PINHEIRO FERREIRA",
         "M\u00e9dia": 9.25,
-        "Mediana": 15.7125
+        "Mediana": 17.875
+    },
+    {
+        "Docente": "BIANCHI SERIQUE MEIGUINS",
+        "M\u00e9dia": 35.85,
+        "Mediana": 17.875
+    },
+    {
+        "Docente": "CARLOS GUSTAVO RESQUE DOS SANTOS",
+        "M\u00e9dia": 20.425,
+        "Mediana": 17.875
+    },
+    {
+        "Docente": "CARLOS RENATO LISBOA FRANC\u00caS",
+        "M\u00e9dia": 64.3,
+        "Mediana": 17.875
     },
     {
         "Docente": "CLAUDOMIRO DE SOUZA DE SALES JUNIOR",
         "M\u00e9dia": 28.575,
-        "Mediana": 15.7125
+        "Mediana": 17.875
     },
     {
         "Docente": "CLEIDSON RONALD BOTELHO DE SOUZA",
-        "M\u00e9dia": 66.175,
-        "Mediana": 15.7125
+        "M\u00e9dia": 69.725,
+        "Mediana": 17.875
+    },
+    {
+        "Docente": "DENIS LIMA DO ROS\u00c1RIO",
+        "M\u00e9dia": 96.1,
+        "Mediana": 17.875
     },
     {
         "Docente": "DIONNE CAVALCANTE MONTEIRO",
         "M\u00e9dia": 6.625,
-        "Mediana": 15.7125
+        "Mediana": 17.875
+    },
+    {
+        "Docente": "EDUARDO COELHO CERQUEIRA",
+        "M\u00e9dia": 147.75,
+        "Mediana": 17.875
+    },
+    {
+        "Docente": "FABIOLA PANTOJA OLIVEIRA ARA\u00daJO",
+        "M\u00e9dia": 14.0,
+        "Mediana": 17.875
     },
     {
         "Docente": "FILIPE DE OLIVEIRA SARAIVA",
         "M\u00e9dia": 14.425,
-        "Mediana": 15.7125
+        "Mediana": 17.875
     },
     {
         "Docente": "GUSTAVO HENRIQUE LIMA PINTO",
         "M\u00e9dia": 65.875,
-        "Mediana": 15.7125
+        "Mediana": 17.875
+    },
+    {
+        "Docente": "HELDER MAY NUNES DA SILVA OLIVEIRA",
+        "M\u00e9dia": 42.625,
+        "Mediana": 17.875
     },
     {
         "Docente": "JEFFERSON MAGALH\u00c3ES DE MORAIS",
         "M\u00e9dia": 17.0,
-        "Mediana": 15.7125
+        "Mediana": 17.875
+    },
+    {
+        "Docente": "JOAO CRIS\u00d3STOMO WEYL ALBUQUERQUE COSTA",
+        "M\u00e9dia": 91.425,
+        "Mediana": 17.875
+    },
+    {
+        "Docente": "JOSIVALDO DE SOUZA ARA\u00daJO",
+        "M\u00e9dia": 11.5,
+        "Mediana": 17.875
+    },
+    {
+        "Docente": "L\u00cdDIO MAURO LIMA DE CAMPOS",
+        "M\u00e9dia": 8.05,
+        "Mediana": 17.875
+    },
+    {
+        "Docente": "NELSON CRUZ SAMPAIO NETO",
+        "M\u00e9dia": 15.725,
+        "Mediana": 17.875
+    },
+    {
+        "Docente": "REGINALDO CORDEIRO DOS SANTOS FILHO",
+        "M\u00e9dia": 15.375,
+        "Mediana": 17.875
     },
     {
         "Docente": "RENATO HIDAKA TORRES",
         "M\u00e9dia": 5.275,
-        "Mediana": 15.7125
+        "Mediana": 17.875
+    },
+    {
+        "Docente": "ROBERTO SAMARONE DOS SANTOS ARA\u00daJO",
+        "M\u00e9dia": 17.025,
+        "Mediana": 17.875
+    },
+    {
+        "Docente": "SANDRO RONALDO BEZERRA OLIVEIRA",
+        "M\u00e9dia": 89.575,
+        "Mediana": 17.875
+    },
+    {
+        "Docente": "VICTOR HUGO SANTIAGO COSTA PINTO",
+        "M\u00e9dia": 8.925,
+        "Mediana": 17.875
+    },
+    {
+        "Docente": "VINICIUS AUGUSTO CARVALHO DE ABREU",
+        "M\u00e9dia": 14.95,
+        "Mediana": 17.875
     }
 ]

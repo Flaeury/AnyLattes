@@ -94,10 +94,10 @@ def import_project(anos):
             print('Analisando publicações de {}'.format(nomeProf))
             x = x + 2
 
-        searchId = findIdLattes(idLattes)
-        if searchId == 0:
-            saveID(idLattes, nomeProf)
-        x = x + 1
+        # searchId = findIdLattes(idLattes)
+        # if searchId == 0:
+        #     saveID(idLattes, nomeProf)
+        # x = x + 1
 
         for trabalhos in root.iter('TRABALHO-EM-EVENTOS'):  # Varre currículo
             autores = ''

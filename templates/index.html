@@ -2,23 +2,17 @@
 
 {% block content %}
 
-
-
-<h2 class=" mt-lg-4 mb-lg-4">Currículos Lattes</h2>
+<h2 class="mt-lg-4 mb-lg-4">Currículos Lattes</h2>
 
 <div class="container">
   <div class="row justify-content-center">
-    <form
-      action="{{ url_for('imports') }}"
-      method="post"
-      id="forms"
-      enctype="multipart/form-data"
-      class="form-inline"
-    >
-      <div class="card-body mb-4 d-flex align-items-center justify-content-center custom-card">
+
+    <!-- Formulário 1 -->
+    <form action="{{ url_for('imports') }}" method="post" id="forms" enctype="multipart/form-data" class="form-inline">
+      <div class="card-body mb-4 d-flex align-items-center justify-content-center">
         <div class="rounded w-100 mx-auto d-flex align-items-center justify-content-center">
           <div class="col section-import h-100 p-3 rounded card-link d-flex flex-column align-items-center">
-            <div class="card-body">
+            <div class="card-body w-100">
               <div class="row rounded mb-4">
                 <div class="text-center mt-2 mb-4">
                   <p>
@@ -26,13 +20,12 @@
                     1234567890123456
                   </p>
                 </div>
-                <div class="col-md-8 col-11 mb-2">
+                <div class="col-md-8 col-11 mb-2 w-75 align-items-center">
                   <label class="d-none" for="lattes_id"></label>
                   <input type="text" class="form-control" id="lattes_id" name="lattes_id" required>
                 </div>
-
                 <div class="col-md-3 col-11">
-                  <button type="submit" class="btn btn-md btn-success w-100">Enviar</button>
+                  <button type="submit" class="btn btn-md btn-success w-100">Enviar id</button>
                 </div>
               </div>
             </div>
@@ -40,6 +33,30 @@
         </div>
       </div>
     </form>
+
+    <!-- Formulário 2 -->
+    <form action="{{ url_for('imports') }}" method="post" id="forms" enctype="multipart/form-data" class="form-inline">
+      <div class="card-body mb-4 d-flex align-items-center justify-content-center">
+        <div class="rounded w-100 mx-auto d-flex align-items-center justify-content-center">
+          <div class="col section-import h-100 p-3 rounded card-link d-flex flex-column align-items-center">
+            <div class="card-body w-100">
+              <div class="row rounded mb-4">
+                <div class="text-center mt-2 mb-4">
+                  <i class="fas fa-upload me-1"></i> Importe o currículo no formato XML
+                </div>
+                <div class="col-md-8 col-11 mb-2 w-75 align-items-center">
+                  <input class="form-control" type="file" name="files[]" id="file" multiple required>
+                </div>
+                <div class="col-md-3 col-11">
+                  <button type="submit" value="Enviar" class="btn btn-md btn-success w-100">Receber XML</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+
   </div>
 </div>
 
