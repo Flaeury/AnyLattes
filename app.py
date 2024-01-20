@@ -76,6 +76,13 @@ def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
+def handle_webdriver_error(driver):
+    try:
+        driver.quit()
+    except Exception as e:
+        print(f"Erro ao fechar o WebDriver: {e}")
+
+
 @app.route("/")
 def index():
     return render_template('index.html')
@@ -85,131 +92,146 @@ def index():
 def imports():
     if request.method == 'POST':
         if 'lattes_id' in request.form:
-            lattes = ",".join(request.form.get(
-                'lattes_id', "").split(";")).split(",")
+            try:
+                lattes = ",".join(request.form.get(
+                    'lattes_id', "").split(";")).split(",")
 
-            if len(lattes) == 0:
-                flash("Lattes ID is required.")
-                return redirect(url_for('index'))
+                if len(lattes) == 0:
+                    flash("Lattes ID is required.")
+                    return redirect(url_for('index'))
 
-            path_to_download = os.getcwd() + '/outputs'
-            options = Options()
-            options.set_preference('browser.download.folderList', 2)
-            options.set_preference('browser.download.dir', path_to_download)
-            options.set_preference('browser.helperApps.alwaysAsk.force', False)
-            options.set_preference(
-                'browser.download.manager.showWhenStarting', False)
-            options.set_preference(
-                'browser.helperApps.neverAsk.saveToDisk', 'application/zip')
+                path_to_download = os.getcwd() + '/outputs'
+                options = Options()
+                options.set_preference('browser.download.folderList', 2)
+                options.set_preference(
+                    'browser.download.dir', path_to_download)
+                options.set_preference(
+                    'browser.helperApps.alwaysAsk.force', False)
+                options.set_preference(
+                    'browser.download.manager.showWhenStarting', False)
+                options.set_preference(
+                    'browser.helperApps.neverAsk.saveToDisk', 'application/zip')
 
-            driver = webdriver.Firefox(options=options)
-            width = height = 800
-            ss_w, ss_h = pyautogui.size()
-            driver.set_window_size(width, height)
-            driver.set_window_position(
-                ss_w / 2 - width / 2, ss_h / 2 - height / 2)
+                driver = webdriver.Firefox(options=options)
+                width = height = 800
+                ss_w, ss_h = pyautogui.size()
+                driver.set_window_size(width, height)
+                driver.set_window_position(
+                    ss_w / 2 - width / 2, ss_h / 2 - height / 2)
 
-            lattes_url = 'http://buscatextual.cnpq.br/buscatextual/download.do?metodo=apresentar&idcnpq='
+                lattes_url = 'http://buscatextual.cnpq.br/buscatextual/download.do?metodo=apresentar&idcnpq='
 
-            for idcnpq in lattes:
-                idcnpq = idcnpq.strip()
-                location = lattes_url + idcnpq
-                driver.get(location)
-
-                frames = driver.find_elements(By.TAG_NAME, 'iframe')
-                driver.switch_to.frame(frames[0])
-
-                driver.find_element(
-                    By.CLASS_NAME, 'recaptcha-checkbox-border').click()
-                driver.switch_to.default_content()
-
-                button = driver.find_element(By.ID, 'submitBtn')
-                time.sleep(random.randint(1, 2))
-                worked = True
-
-                if not button.is_enabled():
-                    frames = driver.find_element(
-                        By.XPATH, '/html/body/div[2]/div[4]').find_elements(By.TAG_NAME, 'iframe')
-                    driver.switch_to.frame(frames[0])
-
-                    time.sleep(random.randint(1, 2))
-                    driver.find_element(
-                        By.ID, 'recaptcha-audio-button').click()
-                    driver.switch_to.default_content()
+                for idcnpq in lattes:
+                    idcnpq = idcnpq.strip()
+                    location = lattes_url + idcnpq
+                    driver.get(location)
 
                     frames = driver.find_elements(By.TAG_NAME, 'iframe')
-                    driver.switch_to.frame(frames[-1])
-
-                    time.sleep(1)
-                    driver.find_element(
-                        By.XPATH, '/html/body/div/div/div[3]/div/button').click()
-
-                    src = driver.find_element(
-                        By.ID, 'audio-source').get_attribute('src')
-                    file_name = path_to_download + '/sample.mp3'
-                    urllib.request.urlretrieve(src, file_name)
-
-                    sound = pydub.AudioSegment.from_mp3(file_name)
-                    file_name = file_name.replace('.mp3', '.wav')
-                    sound.export(file_name, format='wav')
-
-                    sample_audio = sr.AudioFile(file_name)
-                    r = sr.Recognizer()
-                    with sample_audio as source:
-                        audio = r.record(source)
-
-                    key = r.recognize_google(audio)
+                    driver.switch_to.frame(frames[0])
 
                     driver.find_element(
-                        By.ID, 'audio-response').send_keys(key.lower())
-                    driver.find_element(
-                        By.ID, 'audio-response').send_keys(Keys.ENTER)
+                        By.CLASS_NAME, 'recaptcha-checkbox-border').click()
                     driver.switch_to.default_content()
 
+                    button = driver.find_element(By.ID, 'submitBtn')
+                    time.sleep(random.randint(1, 2))
+                    worked = True
                     time.sleep(1)
-                    driver.find_element(By.ID, 'submitBtn').click()
+                    if not button.is_enabled():
+                        time.sleep(1)
+                        frames = driver.find_element(
+                            By.XPATH, '/html/body/div[2]/div[4]').find_elements(By.TAG_NAME, 'iframe')
+                        driver.switch_to.frame(frames[0])
 
-                    shutil.move(str(Path.home()) + "/Downloads/" + idcnpq +
-                                ".zip", os.getcwd() + "/curriculos/" + idcnpq + ".zip")
+                        time.sleep(random.randint(1, 2))
+                        driver.find_element(
+                            By.ID, 'recaptcha-audio-button').click()
+                        driver.switch_to.default_content()
 
-                    path_to_zipfile = os.getcwd() + "/curriculos/" + idcnpq + ".zip"
-                    destino_arquivo = "curriculos/"
+                        frames = driver.find_elements(By.TAG_NAME, 'iframe')
+                        driver.switch_to.frame(frames[-1])
 
-                    if os.path.exists(path_to_zipfile):
-                        with zipfile.ZipFile(path_to_zipfile, 'r') as zip_ref:
-                            zip_ref.extractall(destino_arquivo)
-                        os.remove(path_to_zipfile)
+                        time.sleep(1)
+                        driver.find_element(
+                            By.XPATH, '/html/body/div/div/div[3]/div/button').click()
+                        time.sleep(1)
+                        src = driver.find_element(
+                            By.ID, 'audio-source').get_attribute('src')
+                        time.sleep(1)
+                        file_name = path_to_download + '/sample.mp3'
+                        urllib.request.urlretrieve(src, file_name)
+                        time.sleep(1)
+                        sound = pydub.AudioSegment.from_mp3(file_name)
+                        time.sleep(1)
+                        file_name = file_name.replace('.mp3', '.wav')
+                        sound.export(file_name, format='wav')
+
+                        sample_audio = sr.AudioFile(file_name)
+                        r = sr.Recognizer()
+                        with sample_audio as source:
+                            audio = r.record(source)
+
+                        key = r.recognize_google(audio)
+
+                        driver.find_element(
+                            By.ID, 'audio-response').send_keys(key.lower())
+                        driver.find_element(
+                            By.ID, 'audio-response').send_keys(Keys.ENTER)
+                        driver.switch_to.default_content()
+
+                        time.sleep(1)
+                        driver.find_element(By.ID, 'submitBtn').click()
+
+                        shutil.move(str(Path.home()) + "/Downloads/" + idcnpq +
+                                    ".zip", os.getcwd() + "/arquivos/" + idcnpq + ".zip")
+
+                        path_to_zipfile = os.getcwd() + "/arquivos/" + idcnpq + ".zip"
+                        destino_arquivo = "arquivos/"
+
+                        if os.path.exists(path_to_zipfile):
+                            with zipfile.ZipFile(path_to_zipfile, 'r') as zip_ref:
+                                zip_ref.extractall(destino_arquivo)
+                            os.remove(path_to_zipfile)
+                        else:
+                            worked = False
+
                     else:
-                        worked = False
+                        time.sleep(1)
+                        button.click()
 
-                else:
-                    time.sleep(1)
-                    button.click()
+                        shutil.move(str(Path.home()) + "/Downloads/" + idcnpq +
+                                    ".zip", os.getcwd() + "/arquivos/" + idcnpq + ".zip")
 
-                    shutil.move(str(Path.home()) + "/Downloads/" + idcnpq +
-                                ".zip", os.getcwd() + "/curriculos/" + idcnpq + ".zip")
+                        path_to_zipfile = os.getcwd() + "/arquivos/" + idcnpq + ".zip"
+                        destino_arquivo = "arquivos/"
 
-                    path_to_zipfile = os.getcwd() + "/curriculos/" + idcnpq + ".zip"
-                    destino_arquivo = "curriculos/"
+                        if os.path.exists(path_to_zipfile):
+                            with zipfile.ZipFile(path_to_zipfile, 'r') as zip_ref:
+                                zip_ref.extractall(destino_arquivo)
+                            os.remove(path_to_zipfile)
+                        else:
+                            worked = False
 
-                    if os.path.exists(path_to_zipfile):
-                        with zipfile.ZipFile(path_to_zipfile, 'r') as zip_ref:
-                            zip_ref.extractall(destino_arquivo)
-                        os.remove(path_to_zipfile)
-                    else:
-                        worked = False
+                    if not worked:
+                        continue
 
-                if not worked:
-                    continue
+                    shutil.move(os.getcwd() + "/arquivos/curriculo.xml",
+                                os.getcwd() + "/arquivos/" + idcnpq + ".xml")
 
-                shutil.move(os.getcwd() + "/curriculos/curriculo.xml",
-                            os.getcwd() + "/curriculos/" + idcnpq + ".xml")
+                driver.quit()
+                page = "upload"
+                start_date = "1800"
+                end_date = str(datetime.date.today().year)
+                return render_template('loading.html', inicio=start_date, fim=end_date, page=page)
 
-            driver.quit()
-            page = "upload"
-            start_date = "1800"
-            end_date = str(datetime.date.today().year)
-            return render_template('loading.html', inicio=start_date, fim=end_date, page=page)
+            except Exception as e:
+                print(f"Erro geral: {e}")
+                flash(
+                    "Ocorreu um erro durante a importação. Consulte os logs para mais detalhes.")
+                return render_template('index.html')
+
+            finally:
+                handle_webdriver_error(driver)
 
         elif 'files[]' in request.files:
             files = request.files.getlist('files[]')
@@ -659,5 +681,5 @@ if __name__ == "__main__":
     database.tabela_pontuacoes()
     database.insert_pontuacoes()
 
-    app.run(debug=True)
-    # app.run(host='0.0.0.0')
+    # app.run(debug=True)
+    app.run(host='0.0.0.0')

@@ -4,15 +4,17 @@ import PyPDF2
 import glob
 import xml.etree.ElementTree as ET
 from flask import render_template
-import models.BaseDeCorrecoes, models.connection as database
+import models.BaseDeCorrecoes
+import models.connection as database
 import mysql.connector
 
 db = database.conexao()
 
+
 def import_project():
     xi = 1
     curriculos = []
-    anos_validos = {'2017','2018','2019','2020'}
+    anos_validos = {'2017', '2018', '2019', '2020'}
     respAno = ''
 
     print('Importando documentos: QUALIS_novo.pdf')
@@ -28,7 +30,8 @@ def import_project():
         resultado_total = (resultado_total + pg_extraida)
 
     print('Importanto documento: QualisEventosComp.xls...')
-    workbook2 = xlrd.open_workbook('arquivos/QualisEventosComp.xls')  # Script ler xls
+    workbook2 = xlrd.open_workbook(
+        'arquivos/QualisEventosComp.xls')  # Script ler xls
     worksheet2 = workbook2.sheet_by_index(1)
 
     x = 0
@@ -45,10 +48,9 @@ def import_project():
     autor = []
     estratoss = []
     totalNotas = []
-    
 
     print('Lendo currículo(s)... \n')
-    for f in glob.glob('curriculos/*.xml'):
+    for f in glob.glob('arquivos/*.xml'):
         curriculos.append(f)
         cont = cont+1
 
@@ -163,13 +165,12 @@ def import_project():
         p20B4 = 0
         p20C = 0
         ##################################################################################
-        
 
         for t in root.iter('DADOS-GERAIS'):  # Imprimir nome do professor
             nomeProf = str(t.attrib['NOME-COMPLETO']).upper()
             print('Analisando publicações de {}'.format(nomeProf))
             x = x + 2
-            
+
         x = x + 1
         for trabalhos in root.iter('TRABALHO-EM-EVENTOS'):  # Varre currículo
             autores = ''
@@ -177,18 +178,24 @@ def import_project():
             for trab in trabalhos.iter():  # Laço para identificar as conferências válidas
                 if trab.tag == 'DADOS-BASICOS-DO-TRABALHO' and trab.attrib['NATUREZA'] == 'COMPLETO' and trab.attrib['ANO-DO-TRABALHO'] in anos_validos:
                     conferencia = 'Conferencia;'
-                    conferencia = conferencia + trab.attrib['ANO-DO-TRABALHO'] + ';' + trab.attrib['TITULO-DO-TRABALHO'] + ';' + trab.attrib['DOI'] + ';' + trab.attrib['NATUREZA']
+                    conferencia = conferencia + \
+                        trab.attrib['ANO-DO-TRABALHO'] + ';' + trab.attrib['TITULO-DO-TRABALHO'] + \
+                        ';' + trab.attrib['DOI'] + \
+                        ';' + trab.attrib['NATUREZA']
                     # ano_projeto = trab.attrib['ANO-DO-TRABALHO']
                     trabalho_valido = True
                     cont = cont + 1
                 if trabalho_valido and trab.tag == 'DETALHAMENTO-DO-TRABALHO':
-                        conferencia = conferencia + ';' + trab.attrib['NOME-DO-EVENTO'] + ';' + trab.attrib['TITULO-DOS-ANAIS-OU-PROCEEDINGS']
+                    conferencia = conferencia + ';' + \
+                        trab.attrib['NOME-DO-EVENTO'] + ';' + \
+                        trab.attrib['TITULO-DOS-ANAIS-OU-PROCEEDINGS']
                 if trabalho_valido and trab.tag == 'AUTORES':
                     if autores:
-                        autores = autores + '/ ' + trab.attrib['NOME-COMPLETO-DO-AUTOR']
+                        autores = autores + '/ ' + \
+                            trab.attrib['NOME-COMPLETO-DO-AUTOR']
                     else:
                         autores = trab.attrib['NOME-COMPLETO-DO-AUTOR']
-            if trabalho_valido: 
+            if trabalho_valido:
                 resultado = (conferencia + ';' + autores)
                 resultado = resultado.split(";")
                 estratos = ''
@@ -198,67 +205,67 @@ def import_project():
                 nomeEvento = resultado[5]
                 tituloAnais = resultado[6]
                 autor = resultado[7]
-                
-                
+
                 ###############################################
                 if (doi == str('10.1109/iV.2017.37').upper()):
                     estratos = 'A4'
                     condicao = '-'
-                elif(doi == str('10.1109/iV.2017.29').upper()):
+                elif (doi == str('10.1109/iV.2017.29').upper()):
                     estratos = 'A4'
                     condicao = '-'
-                elif(doi == str('10.1109/IV-2.2019.00019').upper()):
+                elif (doi == str('10.1109/IV-2.2019.00019').upper()):
                     estratos = 'A4'
-                    autor = autores #resultado[11]
+                    autor = autores  # resultado[11]
                     condicao = '-'
-                elif(doi == str('10.1109/IV-2.2019.00020').upper()):
+                elif (doi == str('10.1109/IV-2.2019.00020').upper()):
                     estratos = 'A4'
-                    autor = autores #resultado[11]
+                    autor = autores  # resultado[11]
                     condicao = '-'
-                elif(doi == str('10.1109/iccw.2018.8403776').upper()): #ICC Workshops
+                elif (doi == str('10.1109/iccw.2018.8403776').upper()):  # ICC Workshops
                     estratos = 'B3'
                     condicao = '-'
-                elif(doi == str('10.1145/3084226.3084278').upper()): #EASE
+                elif (doi == str('10.1145/3084226.3084278').upper()):  # EASE
                     estratos = 'A3'
                     condicao = '-'
-                elif(doi == str('10.1145/3210459.3210462').upper()): #EASE
+                elif (doi == str('10.1145/3210459.3210462').upper()):  # EASE
                     estratos = 'A3'
                     condicao = '-'
-                elif(doi == str('10.1109/IMOC.2017.8121084').upper()):
+                elif (doi == str('10.1109/IMOC.2017.8121084').upper()):
                     estratos = 'B4'
                     condicao = '-'
-                elif(doi == str('10.1109/icton.2017.8024977').upper()):
+                elif (doi == str('10.1109/icton.2017.8024977').upper()):
                     estratos = 'A4'
                     condicao = '-'
-                elif(doi == str('10.1109/IV-2.2019.00033').upper()):
+                elif (doi == str('10.1109/IV-2.2019.00033').upper()):
                     estratos = 'A4'
-                    autor = autores #resultado[7]
+                    autor = autores  # resultado[7]
                     condicao = '-'
-                elif(doi == str('10.1145/3275245.3275290').upper()):
+                elif (doi == str('10.1145/3275245.3275290').upper()):
                     estratos = 'B1'
                     condicao = '-'
-                elif(str('Brazilian Symposium on Computer Networks and Distributed Systems').upper() in str(tituloAnais).upper()):
+                elif (str('Brazilian Symposium on Computer Networks and Distributed Systems').upper() in str(tituloAnais).upper()):
                     estratos = 'A4'
                     condicao = '-'
-                elif(str('Brazilian Symposium on Computer Networks and Distributed Systems').upper() in str(resultado[7]).upper()):
+                elif (str('Brazilian Symposium on Computer Networks and Distributed Systems').upper() in str(resultado[7]).upper()):
                     estratos = 'A4'
                     condicao = '-'
-                elif(str('Proceedings of the 18th Brazilian Symposium on Human Factors in Computing Systems').upper() in str(tituloAnais).upper()):
+                elif (str('Proceedings of the 18th Brazilian Symposium on Human Factors in Computing Systems').upper() in str(tituloAnais).upper()):
                     estratos = 'B1'
                     condicao = '-'
-                elif(str('Anais do I Workshop de Computação Urbana').upper() in str(tituloAnais).upper()):
+                elif (str('Anais do I Workshop de Computação Urbana').upper() in str(tituloAnais).upper()):
                     estratos = 'B1'
                     condicao = '-'
-                elif(str('The 33rd ACM/SIGAPP Symposium On Applied Computing').upper() in str(tituloAnais).upper()):
+                elif (str('The 33rd ACM/SIGAPP Symposium On Applied Computing').upper() in str(tituloAnais).upper()):
                     estratos = 'A2'
                     condicao = '-'
-                elif(str('Proceedings of 2018 International Joint Conference on Neural Networks').upper() in str(tituloAnais).upper()):
+                elif (str('Proceedings of 2018 International Joint Conference on Neural Networks').upper() in str(tituloAnais).upper()):
                     estratos = 'A2'
                     condicao = '-'
                 ###########################################
-                    				
+
                 if (condicao != '-'):
-                    for row_num in range(worksheet2.nrows):                #Comparação por SIGLA no resultado[6]
+                    # Comparação por SIGLA no resultado[6]
+                    for row_num in range(worksheet2.nrows):
                         if row_num == 0:
                             continue
                         row = worksheet2.row_values(row_num)
@@ -281,53 +288,53 @@ def import_project():
                             break
                         elif ('{}_'.format(row[0]) in tituloAnais):
                             sigla = row[0]
-                            #					print(row[8] + ' --> ' + sigla)# + ' #6_#')
+                            # print(row[8] + ' --> ' + sigla)# + ' #6_#')
                             estratos = row[8]
                             break
                         elif (' {}2'.format(row[0]) in tituloAnais):
                             sigla = row[0]
-                            #					print(row[8] + ' --> ' + sigla)# + ' # 62#')
+                            # print(row[8] + ' --> ' + sigla)# + ' # 62#')
                             estratos = row[8]
                             break
                         # Comparação por SIGLA no resultado[5]
                         elif (' {} '.format(row[0]) in nomeEvento):
                             sigla = row[0]
-                            #					print(row[8] + ' --> ' + sigla)# + ' # 5 #')
+                            # print(row[8] + ' --> ' + sigla)# + ' # 5 #')
                             estratos = row[8]
                             break
                         elif ('({})'.format(row[0]) in nomeEvento):
                             sigla = row[0]
-                            #					print(row[8] + ' --> ' + sigla)# + ' #(5)')
+                            # print(row[8] + ' --> ' + sigla)# + ' #(5)')
                             estratos = row[8]
                             break
                         elif ('({} '.format(row[0]) in nomeEvento):
                             sigla = row[0]
-                            #					print(row[8] + ' --> ' + sigla)# + ' #(5 #')
+                            # print(row[8] + ' --> ' + sigla)# + ' #(5 #')
                             estratos = row[8]
                             break
                         elif ('{}&'.format(row[0]) in nomeEvento):
                             sigla = row[0]
-                            #					print(row[8] + ' --> ' + sigla)# + ' #5&#')
+                            # print(row[8] + ' --> ' + sigla)# + ' #5&#')
                             estratos = row[8]
                             break
                         elif ('{}_'.format(row[0]) in nomeEvento):
                             sigla = row[0]
-                            #					print(row[8] + ' --> ' + sigla)# + ' #5_#')
+                            # print(row[8] + ' --> ' + sigla)# + ' #5_#')
                             estratos = row[8]
                             break
                         elif (' {}2'.format(row[0]) in nomeEvento):
                             sigla = row[0]
-                            #					print(row[8] + ' --> ' + sigla)# + ' # 52#')
+                            # print(row[8] + ' --> ' + sigla)# + ' # 52#')
                             estratos = row[8]
                             break
                         elif ('XVII {}'.format(row[0]) in str(nomeEvento).upper()):
                             sigla = row[0]
-                            #					print(row[8] + ' --> ' + sigla)# + ' #XVII 5up#')
+                            # print(row[8] + ' --> ' + sigla)# + ' #XVII 5up#')
                             estratos = row[8]
                             break
                         elif ('({})'.format(row[0]) in resultado[7]):
                             sigla = row[0]
-                            #					print(row[8] + ' --> ' + sigla)# + '#(5)')
+                            # print(row[8] + ' --> ' + sigla)# + '#(5)')
                             estratos = row[8]
                             break
                         else:
@@ -336,8 +343,8 @@ def import_project():
                     # print(resultado)                #imprime resultado completo
                     # print(tituloAnais)               #imprime apenas o titulo-do-anais-ou-periodico, resultado[6]
                     # print(nomeEvento)                #imprime apenas o nome-do-evento, resultado[5]
-                    # print(estratos)      
-                    for row_num in range(worksheet2.nrows):                       #Comparação por nome
+                    # print(estratos)
+                    for row_num in range(worksheet2.nrows):  # Comparação por nome
                         if row_num == 0:
                             continue
                         row = worksheet2.row_values(row_num)
@@ -354,7 +361,8 @@ def import_project():
                                 sigla = row[0]
                                 estratos = row[8]
                                 break
-                    for row_num in range(worksheet2.nrows):                #Comparação por SIGLA casos especiais
+                    # Comparação por SIGLA casos especiais
+                    for row_num in range(worksheet2.nrows):
                         if row_num == 0:
                             continue
                         row = worksheet2.row_values(row_num)
@@ -370,8 +378,9 @@ def import_project():
                 documento.append(resultado[0])
                 ano_evento.append(resultado[1])
                 siglas.append(sigla)
-                if ('COMPLETO' in tituloAnais):                          #Correção de tabela, elimina o "COMPLETO" do lugar errado
-                    tituloAnais = (resultado[2] + resultado [3] + resultado[4])
+                # Correção de tabela, elimina o "COMPLETO" do lugar errado
+                if ('COMPLETO' in tituloAnais):
+                    tituloAnais = (resultado[2] + resultado[3] + resultado[4])
                     doi = (resultado[5])
                     nomeEvento = (resultado[8] + ' / ' + autor)
                     autor = (resultado[9])
@@ -395,8 +404,8 @@ def import_project():
                     else:
                         autor = (autor)
                 estratoss.append(estratos)
-                
-                nota = 'SEM QUALIS'             #Calcula a nota do estrato
+
+                nota = 'SEM QUALIS'  # Calcula a nota do estrato
                 if (estratos == 'A1'):
                     nota = models.BaseDeCorrecoes.A1c
                 elif (estratos == 'A2'):
@@ -415,28 +424,28 @@ def import_project():
                     nota = models.BaseDeCorrecoes.B4c
                 elif (estratos == 'C'):
                     nota = models.BaseDeCorrecoes.Cc
-                
+
                 notas.append(nota)
-                
-                if (nota != 'SEM QUALIS'):                  #Contador de estratos das conferências
+
+                if (nota != 'SEM QUALIS'):  # Contador de estratos das conferências
                     totalNota = totalNota + nota
                 if (estratos != '-'):
                     if (resultado[1] == '2017'):
                         cont17c = cont17c + 1
-                        if (nota != 'SEM QUALIS'):          #somador de notas de 2017
+                        if (nota != 'SEM QUALIS'):  # somador de notas de 2017
                             nota17 = nota17 + nota
                         if (estratos == 'A1'):
                             c17A1 = c17A1 + 1
                         elif (estratos == 'A2'):
                             c17A2 = c17A2 + 1
                         elif (estratos == 'A3'):
-                                c17A3 = c17A3 + 1
+                            c17A3 = c17A3 + 1
                         elif (estratos == 'A4'):
                             c17A4 = c17A4 + 1
                         elif (estratos == 'B1'):
                             c17B1 = c17B1 + 1
                         elif (estratos == 'B2'):
-                                c17B2 = c17B2 + 1
+                            c17B2 = c17B2 + 1
                         elif (estratos == 'B3'):
                             c17B3 = c17B3 + 1
                         elif (estratos == 'B4'):
@@ -445,7 +454,7 @@ def import_project():
                             c17C = c17C + 1
                     elif (resultado[1] == '2018'):
                         cont18c = cont18c + 1
-                        if (nota != 'SEM QUALIS'):          #somador de notas de 2018
+                        if (nota != 'SEM QUALIS'):  # somador de notas de 2018
                             nota18 = nota18 + nota
                         if (estratos == 'A1'):
                             c18A1 = c18A1 + 1
@@ -467,7 +476,7 @@ def import_project():
                             c18C = c18C + 1
                     elif (resultado[1] == '2019'):
                         cont19c = cont19c + 1
-                        if (nota != 'SEM QUALIS'):          #somador de notas de 2019
+                        if (nota != 'SEM QUALIS'):  # somador de notas de 2019
                             nota19 = nota19 + nota
                         if (estratos == 'A1'):
                             c19A1 = c19A1 + 1
@@ -489,7 +498,7 @@ def import_project():
                             c19C = c19C + 1
                     elif (resultado[1] == '2020'):
                         cont20c = cont20c + 1
-                        if (nota != 'SEM QUALIS'):          #somador de notas de 2020
+                        if (nota != 'SEM QUALIS'):  # somador de notas de 2020
                             nota20 = nota20 + nota
                         if (estratos == 'A1'):
                             c20A1 = c20A1 + 1
@@ -509,14 +518,16 @@ def import_project():
                             c20B4 = c20B4 + 1
                         elif (estratos == 'C'):
                             c20C = c20C + 1
-                
-                #x = x + 1
-                
-                print(nomeProf," | ", resultado[0], " | ", resultado[1]," | ", tituloAnais," | ", doi," | ", sigla ," | ",nomeEvento," | ", autor," | ", estratos," | ", nota)
+
+                # x = x + 1
+
+                print(nomeProf, " | ", resultado[0], " | ", resultado[1], " | ", tituloAnais, " | ",
+                      doi, " | ", sigla, " | ", nomeEvento, " | ", autor, " | ", estratos, " | ", nota)
                 c = db.cursor()
-                
-                data  = """ insert into resultados (nome_docente, documento, ano_evento, titulo, doi, sigla, nome_evento, autores,estratos, notas)
+
+                data = """ insert into resultados (nome_docente, documento, ano_evento, titulo, doi, sigla, nome_evento, autores,estratos, notas)
                                 VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"""
-                                            
-                c.execute(data,(nomeProf, resultado[0], resultado[1], tituloAnais, doi, sigla ,nomeEvento, autor, estratos, nota))
+
+                c.execute(data, (nomeProf, resultado[0], resultado[1],
+                          tituloAnais, doi, sigla, nomeEvento, autor, estratos, nota))
                 db.commit()

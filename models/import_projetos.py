@@ -67,7 +67,7 @@ def import_project(anos):
     idLattes = []
 
     print('Lendo currículo(s)... \n')
-    for f in glob.glob('curriculos/*.xml'):
+    for f in glob.glob('arquivos/*.xml'):
         curriculos.append(f)
         cont = cont+1
 
@@ -94,10 +94,10 @@ def import_project(anos):
             print('Analisando publicações de {}'.format(nomeProf))
             x = x + 2
 
-        # searchId = findIdLattes(idLattes)
-        # if searchId == 0:
-        #     saveID(idLattes, nomeProf)
-        # x = x + 1
+        searchId = findIdLattes(idLattes)
+        if searchId == 0:
+            saveID(idLattes, nomeProf)
+        x = x + 1
 
         for trabalhos in root.iter('TRABALHO-EM-EVENTOS'):  # Varre currículo
             autores = ''

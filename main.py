@@ -19,11 +19,11 @@ from pathlib import Path
 
 def descompactar(idcnpq):
     shutil.move(str(Path.home()) + "/Downloads/" + idcnpq +
-                ".zip", os.getcwd() + "/curriculos/" + idcnpq + ".zip")
+                ".zip", os.getcwd() + "/arquivos/" + idcnpq + ".zip")
 
-    path_to_zipfile = os.getcwd() + "/curriculos/" + idcnpq + ".zip"
+    path_to_zipfile = os.getcwd() + "/arquivos/" + idcnpq + ".zip"
 
-    destino_arquivo = "curriculos/"
+    destino_arquivo = "arquivos/"
 
     if os.path.exists(path_to_zipfile):
         with zipfile.ZipFile(path_to_zipfile, 'r') as zip_ref:
