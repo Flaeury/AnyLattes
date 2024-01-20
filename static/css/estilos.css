@@ -59,7 +59,11 @@
   transform: rotate(45deg);
 }
 
+.b-lattes {
+  box-shadow: 15px 15px 30px #ededed,
+  -15px -15px 30px rgb(254, 254, 254);
 
+}
 
 h1 {
   display: block;

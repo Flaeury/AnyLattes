@@ -8,21 +8,47 @@
         <span class="visually-hidden">Loading...</span>
     </div>
 </div> -->
-<div class="col-md-5">
-    <button class="buttonAtualizar">
-        <div class="svg-wrapper-1">
-            <i class="fa-solid fa-rotate-right"></i>
+
+<form  action="{{ url_for('resultado_total') }}" method="post" id="forms" enctype="multipart/form-data">
+    <div class=" row align-items-center justify-content-between d-flex">
+        <div class="col-md-6 d-flex align-items-center">
+            <button class="buttonAtualizar">
+                <div class="svg-wrapper-1">
+                    <i class="fa-solid fa-rotate-right"></i>
+                </div>
+                <span>Atualizar dados</span>
+            </button>
         </div>
-        <span>Atualizar dados</span>
-      </button>
-</div>
+    
+        <div style="padding: 1rem" class="section-import rounded card-link col-md-6 d-flex align-items-end justify-content-end" >
+            <div class="form-group row justify-content-between" style="margin-right: 1rem">
+                <label for="ano_inicio" class="col-form-label col-md-1" style="margin-right: 0.3rem">De:</label>
+                <div class="col-md-4">
+                    <input type="number" class="form-control" name="ano_inicio" id="ano_inicio" min="1900" minlength="5" maxlength="5" required>
+                </div>
+    
+                <label for="ano_fim" class="col-form-label col-md-1" style="margin-right: 0.3rem">Até:</label>
+                <div class="col-md-4">
+                    <input type="number" class="form-control" name="ano_fim" id="ano_fim" min="1900" minlength="5" maxlength="5" required>
+                </div>
+    
+            </div>
+            <div class="col-md-3">
+                <button type="submit" value="Enviar" class="btn w-100 b-lattes btn-success">Recarregar</button>
+            </div>
+        </div>
+    </div>
+
+</form>
+
+
 <!-- <script src='https://cdn.plot.ly/plotly-latest.min.js'></script> -->
 <!-- <script src="{{url_for('static',filename= 'js/plotly.min.js') }}"></script> -->
 
 <div class="cards"> 
     <div class="card-header" id="card-header">
         <i class="fas fa-chart-bar me-1"></i>
-        Média Por Docente
+        Pontuação Por Docente
     </div>
 
     <div class="card-body">

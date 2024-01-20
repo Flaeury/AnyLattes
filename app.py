@@ -272,6 +272,8 @@ def imports():
 
     return render_template('imports.html')
 
+#! RESOLVER ERRO AMANHA
+
 
 @app.route("/upload", methods=['GET', 'POST'])
 def upload():
@@ -293,8 +295,8 @@ def upload():
         anos = []
         result = []
         page = "upload"
-        start_date = "1800"
-        end_date = str(datetime.date.today().year)
+        start_date = request.form.get('ano_inicio')
+        end_date = request.form.get('ano_fim')
         return render_template('loading.html', inicio=start_date, fim=end_date, page=page)
 
 
@@ -356,14 +358,14 @@ def resultado_total():
     m = []
     for d in dados:
         docente.append(d['Docente'])
-        media.append(d['Média'])
+        media.append(d['Pontuação'])
         mediana.append(d['Mediana'])
 
     m.append(dados[-1]['Mediana'])
     print(m)
     val1 = str(m[-1])
-    figura = px.bar(dados, x='Docente', y='Média',
-                    color_discrete_sequence=px.colors.qualitative.T10, template='plotly_white', text='Média')
+    figura = px.bar(dados, x='Docente', y='Pontuação',
+                    color_discrete_sequence=px.colors.qualitative.T10, template='plotly_white', text='Pontuação')
     figura.add_scatter(x=docente, y=mediana, xaxis='x',
                        name="Mediana: "+val1, marker=dict(color="crimson"))
 
@@ -595,7 +597,8 @@ def resultado_editado(docente):
 
 @app.route("/deletarDocente/<docente>", methods=['POST'])
 def deletarDocente(docente):
-    deletar_docente(docente)
+    deletar_docente(docente),
+    deletar_iddocente(docente)
 
     return render_template('resultados_por_docente.html')
 
@@ -681,5 +684,5 @@ if __name__ == "__main__":
     database.tabela_pontuacoes()
     database.insert_pontuacoes()
 
-    # app.run(debug=True)
+    app.run(debug=True)
     app.run(host='0.0.0.0')
