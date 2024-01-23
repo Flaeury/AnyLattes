@@ -9,8 +9,8 @@ def contador(nome_docente):
 
     return resultado
 
-def todosContador():
-    sql = "select ano_evento, estratos, count(estratos) as quantidade from resultados group by estratos, ano_evento order by ano_evento asc"
+def todosContador(from_year, to_year):
+    sql = "select ano_evento, estratos, count(estratos) as quantidade from resultados WHERE ano_evento >= " + from_year + " AND ano_evento <= " + to_year + " group by estratos, ano_evento order by ano_evento asc"
     resultado = cursor.execute(sql)
     
     return resultado

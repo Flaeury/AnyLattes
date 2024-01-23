@@ -314,13 +314,14 @@ def upload():
 
 @app.route('/resultado_total')
 def resultado_total():
-    upload()
+    from_year = request.args.get('ano_inicio', '1900')
+    to_year = request.args.get('ano_fim', str(datetime.date.today().year))
 
-    dados = todosContador()
+    dados = todosContador(from_year=from_year, to_year=to_year)
 
-    listar = lista()
-    totalNotas = soma_nota()
-    contadorEstratos = total_estratos()
+    listar = lista(from_year=from_year, to_year=to_year)
+    totalNotas = soma_nota(from_year, to_year)
+    contadorEstratos = total_estratos(from_year, to_year)
 
     conteudo = {}
     div = []
@@ -348,7 +349,7 @@ def resultado_total():
     print(anos)
     names = []
     values = []
-    pizza()
+    pizza(from_year=from_year, to_year=to_year)
     with open('pizza.json', 'r') as piz:
         d = json.load(piz)
         names.append(d[0]['Conferencia'])
@@ -360,7 +361,7 @@ def resultado_total():
 
     graph = json.dumps(figs, cls=plotly.utils.PlotlyJSONEncoder)
 
-    grafico_media()
+    grafico_media(from_year=from_year, to_year=to_year)
     with open('media_docentes.json', 'r') as med:
         dados = json.load(med)
 
@@ -403,7 +404,8 @@ def resultado_total():
     titulosRepetidos = titulos_qualis()
 
     return render_template("resultados.html", anos=anos, graphJSON=graphJSON, graph=graph, medias=medias, listar=listar, totalNotas=totalNotas,
-                           contadorEstratos=contadorEstratos, data=data, titulosRepetidos=titulosRepetidos)
+                           contadorEstratos=contadorEstratos, data=data, titulosRepetidos=titulosRepetidos,
+                           ano_inicio=from_year, ano_fim=to_year)
 
 
 @app.route("/projetos/inicio=<inicio>&fim=<fim>", methods=['POST'])

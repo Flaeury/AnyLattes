@@ -27,8 +27,8 @@ def graficos(busca):
         outfile.write(json_object)
 
 
-def pizza():
-    valor = perc()
+def pizza(from_year, to_year):
+    valor = perc(from_year, to_year)
     lista = []
     content = {}
 
@@ -58,8 +58,8 @@ def pizza_por_docente(docente):
         outfile.write(json_object)
 
 
-def grafico_media():
-    nota = media_docentes()
+def grafico_media(from_year, to_year):
+    nota = media_docentes(from_year=from_year, to_year=to_year)
 
     notas = []
 
