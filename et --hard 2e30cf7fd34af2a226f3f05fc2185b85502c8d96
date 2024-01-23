@@ -1,0 +1,277 @@
+[33mcommit 571d1a3b4cc279e5a8f3479e9f1b67c9da083822[m[33m ([m[1;36mHEAD -> [m[1;32mxml[m[33m, [m[1;31morigin/xml[m[33m)[m
+Author: Raiane <raianw200410@outlook.com>
+Date:   Mon Jan 22 16:01:21 2024 -0300
+
+    arrumarrrr
+
+[33mcommit e783cfa8a748458993b837f492d764d89c37bde1[m[33m ([m[1;31morigin/master[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmaster[m[33m)[m
+Author: Raiane <raianw200410@outlook.com>
+Date:   Sat Jan 20 20:06:46 2024 -0300
+
+    resolver erro
+
+[33mcommit 2e30cf7fd34af2a226f3f05fc2185b85502c8d96[m
+Author: Raiane <raianw200410@outlook.com>
+Date:   Sat Jan 20 13:11:33 2024 -0300
+
+    arrumando problema do banco de dados nomedocente column
+
+[33mcommit d9f718f64174a4cdddb5030f2d93770f828f69dc[m
+Author: Raiane <raianw200410@outlook.com>
+Date:   Fri Jan 19 12:39:54 2024 -0300
+
+    subindo mudanças
+
+[33mcommit 6ddb03c47bb97c28d2c3fccd06076cfc43d68988[m
+Author: Raiane <raianw200410@outlook.com>
+Date:   Mon Jan 15 10:31:38 2024 -0300
+
+    subindo button
+
+[33mcommit 434917158c22d7ac3d1ac329012174153ac77e98[m
+Author: Raiane <raianw200410@outlook.com>
+Date:   Mon Jan 15 00:18:22 2024 -0300
+
+    a
+
+[33mcommit 6c24d4d24c6c6899a41a81aef9240de9c332db2f[m
+Author: Raiane <raianw200410@outlook.com>
+Date:   Wed Jan 10 23:34:00 2024 -0300
+
+    arrumando graficos 50/50
+
+[33mcommit 1568bc5b3a5b4005991508eb125aa4af73b5c42f[m[33m ([m[1;32mfront[m[33m, [m[1;32mdev[m[33m)[m
+Author: Raiane <raianw200410@outlook.com>
+Date:   Wed Jan 10 23:11:55 2024 -0300
+
+    arrumando layout
+
+[33mcommit 32ebbd4d239b1b5723514931e18411f6f737f2ae[m
+Author: Raiane <hi.alita1999@gmail.com>
+Date:   Wed Jan 10 15:00:13 2024 -0300
+
+    mudando dependencias
+
+[33mcommit 1d191853d927963598271f8936dfea11a90e2d8c[m
+Author: raiane <hi.alita1999@gmail.com>
+Date:   Wed Dec 20 14:50:04 2023 -0300
+
+    checar erro
+
+[33mcommit 447a22714a02b3a1b576bd32037ff83dd0475497[m
+Author: Raiane <raianw200410@outlook.com>
+Date:   Tue Dec 19 10:29:13 2023 -0300
+
+    mudanças de reload
+
+[33mcommit fe826ae719c01b6ccaa005bc453760e9e12b419f[m
+Author: raiane <hi.alita1999@gmail.com>
+Date:   Fri Dec 15 12:00:10 2023 -0300
+
+    problema no reload
+
+[33mcommit 1681ec2188a5da8261d1d8482d59d4f7fe8c32e5[m
+Author: Raiane <raianw200410@outlook.com>
+Date:   Thu Dec 14 19:14:58 2023 -0300
+
+    teste no pc
+
+[33mcommit 2585014f3e1d0c46452f9968f5f6f771f36e2c7f[m
+Author: raiane <hi.alita1999@gmail.com>
+Date:   Wed Dec 13 11:31:05 2023 -0300
+
+    erro de import
+
+[33mcommit bb62c671818e6131195c2dee850c8196b765450f[m
+Author: raiane <hi.alita1999@gmail.com>
+Date:   Wed Nov 29 11:39:23 2023 -0300
+
+    finalização da extração
+
+[33mcommit 2c97bf67c41103f70b0c17ed962ee226fadf4612[m
+Author: raiane <hi.alita1999@gmail.com>
+Date:   Wed Nov 29 10:57:48 2023 -0300
+
+    extração feita
+
+[33mcommit e2fe3b0b2704a892dd6afa29d47fec602d01c479[m
+Author: raiane <hi.alita1999@gmail.com>
+Date:   Wed Nov 29 09:45:47 2023 -0300
+
+    mudança no os.path
+
+[33mcommit da2af8b2d506f7ad2cde95340665a41f80edb31e[m
+Author: raiane <hi.alita1999@gmail.com>
+Date:   Tue Nov 28 10:52:59 2023 -0300
+
+    mudando para xml
+
+[33mcommit 95c8a166510cbd397376942c33406e989d811336[m
+Author: raiane <hi.alita1999@gmail.com>
+Date:   Mon Nov 27 10:47:42 2023 -0300
+
+    baixando o arquivo zip do código
+
+[33mcommit 81540c03f847234a6701bfcd1b47625ff2982f91[m
+Author: raiane <hi.alita1999@gmail.com>
+Date:   Mon Nov 27 10:31:15 2023 -0300
+
+    download de arquivo
+
+[33mcommit 3c615f18e3b8d659917138a835149541e5651ede[m
+Author: Raiane <raianw200410@outlook.com>
+Date:   Thu Nov 23 23:21:04 2023 -0300
+
+    adicionando a automatização
+
+[33mcommit 01d06bd32d797765981d1b1bd5df8b20562dddd5[m
+Author: raiane <hi.alita1999@gmail.com>
+Date:   Wed Nov 22 11:44:16 2023 -0300
+
+    input para nova aquisição de dados
+
+[33mcommit 7a22f3c4674e5d74bb17a63fb6da8ec214adf8ab[m
+Author: Raiane <raianw200410@outlook.com>
+Date:   Wed Nov 15 12:44:47 2023 -0300
+
+    delete docente
+
+[33mcommit efa2f04b1b04d060644f699d5886155763aa3680[m
+Author: Raiane <raianw200410@outlook.com>
+Date:   Tue Nov 14 22:13:02 2023 -0300
+
+    ajustando issues
+
+[33mcommit 4a74bbe2464876c2a308a406d2c00dc7c297c06d[m
+Author: raiane <hi.alita1999@gmail.com>
+Date:   Tue Nov 14 10:49:57 2023 -0300
+
+    info e margin
+
+[33mcommit 19b63c4f7dc37f1c4d6affc133a0c596705cc891[m
+Author: alexcirilo <c.alex.cirilo@gmail.com>
+Date:   Wed Aug 23 09:16:25 2023 -0300
+
+    correcao periodico com estrato vazio
+
+[33mcommit 5ab728c7867e497dfa60e6f25fc376f4fb08d146[m
+Merge: efc8198 267d2b3
+Author: alexcirilo <c.alex.cirilo@gmail.com>
+Date:   Mon Aug 21 20:05:51 2023 -0300
+
+    Merge branch 'master' of https://github.com/alexcirilo/Lattes4Web
+
+[33mcommit efc8198a09cfac29dc588e472ed4b98993d2e49b[m
+Author: alexcirilo <c.alex.cirilo@gmail.com>
+Date:   Mon Aug 21 20:04:42 2023 -0300
+
+    rebase branch_sqlite
+
+[33mcommit 281127305c7a2a02355dea222e309c4d6715c4a8[m[33m ([m[1;31morigin/branch_sqlite[m[33m)[m
+Author: alexcirilo <c.alex.cirilo@gmail.com>
+Date:   Mon Aug 21 20:03:03 2023 -0300
+
+    ajuste README para opção docker
+
+[33mcommit 267d2b3809e0a0271e51aea95f5dd6c89bf45aa5[m
+Merge: 18952a6 b9d52df
+Author: alexcirilo <c.alex.cirilo@gmail.com>
+Date:   Mon Aug 21 18:12:12 2023 -0300
+
+    Merge branch 'branch_sqlite'
+
+[33mcommit b9d52dff45aaf8861935a92369ef88dfd221e076[m
+Author: alexcirilo <c.alex.cirilo@gmail.com>
+Date:   Mon Aug 21 17:55:36 2023 -0300
+
+    importacao curriculos via arquivo zip
+
+[33mcommit f5ca0366b9eed8f52a44bb323d6222f0b44bd5a2[m
+Author: alexcirilo <c.alex.cirilo@gmail.com>
+Date:   Mon Aug 21 17:55:11 2023 -0300
+
+    importacao curriculos via arquivo zip
+
+[33mcommit 18952a640340a844b1e016870887e9b6f8b7f9a4[m
+Merge: 15f4b40 46160bc
+Author: alexcirilo <c.alex.cirilo@gmail.com>
+Date:   Mon Aug 21 14:41:25 2023 -0300
+
+    Merge branch 'master' of https://github.com/alexcirilo/Lattes4Web
+
+[33mcommit 15f4b40e7d3323bdb04a1b2384800d243a4b909e[m
+Author: alexcirilo <c.alex.cirilo@gmail.com>
+Date:   Mon Aug 21 09:20:55 2023 -0300
+
+    rebase branch_sqlite
+
+[33mcommit 35cd57bd38928804c81536e32e1811c407da74e1[m
+Author: alexcirilo <c.alex.cirilo@gmail.com>
+Date:   Mon Aug 21 09:53:20 2023 -0300
+
+    ajuste gitignore
+
+[33mcommit 5ca87c9f06663f785b400466b0b623c9345fa21a[m
+Author: alexcirilo <c.alex.cirilo@gmail.com>
+Date:   Mon Aug 21 09:45:45 2023 -0300
+
+    correcao metodo que redirecionava p/ tela de loading
+
+[33mcommit 46160bcbe56e9d307db1dcd94bc20f4a52d7a368[m
+Author: alexcirilo <c.alex.cirilo@gmail.com>
+Date:   Mon Aug 21 09:20:55 2023 -0300
+
+    rebase branch_sqlite
+
+[33mcommit d9721ecd890d8937999fc1034ce88ccca8b318b2[m
+Author: alexcirilo <c.alex.cirilo@gmail.com>
+Date:   Mon Aug 21 09:17:10 2023 -0300
+
+    merge alterações railway
+
+[33mcommit 05ad9786e98df3f4e0f3b7f857f4ad463b4f8867[m
+Author: alexcirilo <c.alex.cirilo@gmail.com>
+Date:   Sun Aug 20 15:38:38 2023 -0300
+
+    merge branch_sqlite
+
+[33mcommit 8f8abf58895dcb274fee779c6055258b480aaea7[m
+Merge: bf9936c a5e7983
+Author: alexcirilo <c.alex.cirilo@gmail.com>
+Date:   Sun Aug 20 15:15:53 2023 -0300
+
+    merge branch_sqlite
+
+[33mcommit a5e79831e2f0b5c938b695d03f991c9568f3130b[m
+Author: alexcirilo <c.alex.cirilo@gmail.com>
+Date:   Sun Aug 20 15:13:22 2023 -0300
+
+    loading para nuvem_de_palavras
+
+[33mcommit bf9936c7a27fdf3c1b0bee862e34e9116ab8251e[m
+Author: alexcirilo <c.alex.cirilo@gmail.com>
+Date:   Sun Aug 20 14:06:28 2023 -0300
+
+    correção condição p/ sem qualis
+
+[33mcommit 7f877eb36545f340d8ce046d658427695bace2c1[m
+Author: alexcirilo <c.alex.cirilo@gmail.com>
+Date:   Sun Aug 20 14:03:13 2023 -0300
+
+    correção condição p/ sem qualis
+
+[33mcommit d47a852cb404c8622fc9c1983676f599b2170789[m
+Author: alexcirilo <c.alex.cirilo@gmail.com>
+Date:   Sun Aug 20 14:02:25 2023 -0300
+
+    correção condição p/ sem qualis
+
+[33mcommit 80d927f23558df5aec8f3a43fc4f8697987ebe10[m
+Author: alexcirilo <c.alex.cirilo@gmail.com>
+Date:   Sat Aug 19 17:23:14 2023 -0300
+
+    feat(railway): inclusao modal p/ tabela colaboracao e correção modal publicacoes
+
+[33mcommit d2f815f247c00def5c8189c4cbf81300110de2f6[m
+Author: alexcirilo <c.alex.cirilo@gmail.com>
+Date:  

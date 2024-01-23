@@ -32,6 +32,8 @@ from selenium.webdriver.firefox.options import Options
 import speech_recognition as sr
 import urllib
 import pydub
+import PyPDF2
+import xml.etree.ElementTree as ET
 import shutil
 from pathlib import Path
 import datetime
@@ -237,13 +239,14 @@ def imports():
             files = request.files.getlist('files[]')
             for file in files:
                 if file.filename == '':
-                    flash("No Selected file(s)")
+                    flash("No selected file(s)")
                 else:
                     if file and allowed_file(file.filename):
                         filename = secure_filename(file.filename)
-                        file.save(os.path.join('arquivos/' + filename))
-                        f = file.filename.rsplit('.', 1)[1].lower()
+                        f = filename.rsplit('.', 1)[1].lower()
                         dir = 'arquivos/'
+
+                        file.save(os.path.join(dir, filename))
 
                         if f == 'pdf' or f == 'PDF':
                             old = os.path.join(dir, filename)
@@ -254,17 +257,25 @@ def imports():
                             new = os.path.join(dir, 'QualisConferencias.xlsx')
                             os.rename(old, new)
                         else:
-                            flash("Erro no sistema")
+                            flash("Error in the system")
 
                         flash('File(s) uploaded successfully')
 
-                    else:
-                        flash(
-                            "Não foi possível efetuar upload. Arquivo com extensão inválida")
+                        # Now, check if the file is an XML file before parsing
+                        if f == 'xml':
+                            tree = ET.parse(os.path.join(dir, filename))
+                            root = tree.getroot()
+                            for t in root.iter('CURRICULO-VITAE'):
+                                numLattes = str(
+                                    t.attrib['NUMERO-IDENTIFICADOR'])
+
+                            shutil.move(os.path.join(dir, filename),
+                                        os.path.join(dir, numLattes + ".xml"))
 
             page = "upload"
             start_date = "1800"
             end_date = str(datetime.date.today().year)
+
             return render_template('loading.html', inicio=start_date, fim=end_date, page=page)
 
         else:
@@ -293,8 +304,8 @@ def upload():
         anos = []
         result = []
         page = "upload"
-        start_date = "1800"
-        end_date = str(datetime.date.today().year)
+        start_date = request.form.get('ano_inicio')
+        end_date = request.form.get('ano_fim')
         return render_template('loading.html', inicio=start_date, fim=end_date, page=page)
 
 
