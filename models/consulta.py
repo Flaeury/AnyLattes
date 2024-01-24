@@ -31,8 +31,8 @@ def lista_por_id(id):
 
 def lista(from_year, to_year):
 
-    sql = "select id, nome_docente, documento,ano_evento, titulo,doi,sigla,nome_evento, autores,estratos, round(notas,5) from resultados r WHERE ano_evento >= " + \
-        from_year + " AND ano_evento <= " + to_year + " order by ano_evento asc;"
+    sql = "SELECT id, nome_docente, documento,ano_evento, titulo,doi,sigla,nome_evento, autores,estratos, round(notas,5) from resultados r WHERE ano_evento >= " + \
+        from_year+" AND ano_evento <= " + to_year + " order by ano_evento asc;"
     cursor = db.cursor()
     cursor.execute(sql.upper())
     resultado = cursor.fetchall()

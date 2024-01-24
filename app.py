@@ -303,7 +303,7 @@ def upload():
 
                 xml_content = file.read()
                 print(f"Processing XML file: {xml_file}")
-                print(xml_content)
+                # print(xml_content)
 
         anos = []
         result = []
@@ -315,7 +315,7 @@ def upload():
 
 @app.route('/resultado_total')
 def resultado_total():
-    from_year = request.args.get('ano_inicio', '1900')
+    from_year = request.args.get('ano_inicio', '2010')
     to_year = request.args.get('ano_fim', str(datetime.date.today().year))
 
     dados = todosContador(from_year=from_year, to_year=to_year)
@@ -347,7 +347,7 @@ def resultado_total():
         anos.append(c['Ano'])
 
     anos = sorted(set(anos))
-    print(anos)
+    # print(anos)
     names = []
     values = []
     pizza(from_year=from_year, to_year=to_year)
@@ -376,7 +376,7 @@ def resultado_total():
         mediana.append(d['Mediana'])
 
     m.append(dados[-1]['Mediana'])
-    print(m)
+    # print(m)
     val1 = str(m[-1])
     figura = px.bar(dados, x='Docente', y='Pontuação',
                     color_discrete_sequence=px.colors.qualitative.T10, template='plotly_white', text='Pontuação')
@@ -432,9 +432,9 @@ def gerar_tabela_qualis():
 @app.route('/resultado_por_docente')
 def resultado_por_docente():
 
-    listar = lista()
+    listar = listar = lista('1500', str(datetime.date.today().year))
     # prof = busca_prof()
-    totalNotas = soma_nota()
+    totalNotas = soma_nota('1500', str(datetime.date.today().year))
     contadorEstratos = contador_estratos()
     return render_template("resultados_por_docente.html", listar=listar, totalNotas=totalNotas, contadorEstratos=contadorEstratos)
 
@@ -442,7 +442,7 @@ def resultado_por_docente():
 @app.route('/listar')
 def listar():
     contadorEstratos = contador_estratos()
-    listar = lista()
+    listar = lista('1500', str(datetime.date.today().year))
     totalNotas = soma_nota()
     return render_template("resultados_por_docente.html", listar=listar, totalNotas=totalNotas, contadorEstratos=contadorEstratos)
 
@@ -464,7 +464,7 @@ def corrige_notas():
                     update_notas(nota, r[0])
             reps = qualis_repetidos(titulo=t)
             for r in reps:
-                print(r)
+                # print(r)
                 if r[0] == t:
                     media = float(r[1]) / float(r[3])
                     update_qualis_repetido(titulo=r[0], valor=str(media))
@@ -477,7 +477,7 @@ def corrige_notas():
 def contadores():
     if request.method == 'POST':
         busca = request.form['query']
-        print(busca)
+        # print(busca)
         cont = contador(busca)
         print("all list")
         # os.remove('arq.json')
@@ -603,7 +603,7 @@ def resultado_docente(docente):
 
 def resultado_editado(docente):
 
-    listar = lista()
+    listar = lista('1500', str(datetime.date.today().year))
     # prof = busca_prof()
     totalNotas = soma_nota()
     contadorEstratos = contador_estratos()
@@ -665,7 +665,7 @@ def tabela_qualis():
 
     dados = {}
     dados = zip(estrato, notas)
-    print(dados)
+    # print(dados)
 
     for dado in dados:
         update_pontuacoes(dado[0], dado[1])
@@ -673,7 +673,7 @@ def tabela_qualis():
 
 
 def recalcula_notas():
-    titulos = lista()
+    titulos = lista('1500', str(datetime.date.today().year))
 
     for t in titulos:
         estratos = t[9]
