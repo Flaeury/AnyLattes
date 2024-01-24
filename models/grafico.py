@@ -92,7 +92,7 @@ def grafico_colaboracao(from_year, to_year):
             d = d.split()[0] + " " + d.split()[-1]
             G.add_node(d)
 
-    valor = titulos_repetidos()
+    valor = titulos_repetidos(from_year, to_year)
 
     for i in range(0, len(valor)):
         atual = valor[i][0]

@@ -76,7 +76,6 @@ def contador_estratos():
     cursor = db.cursor()
     cursor.execute(sql)
     resultado = cursor.fetchall()
-
     return resultado
 
 
@@ -113,9 +112,11 @@ def titulo_repetido(titulo):
 # verificar quais titulos se repetem e quais docentes publicaram
 
 
-def titulos_repetidos():
+def titulos_repetidos(from_year, to_year):
     # sql = ("select nome_docente, titulo from resultados r where titulo like '%"+titulo+"%' GROUP by titulo HAVING count(*)>1")
-    sql = "SELECT distinct titulo, nome_docente FROM resultados r WHERE titulo in (SELECT DISTINCT titulo FROM resultados r group by titulo having COUNT(*) >1) group by titulo,nome_docente  order by titulo;"
+    sql = "SELECT distinct titulo, nome_docente FROM resultados r WHERE titulo in (SELECT DISTINCT titulo FROM resultados r group by titulo having COUNT(*) >1) AND ano_evento >= '" + \
+        from_year+"'  AND ano_evento <= '"+to_year + \
+        "' group by titulo,nome_docente  order by titulo;"
     cursor = db.cursor()
     cursor.execute(sql)
     resultado = cursor.fetchall()
