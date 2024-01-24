@@ -287,6 +287,7 @@ def imports():
 # *
 # TODO BUSCAR AMANHA
 
+
 @app.route("/upload", methods=['GET', 'POST'])
 def upload():
     if request.method == 'POST':
@@ -395,7 +396,7 @@ def resultado_total():
 
     medias = json.dumps(figura, cls=plotly.utils.PlotlyJSONEncoder)
 
-    colaboracao = grafico_colaboracao()
+    colaboracao = grafico_colaboracao(from_year=from_year, to_year=to_year)
 
     valor_padrao = 'circular'
 
@@ -618,11 +619,11 @@ def deletarDocente(docente):
 
 
 @app.route("/mostra_grafo", methods=['POST', 'GET'])
-def mostra_grafo():
+def mostra_grafo(from_year, to_year):
     if request.method == "POST":
         tipo = request.form['query']
 
-        g = grafico_colaboracao()
+        g = grafico_colaboracao(from_year, to_year)
         grafo = tipo_grafo(tipo, g)
         return tipo
 

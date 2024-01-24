@@ -31,7 +31,8 @@ def lista_por_id(id):
 
 def lista(from_year, to_year):
 
-    sql = "select id, nome_docente, documento,ano_evento, titulo,doi,sigla,nome_evento, autores,estratos, round(notas,5) from resultados r WHERE ano_evento >= " + from_year + " AND ano_evento <= " + to_year + " order by ano_evento asc;"
+    sql = "select id, nome_docente, documento,ano_evento, titulo,doi,sigla,nome_evento, autores,estratos, round(notas,5) from resultados r WHERE ano_evento >= " + \
+        from_year + " AND ano_evento <= " + to_year + " order by ano_evento asc;"
     cursor = db.cursor()
     cursor.execute(sql.upper())
     resultado = cursor.fetchall()
@@ -51,7 +52,8 @@ def busca_prof():
 
 def soma_nota(from_year, to_year):
 
-    sql = ("SELECT distinct nome_docente , round(sum(notas),3) from resultados where nome_docente in (select distinct(nome_docente) from resultados) AND ano_evento >= " + from_year + " AND ano_evento <= " + to_year + " group by nome_docente order by nome_docente asc;")
+    sql = ("SELECT distinct nome_docente , round(sum(notas),3) from resultados where nome_docente in (select distinct(nome_docente) from resultados) AND ano_evento >= " +
+           from_year + " AND ano_evento <= " + to_year + " group by nome_docente order by nome_docente asc;")
     cursor = db.cursor()
     cursor.execute(sql)
     resultado = cursor.fetchall()
@@ -130,8 +132,10 @@ def titulo_repetidos(titulo):
     return resultado
 
 
-def docente_titulos_repetidos():
-    sql = "SELECT distinct  nome_docente FROM resultados r WHERE titulo in (SELECT DISTINCT titulo FROM resultados r group by titulo having COUNT(*) >1) group by titulo,nome_docente  order by titulo;"
+def docente_titulos_repetidos(from_year, to_year):
+    sql = "SELECT distinct nome_docente FROM resultados r WHERE titulo in (SELECT DISTINCT titulo FROM resultados r group by titulo having COUNT(*) >1) AND ano_evento >= '" + \
+        from_year+"'  AND ano_evento <= '"+to_year + \
+        "' group by titulo,nome_docente order by titulo;"
     cursor = db.cursor()
     cursor.execute(sql)
     resultado = cursor.fetchall()
@@ -181,7 +185,8 @@ def atualizar(id, doi, sigla, nome_evento, estratos, nota, versao):
 
 
 def total_estratos(from_year, to_year):
-    sql = "SELECT ano_evento,estratos, COUNT(estratos) from resultados r WHERE ano_evento >= '" + from_year + "' AND ano_evento <= '" + to_year + "' group by ano_evento,estratos;"
+    sql = "SELECT ano_evento,estratos, COUNT(estratos) from resultados r WHERE ano_evento >= '" + \
+        from_year + "' AND ano_evento <= '" + to_year + "' group by ano_evento,estratos;"
     print(sql)
 
     cursor = db.cursor()
@@ -194,10 +199,11 @@ def total_estratos(from_year, to_year):
 def perc(from_year, to_year):
     sql = ("select distinct total, 'Periódico', 'Conferência', round(periodico * 100 / total,3 ) as percentual_periodico, round(conferencia * 100 / total,3 ) as percentual_conferencia " +
            "from (select " +
-           "(select count(1) from resultados r  WHERE ano_evento >= " + from_year + " AND ano_evento <= " + to_year + ") as total,"
+           "(select count(1) from resultados r  WHERE ano_evento >= " +
+           from_year + " AND ano_evento <= " + to_year + ") as total,"
            "(select count(1) from resultados r where r.documento like '%Peri%'  AND ano_evento >= " + from_year + " AND ano_evento <= " + to_year + ") as periodico," +
            "(select count(1) from resultados r where r.documento like '%Conf%'  AND ano_evento >= " + from_year + " AND ano_evento <= " + to_year + ") as conferencia from resultados);")
-    
+
     print(sql)
     cursor = db.cursor()
     cursor.execute(sql)
@@ -230,7 +236,8 @@ def busca_conferencias():
 
 
 def media_docentes(from_year, to_year):
-    sql = "select nome_docente, round(sum(notas),3) as media from resultados r WHERE ano_evento >= " + from_year + " AND ano_evento <= " + to_year + " group by nome_docente ;"
+    sql = "select nome_docente, round(sum(notas),3) as media from resultados r WHERE ano_evento >= " + \
+        from_year + " AND ano_evento <= " + to_year + " group by nome_docente ;"
     cursor = db.cursor()
     cursor.execute(sql)
     resultado = cursor.fetchall()

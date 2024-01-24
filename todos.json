@@ -1,55 +1,5 @@
 [
     {
-        "Ano": 2020,
-        "Estratos": "-",
-        "Quantidade": 22
-    },
-    {
-        "Ano": 2020,
-        "Estratos": "A1",
-        "Quantidade": 25
-    },
-    {
-        "Ano": 2020,
-        "Estratos": "A2",
-        "Quantidade": 37
-    },
-    {
-        "Ano": 2020,
-        "Estratos": "A3",
-        "Quantidade": 28
-    },
-    {
-        "Ano": 2020,
-        "Estratos": "A4",
-        "Quantidade": 28
-    },
-    {
-        "Ano": 2020,
-        "Estratos": "B1",
-        "Quantidade": 5
-    },
-    {
-        "Ano": 2020,
-        "Estratos": "B2",
-        "Quantidade": 4
-    },
-    {
-        "Ano": 2020,
-        "Estratos": "B3",
-        "Quantidade": 27
-    },
-    {
-        "Ano": 2020,
-        "Estratos": "B4",
-        "Quantidade": 23
-    },
-    {
-        "Ano": 2020,
-        "Estratos": "C",
-        "Quantidade": 2
-    },
-    {
         "Ano": 2021,
         "Estratos": "-",
         "Quantidade": 33
@@ -146,46 +96,6 @@
     },
     {
         "Ano": 2022,
-        "Estratos": "C",
-        "Quantidade": 2
-    },
-    {
-        "Ano": 2023,
-        "Estratos": "-",
-        "Quantidade": 30
-    },
-    {
-        "Ano": 2023,
-        "Estratos": "A1",
-        "Quantidade": 18
-    },
-    {
-        "Ano": 2023,
-        "Estratos": "A2",
-        "Quantidade": 24
-    },
-    {
-        "Ano": 2023,
-        "Estratos": "A3",
-        "Quantidade": 11
-    },
-    {
-        "Ano": 2023,
-        "Estratos": "A4",
-        "Quantidade": 21
-    },
-    {
-        "Ano": 2023,
-        "Estratos": "B1",
-        "Quantidade": 4
-    },
-    {
-        "Ano": 2023,
-        "Estratos": "B4",
-        "Quantidade": 11
-    },
-    {
-        "Ano": 2023,
         "Estratos": "C",
         "Quantidade": 2
     }

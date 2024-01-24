@@ -81,10 +81,10 @@ def grafico_media(from_year, to_year):
         outfile.write(json_object)
 
 
-def grafico_colaboracao():
+def grafico_colaboracao(from_year, to_year):
     lista_docente = []
     G = nx.Graph()
-    docente = docente_titulos_repetidos()
+    docente = docente_titulos_repetidos(from_year, to_year)
 
     for doc in docente:
         for d in doc:
