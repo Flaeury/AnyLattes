@@ -317,12 +317,14 @@ def upload():
 def resultado_total():
     from_year = request.args.get('ano_inicio', '2010')
     to_year = request.args.get('ano_fim', str(datetime.date.today().year))
+    nome_docente = request.args.get('nome_docente', '')
 
-    dados = todosContador(from_year=from_year, to_year=to_year)
+    dados = todosContador(from_year=from_year, to_year=to_year, nome_docente=nome_docente)
 
-    listar = lista(from_year=from_year, to_year=to_year)
-    totalNotas = soma_nota(from_year, to_year)
-    contadorEstratos = total_estratos(from_year, to_year)
+    listar = lista(from_year=from_year, to_year=to_year, nome_docente=nome_docente)
+    totalNotas = soma_nota(from_year, to_year, nome_docente)
+    contadorEstratos = total_estratos(from_year, to_year, nome_docente)
+    docentes = get_nome_docente()
 
     conteudo = {}
     div = []
@@ -350,7 +352,7 @@ def resultado_total():
     # print(anos)
     names = []
     values = []
-    pizza(from_year=from_year, to_year=to_year)
+    pizza(from_year=from_year, to_year=to_year, nome_docente=nome_docente)
     with open('pizza.json', 'r') as piz:
         d = json.load(piz)
         names.append(d[0]['Conferencia'])
@@ -362,7 +364,7 @@ def resultado_total():
 
     graph = json.dumps(figs, cls=plotly.utils.PlotlyJSONEncoder)
 
-    grafico_media(from_year=from_year, to_year=to_year)
+    grafico_media(from_year=from_year, to_year=to_year, nome_docente=nome_docente)
     with open('media_docentes.json', 'r') as med:
         dados = json.load(med)
 
@@ -396,17 +398,17 @@ def resultado_total():
 
     medias = json.dumps(figura, cls=plotly.utils.PlotlyJSONEncoder)
 
-    colaboracao = grafico_colaboracao(from_year=from_year, to_year=to_year)
+    colaboracao = grafico_colaboracao(from_year=from_year, to_year=to_year, nome_docente=nome_docente)
 
     valor_padrao = 'circular'
 
     tipo_grafo(valor_padrao, colaboracao)
 
-    titulosRepetidos = titulos_qualis()
+    titulosRepetidos = titulos_qualis(nome_docente)
 
     return render_template("resultados.html", anos=anos, graphJSON=graphJSON, graph=graph, medias=medias, listar=listar, totalNotas=totalNotas,
                            contadorEstratos=contadorEstratos, data=data, titulosRepetidos=titulosRepetidos,
-                           ano_inicio=from_year, ano_fim=to_year)
+                           ano_inicio=from_year, ano_fim=to_year, docentes=docentes)
 
 
 @app.route("/projetos/inicio=<inicio>&fim=<fim>", methods=['POST'])
