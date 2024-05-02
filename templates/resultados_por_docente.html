@@ -100,9 +100,10 @@
         id="mostrar"
         onchange="javascript:mostraAlerta(this);"
         style="display: none"
-      >
+      > 
+        <option value="todos" selected>Mostrar tudo</option>
         <option value="producaoIntelectual">Produção Intelectual</option>
-        <option value="tabelaQte" selected>Notas</option>
+        <option value="tabelaQte" >Notas</option>
         <option value="grafico">Gráficos</option>
         <option value="nuvem">Nuvem de Palavras</option>
       </select>
@@ -112,6 +113,24 @@
   <input type="hidden" name="hidden_value" id="hidden_value" />
   <div class="card-body">
     <div class="row">
+      <div class="col-md-12" id="todos">
+
+        <table class="table table-striped table-bordered table-sm">
+          <tbody class="contadorEstratos"></tbody>
+        </table>
+        <table class="table table-sm table-responsive">
+          <thead class="table table-dark" id="total"></thead>
+        </table>
+
+        <div id="chart" class="col-sm-8"></div>
+
+        <div id="pizza" class="col-sm-4"></div>
+        <table class="table table-sm table-responsive" id="producao">
+          <thead class="table dadosProducaoIntelectual"></thead>
+        </table>
+
+      </div>
+
       <div class="col-md-12" id="tabelaQte">
         <table class="table table-striped table-bordered table-sm">
           <tbody class="contadorEstratos"></tbody>
@@ -433,7 +452,12 @@
 
   function mostraAlerta(elemento) {
     var query = $("#hidden_value").val();
-    if (elemento.value === "tabelaQte") {
+    if (elemento.value === "todos") {
+      ocultar(elemento);
+      producao();
+      nuvem_docente(elemento.value);
+      mostrar(elemento);
+    } else if (elemento.value === "tabelaQte") {
       ocultar(elemento);
     } else if (elemento.value === "grafico") {
       mostrar(elemento);

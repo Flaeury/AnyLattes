@@ -16,6 +16,11 @@
   transition: all 0.3s;
 }
 
+
+#nome_docente option {
+  padding: 8px;
+}
+
 .buttonAtualizar:hover {
   transform: translateY(-3px);
   box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.3);
