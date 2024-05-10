@@ -34,7 +34,7 @@ def lista(from_year, to_year, nome_docente=''):
     sql = "SELECT id, nome_docente, documento,ano_evento, titulo,doi,sigla,nome_evento, autores,estratos, round(notas,5) from resultados r WHERE ano_evento >= " + \
         from_year+" AND ano_evento <= " + to_year + " order by ano_evento asc;"
     if nome_docente != '':
-        sql = "SELECT id, nome_docente, documento,ano_evento, titulo,doi,sigla,nome_evento, autores,estratos, round(notas,5) from resultados r WHERE nome_docente = '" + \
+        sql = "SELECT id, nome_docente, documento,ano_evento, titulo,doi,sigla,nome_evento, autores,estratos, round(notas,5) from resultados r WHERE nome_docente in = '" + \
             nome_docente+"' AND ano_evento >= " + from_year + \
             " AND ano_evento <= " + to_year + " order by ano_evento asc;"
 
@@ -62,7 +62,7 @@ def soma_nota(from_year, to_year, nome_docente=''):
 
     if nome_docente != '':
         sql = ("SELECT distinct nome_docente , round(sum(notas),3) from resultados where nome_docente in (select distinct(nome_docente) from resultados) AND ano_evento >= " +
-               from_year + " AND ano_evento <= " + to_year + " AND nome_docente = '"+nome_docente+"' group by nome_docente order by nome_docente asc;")
+               from_year + " AND ano_evento <= " + to_year + " AND nome_docente in = '"+nome_docente+"' group by nome_docente order by nome_docente asc;")
     cursor = db.cursor()
     cursor.execute(sql)
     resultado = cursor.fetchall()
@@ -72,7 +72,7 @@ def soma_nota(from_year, to_year, nome_docente=''):
 def soma_nota_docente(docente):
 
     sql = (" SELECT distinct nome_docente , round(sum(notas),3) from resultados where nome_docente in" +
-           "(select distinct(nome_docente) from resultados where nome_docente = '"+docente+"')group by nome_docente order by ano_evento asc;")
+           "(select distinct(nome_docente) from resultados where nome_docente in = '"+docente+"')group by nome_docente order by ano_evento asc;")
     cursor = db.cursor()
     cursor.execute(sql)
     resultado = cursor.fetchall()
@@ -92,7 +92,7 @@ def titulos_qualis(nome_docente=''):
     sql = ('SELECT DISTINCT titulo FROM resultados r group by titulo having COUNT(*) >1 ;')
 
     if nome_docente != '':
-        sql = ('SELECT DISTINCT titulo FROM resultados r WHERE nome_docente = "' +
+        sql = ('SELECT DISTINCT titulo FROM resultados r WHERE nome_docente in = "' +
                nome_docente+'" group by titulo having COUNT(*) >1 ;')
 
     cursor = db.cursor()
@@ -135,7 +135,7 @@ def titulos_repetidos(from_year, to_year, nome_docente=''):
     if nome_docente != '':
         sql = "SELECT distinct titulo, nome_docente FROM resultados r WHERE titulo in (SELECT DISTINCT titulo FROM resultados r group by titulo having COUNT(*) >1) AND ano_evento >= '" + \
             from_year+"'  AND ano_evento <= '"+to_year + \
-            "' AND nome_docente = '"+nome_docente + \
+            "' AND nome_docente in = '"+nome_docente + \
             "' group by titulo,nome_docente  order by titulo;"
     cursor = db.cursor()
     cursor.execute(sql)
@@ -161,7 +161,7 @@ def docente_titulos_repetidos(from_year, to_year, nome_docente=''):
     if nome_docente != '':
         sql = "SELECT distinct nome_docente FROM resultados r WHERE titulo in (SELECT DISTINCT titulo FROM resultados r group by titulo having COUNT(*) >1) AND ano_evento >= '" + \
             from_year+"'  AND ano_evento <= '"+to_year + \
-            "' AND nome_docente = '"+nome_docente + \
+            "' AND nome_docente in = '"+nome_docente + \
             "' group by titulo,nome_docente order by titulo;"
 
     cursor = db.cursor()
