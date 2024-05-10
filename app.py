@@ -303,7 +303,6 @@ def upload():
 
                 xml_content = file.read()
                 print(f"Processing XML file: {xml_file}")
-                # print(xml_content)
 
         anos = []
         result = []
@@ -319,9 +318,11 @@ def resultado_total():
     to_year = request.args.get('ano_fim', str(datetime.date.today().year))
     nome_docente = request.args.get('nome_docente', '')
 
-    dados = todosContador(from_year=from_year, to_year=to_year, nome_docente=nome_docente)
+    dados = todosContador(from_year=from_year,
+                          to_year=to_year, nome_docente=nome_docente)
 
-    listar = lista(from_year=from_year, to_year=to_year, nome_docente=nome_docente)
+    listar = lista(from_year=from_year, to_year=to_year,
+                   nome_docente=nome_docente)
     totalNotas = soma_nota(from_year, to_year, nome_docente)
     contadorEstratos = total_estratos(from_year, to_year, nome_docente)
     docentes = get_nome_docente()
@@ -349,7 +350,7 @@ def resultado_total():
         anos.append(c['Ano'])
 
     anos = sorted(set(anos))
-    # print(anos)
+
     names = []
     values = []
     pizza(from_year=from_year, to_year=to_year, nome_docente=nome_docente)
@@ -364,7 +365,8 @@ def resultado_total():
 
     graph = json.dumps(figs, cls=plotly.utils.PlotlyJSONEncoder)
 
-    grafico_media(from_year=from_year, to_year=to_year, nome_docente=nome_docente)
+    grafico_media(from_year=from_year, to_year=to_year,
+                  nome_docente=nome_docente)
     with open('media_docentes.json', 'r') as med:
         dados = json.load(med)
 
@@ -378,7 +380,7 @@ def resultado_total():
         mediana.append(d['Mediana'])
 
     m.append(dados[-1]['Mediana'])
-    # print(m)
+
     val1 = str(m[-1])
     figura = px.bar(dados, x='Docente', y='Pontuação',
                     color_discrete_sequence=px.colors.qualitative.T10, template='plotly_white', text='Pontuação')
@@ -398,7 +400,8 @@ def resultado_total():
 
     medias = json.dumps(figura, cls=plotly.utils.PlotlyJSONEncoder)
 
-    colaboracao = grafico_colaboracao(from_year=from_year, to_year=to_year, nome_docente=nome_docente)
+    colaboracao = grafico_colaboracao(
+        from_year=from_year, to_year=to_year, nome_docente=nome_docente)
 
     valor_padrao = 'circular'
 
@@ -466,7 +469,7 @@ def corrige_notas():
                     update_notas(nota, r[0])
             reps = qualis_repetidos(titulo=t)
             for r in reps:
-                # print(r)
+
                 if r[0] == t:
                     media = float(r[1]) / float(r[3])
                     update_qualis_repetido(titulo=r[0], valor=str(media))
@@ -479,7 +482,7 @@ def corrige_notas():
 def contadores():
     if request.method == 'POST':
         busca = request.form['query']
-        # print(busca)
+
         cont = contador(busca)
         print("all list")
         # os.remove('arq.json')
@@ -508,7 +511,6 @@ def gerar_grafico():
 
     graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
 
-    # print(graphJSON)
     names = []
     values = []
     pizza_por_docente(busca)
@@ -667,7 +669,6 @@ def tabela_qualis():
 
     dados = {}
     dados = zip(estrato, notas)
-    # print(dados)
 
     for dado in dados:
         update_pontuacoes(dado[0], dado[1])

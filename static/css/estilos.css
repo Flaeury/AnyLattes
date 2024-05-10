@@ -15,7 +15,7 @@
   height: 50px;
   align-items: center;
   justify-content: space-between;
-  padding: 0 30px;
+  padding: 0 20px;
   border-radius: 8px;
   cursor: pointer;
   background-color: #fff;
@@ -227,7 +227,7 @@ body {
   max-width: 90%;
 }
 .section-import {
-  background-color: #F8F8F8;
+  background-color: #f3f3f3;
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1)
 }
 

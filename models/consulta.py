@@ -29,14 +29,15 @@ def lista_por_id(id):
     return resultado
 
 
-def lista(from_year, to_year, nome_docente = ''):
+def lista(from_year, to_year, nome_docente=''):
 
     sql = "SELECT id, nome_docente, documento,ano_evento, titulo,doi,sigla,nome_evento, autores,estratos, round(notas,5) from resultados r WHERE ano_evento >= " + \
         from_year+" AND ano_evento <= " + to_year + " order by ano_evento asc;"
     if nome_docente != '':
         sql = "SELECT id, nome_docente, documento,ano_evento, titulo,doi,sigla,nome_evento, autores,estratos, round(notas,5) from resultados r WHERE nome_docente = '" + \
-            nome_docente+"' AND ano_evento >= " + from_year + " AND ano_evento <= " + to_year + " order by ano_evento asc;"
-        
+            nome_docente+"' AND ano_evento >= " + from_year + \
+            " AND ano_evento <= " + to_year + " order by ano_evento asc;"
+
     cursor = db.cursor()
     cursor.execute(sql.upper())
     resultado = cursor.fetchall()
@@ -54,14 +55,14 @@ def busca_prof():
     return resultado
 
 
-def soma_nota(from_year, to_year, nome_docente = ''):
+def soma_nota(from_year, to_year, nome_docente=''):
 
     sql = ("SELECT distinct nome_docente , round(sum(notas),3) from resultados where nome_docente in (select distinct(nome_docente) from resultados) AND ano_evento >= " +
            from_year + " AND ano_evento <= " + to_year + " group by nome_docente order by nome_docente asc;")
 
     if nome_docente != '':
         sql = ("SELECT distinct nome_docente , round(sum(notas),3) from resultados where nome_docente in (select distinct(nome_docente) from resultados) AND ano_evento >= " +
-                from_year + " AND ano_evento <= " + to_year + " AND nome_docente = '"+nome_docente+"' group by nome_docente order by nome_docente asc;")
+               from_year + " AND ano_evento <= " + to_year + " AND nome_docente = '"+nome_docente+"' group by nome_docente order by nome_docente asc;")
     cursor = db.cursor()
     cursor.execute(sql)
     resultado = cursor.fetchall()
@@ -87,7 +88,7 @@ def contador_estratos():
     return resultado
 
 
-def titulos_qualis(nome_docente = ''):
+def titulos_qualis(nome_docente=''):
     sql = ('SELECT DISTINCT titulo FROM resultados r group by titulo having COUNT(*) >1 ;')
 
     if nome_docente != '':
@@ -125,16 +126,17 @@ def titulo_repetido(titulo):
 # verificar quais titulos se repetem e quais docentes publicaram
 
 
-def titulos_repetidos(from_year, to_year, nome_docente = ''):
+def titulos_repetidos(from_year, to_year, nome_docente=''):
     # sql = ("select nome_docente, titulo from resultados r where titulo like '%"+titulo+"%' GROUP by titulo HAVING count(*)>1")
     sql = "SELECT distinct titulo, nome_docente FROM resultados r WHERE titulo in (SELECT DISTINCT titulo FROM resultados r group by titulo having COUNT(*) >1) AND ano_evento >= '" + \
         from_year+"'  AND ano_evento <= '"+to_year + \
         "' group by titulo,nome_docente  order by titulo;"
-    
+
     if nome_docente != '':
         sql = "SELECT distinct titulo, nome_docente FROM resultados r WHERE titulo in (SELECT DISTINCT titulo FROM resultados r group by titulo having COUNT(*) >1) AND ano_evento >= '" + \
-        from_year+"'  AND ano_evento <= '"+to_year + \
-        "' AND nome_docente = '"+nome_docente+"' group by titulo,nome_docente  order by titulo;"
+            from_year+"'  AND ano_evento <= '"+to_year + \
+            "' AND nome_docente = '"+nome_docente + \
+            "' group by titulo,nome_docente  order by titulo;"
     cursor = db.cursor()
     cursor.execute(sql)
     resultado = cursor.fetchall()
@@ -151,15 +153,16 @@ def titulo_repetidos(titulo):
     return resultado
 
 
-def docente_titulos_repetidos(from_year, to_year, nome_docente = ''):
+def docente_titulos_repetidos(from_year, to_year, nome_docente=''):
     sql = "SELECT distinct nome_docente FROM resultados r WHERE titulo in (SELECT DISTINCT titulo FROM resultados r group by titulo having COUNT(*) >1) AND ano_evento >= '" + \
         from_year+"'  AND ano_evento <= '"+to_year + \
         "' group by titulo,nome_docente order by titulo;"
-    
+
     if nome_docente != '':
         sql = "SELECT distinct nome_docente FROM resultados r WHERE titulo in (SELECT DISTINCT titulo FROM resultados r group by titulo having COUNT(*) >1) AND ano_evento >= '" + \
-        from_year+"'  AND ano_evento <= '"+to_year + \
-        "' AND nome_docente = '"+nome_docente+"' group by titulo,nome_docente order by titulo;"
+            from_year+"'  AND ano_evento <= '"+to_year + \
+            "' AND nome_docente = '"+nome_docente + \
+            "' group by titulo,nome_docente order by titulo;"
 
     cursor = db.cursor()
     cursor.execute(sql)
@@ -209,10 +212,10 @@ def atualizar(id, doi, sigla, nome_evento, estratos, nota, versao):
     print("Atualizado com Sucesso!")
 
 
-def total_estratos(from_year, to_year, nome_docente = ''):
+def total_estratos(from_year, to_year, nome_docente=''):
     sql = "SELECT ano_evento,estratos, COUNT(estratos) from resultados r WHERE ano_evento >= '" + \
         from_year + "' AND ano_evento <= '" + to_year + "' group by ano_evento,estratos;"
-    
+
     if nome_docente != '':
         sql = "SELECT ano_evento,estratos, COUNT(estratos) from resultados r WHERE nome_docente = '"+nome_docente+"' AND ano_evento >= '" + \
             from_year + "' AND ano_evento <= '" + to_year + "' group by ano_evento,estratos;"
@@ -223,6 +226,7 @@ def total_estratos(from_year, to_year, nome_docente = ''):
 
     return resultado
 
+
 def get_nome_docente():
     sql = "select distinct(nome_docente) from resultados;"
     cursor = db.cursor()
@@ -231,25 +235,24 @@ def get_nome_docente():
     return resultado
 
 
-
-def perc(from_year, to_year, nome_docente = ''):
+def perc(from_year, to_year, nome_docente=''):
     sql = ("select distinct total, 'Periódico', 'Conferência', round(periodico * 100 / total,3 ) as percentual_periodico, round(conferencia * 100 / total,3 ) as percentual_conferencia " +
            "from (select " +
            "(select count(1) from resultados r  WHERE ano_evento >= " +
            from_year + " AND ano_evento <= " + to_year + ") as total,"
            "(select count(1) from resultados r where r.documento like '%Peri%'  AND ano_evento >= " + from_year + " AND ano_evento <= " + to_year + ") as periodico," +
            "(select count(1) from resultados r where r.documento like '%Conf%'  AND ano_evento >= " + from_year + " AND ano_evento <= " + to_year + ") as conferencia from resultados);")
-    
+
     if nome_docente != '':
         sql = ("select distinct total, 'Periódico', 'Conferência', round(periodico * 100 / total,3 ) as percentual_periodico, round(conferencia * 100 / total,3 ) as percentual_conferencia " +
-              "from (select " +
-                "(select count(1) from resultados r  WHERE ano_evento >= " +
-                from_year + " AND ano_evento <= " + to_year + " AND nome_docente = '"+nome_docente+"') as total,"
-                "(select count(1) from resultados r where r.documento like '%Peri%'  AND ano_evento >= " + from_year + " AND ano_evento <= " + to_year + " AND nome_docente = '"+nome_docente+"') as periodico," +
-                "(select count(1) from resultados r where r.documento like '%Conf%'  AND ano_evento >= " + from_year + " AND ano_evento <= " + to_year + " AND nome_docente = '"+nome_docente+"') as conferencia from resultados);")
-        
+               "from (select " +
+               "(select count(1) from resultados r  WHERE ano_evento >= " +
+               from_year + " AND ano_evento <= " + to_year +
+               " AND nome_docente = '"+nome_docente+"') as total,"
+               "(select count(1) from resultados r where r.documento like '%Peri%'  AND ano_evento >= " + from_year + " AND ano_evento <= " + to_year + " AND nome_docente = '"+nome_docente+"') as periodico," +
+               "(select count(1) from resultados r where r.documento like '%Conf%'  AND ano_evento >= " + from_year + " AND ano_evento <= " + to_year + " AND nome_docente = '"+nome_docente+"') as conferencia from resultados);")
 
-    print(sql)
+    # print(sql)
     cursor = db.cursor()
     cursor.execute(sql)
     resultado = cursor.fetchall()
@@ -280,12 +283,13 @@ def busca_conferencias():
 # media todos docentes
 
 
-def media_docentes(from_year, to_year, nome_docente = ''):
+def media_docentes(from_year, to_year, nome_docente=''):
     sql = "select nome_docente, round(sum(notas),3) as media from resultados r WHERE ano_evento >= " + \
         from_year + " AND ano_evento <= " + to_year + " group by nome_docente ;"
     if nome_docente != '':
         sql = "select nome_docente, round(sum(notas),3) as media from resultados r WHERE nome_docente = '" + \
-            nome_docente + "' AND ano_evento >= " + from_year + " AND ano_evento <= " + to_year + " group by nome_docente ;"
+            nome_docente + "' AND ano_evento >= " + from_year + \
+            " AND ano_evento <= " + to_year + " group by nome_docente ;"
     cursor = db.cursor()
     cursor.execute(sql)
     resultado = cursor.fetchall()
