@@ -14,6 +14,18 @@ selectBtn.addEventListener("click", () => {
     selectBtn.classList.toggle("open");
 });
 
+const updateInputWithSelected = () => {
+    let selected = document.querySelectorAll(".docente-item-checkbox.checked"),
+        result = [];
+
+    for (const item of selected) {
+        docente = item.getAttribute('data-docente');
+        result.push(docente);
+    }
+
+    document.getElementById("docentes-input-hidden").value = result.join(';');
+};
+
 items.forEach(item => {
     item.addEventListener("click", () => {
         item.classList.toggle("checked");
@@ -26,6 +38,8 @@ items.forEach(item => {
         } else {
             btnText.innerText = "Select Language";
         }
+
+        updateInputWithSelected();
     });
 });
 

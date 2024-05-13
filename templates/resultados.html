@@ -25,10 +25,12 @@
                     <i class="fa-solid fa-chevron-down"></i>
                   </span>
                 </div>
+
+                <input type="hidden" name="nome_docente" value="{{ nome_docente }}" id="docentes-input-hidden" />
           
                 <ul class="list-items">
                   {% for total in docentes %}
-                    <li class="item docente-item">
+                    <li class="item docente-item docente-item-checkbox {{ 'checked' if total[0] in docentes_selecionados else '' }}" data-docente="{{ total[0] }}">
                       <span class="checkbox">
                        
                         <i class="fa-solid fa-check check-icon"></i>

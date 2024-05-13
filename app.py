@@ -316,7 +316,7 @@ def upload():
 def resultado_total():
     from_year = request.args.get('ano_inicio', '2010')
     to_year = request.args.get('ano_fim', str(datetime.date.today().year))
-    nome_docente = request.args.get('nome_docente', '')
+    nome_docente = request.args.get('nome_docente', '*')
 
     dados = todosContador(from_year=from_year,
                           to_year=to_year, nome_docente=nome_docente)
@@ -409,9 +409,17 @@ def resultado_total():
 
     titulosRepetidos = titulos_qualis(nome_docente)
 
+    docentes_selecionados = []
+
+    if (nome_docente == '*'):
+        for item in docentes:
+            docentes_selecionados.append(item[0])
+    else:
+        docentes_selecionados = nome_docente.split(';')
+
     return render_template("resultados.html", anos=anos, graphJSON=graphJSON, graph=graph, medias=medias, listar=listar, totalNotas=totalNotas,
                            contadorEstratos=contadorEstratos, data=data, titulosRepetidos=titulosRepetidos,
-                           ano_inicio=from_year, ano_fim=to_year, docentes=docentes)
+                           ano_inicio=from_year, ano_fim=to_year, docentes=docentes, docentes_selecionados=docentes_selecionados, nome_docente=nome_docente)
 
 
 @app.route("/projetos/inicio=<inicio>&fim=<fim>", methods=['POST'])

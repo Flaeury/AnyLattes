@@ -15,6 +15,7 @@ pip3 install flask_cors
 pip3 install pyautogui
 pip3 install SpeechRecognition
 pip3 install pydub
+pip3 install selenium
 python3 -m venv venv
 # source venv/bin/activate
 pip3 install xlrd

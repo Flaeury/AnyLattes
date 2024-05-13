@@ -27,7 +27,7 @@ def graficos(busca):
         outfile.write(json_object)
 
 
-def pizza(from_year, to_year, nome_docente = ''):
+def pizza(from_year, to_year, nome_docente = '*'):
     valor = perc(from_year, to_year, nome_docente)
     lista = []
     content = {}
@@ -58,7 +58,7 @@ def pizza_por_docente(docente):
         outfile.write(json_object)
 
 
-def grafico_media(from_year, to_year, nome_docente = ''):
+def grafico_media(from_year, to_year, nome_docente = '*'):
     nota = media_docentes(from_year=from_year, to_year=to_year, nome_docente=nome_docente)
 
     notas = []
@@ -81,7 +81,7 @@ def grafico_media(from_year, to_year, nome_docente = ''):
         outfile.write(json_object)
 
 
-def grafico_colaboracao(from_year, to_year, nome_docente = ''):
+def grafico_colaboracao(from_year, to_year, nome_docente = '*'):
     lista_docente = []
     G = nx.Graph()
     docente = docente_titulos_repetidos(from_year, to_year, nome_docente)
