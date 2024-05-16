@@ -74,7 +74,7 @@
             <a style="margin: 0.5rem 1rem" class="nav-item nav-link pathname" href="{{url_for('index')}}">Importar dados</a>
             <a style="margin: 0.5rem 1rem" class="nav-item nav-link pathname" href="{{url_for('imports')}}">Importar Qualis</a>
             <a style="margin: 0.5rem 1rem" class="nav-item nav-link pathname" href="{{url_for('resultado_total')}}">Resultado Geral</a>
-            <a style="margin: 0.5rem 1rem" class="nav-item nav-link pathname" href="{{url_for('resultado_por_docente')}}">Resultados por Docente</a>
+           <a style="margin: 0.5rem 1rem" class="nav-item nav-link pathname" href="{{url_for('resultado_por_docente')}}">Resultados por Docente</a>
             <a style="margin: 0.5rem 1rem" class="nav-link nav-item pathname" href="{{url_for('wordcloud')}}">Nuvem de palavras</a>
             <a style="margin: 0.5rem 1rem" class="nav-link nav-item pathname" href="{{url_for('configuracoes')}}">Configurações</a>
           </div>
@@ -88,11 +88,11 @@
       <div id="layoutSidenav_container"> <!-- Center everything -->
         <main>
           <div class="container-fluid">
-            <div class="spinner-wrapper">
+           <!-- <div class="spinner-wrapper">
               <div class="spinner-border text-primary" role="status">
                 <span class="visually-hidden">Loading...</span>
               </div>
-            </div>
+            </div> -->
             <div class=" container"> <!-- Center alerts and content -->
               {% for messages in get_flashed_messages() %}
                 <div id="alert" class="alert alert-primary alert-dismissible fade show" role="alert">
