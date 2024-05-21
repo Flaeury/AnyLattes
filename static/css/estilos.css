@@ -197,6 +197,12 @@ h2 {
   font-size: 14px;
 }
 
+.input_colaboracao {
+  width: 100%;
+  max-width: 58vw;
+  text-align: start;
+}
+
 .pathname {
   font-family: 'Roboto', sans-serif;
   font-weight: 400;
@@ -206,7 +212,7 @@ h2 {
   box-shadow: 15px 15px 30px #bebebe,
   -15px -15px 30px rgb(254, 254, 254);
   background-color: transparent;
-  margin: 3.5rem 0.1rem;
+  margin: 2rem 0.1rem;
 
 }
 
@@ -261,6 +267,9 @@ body {
   width: 60px;
 }
 /*Preloader final*/
+a {
+  text-decoration: none;
+}
 
 .media {
   display: flex;
