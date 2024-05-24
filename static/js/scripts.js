@@ -7,6 +7,44 @@
 // Scripts
 // 
 
+const selectBtn = document.querySelector(".select-btn"),
+      items = document.querySelectorAll(".item");
+
+selectBtn.addEventListener("click", () => {
+    selectBtn.classList.toggle("open");
+});
+
+const updateInputWithSelected = () => {
+    let selected = document.querySelectorAll(".docente-item-checkbox.checked"),
+        result = [];
+
+    for (const item of selected) {
+        docente = item.getAttribute('data-docente');
+        result.push(docente);
+    }
+
+    
+    document.getElementById("docentes-input-hidden").value = result.join(';');
+};
+
+items.forEach(item => {
+    item.addEventListener("click", () => {
+        item.classList.toggle("checked");
+
+        let checked = document.querySelectorAll(".checked"),
+            btnText = document.querySelector(".btn-text");
+
+        if(checked && checked.length > 0) {
+            btnText.innerText = `${checked.length} Selected`; // Correção aqui
+        } else {
+            btnText.innerText = "Select Language";
+        }
+
+        updateInputWithSelected();
+    });
+});
+
+
 // ocultar ou não a barra de navegação.
 window.addEventListener('DOMContentLoaded', event => {
 

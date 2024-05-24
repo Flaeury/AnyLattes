@@ -6,21 +6,49 @@
         <span class="visually-hidden">Loading...</span>
     </div>
 </div> -->
-
-<form method="get" id="forms">
-    <div class="row align-items-center justify-content-between d-flex">
-        <div class="col-md-6 d-flex align-items-center">
+  <!-- 
             <button class="buttonAtualizar">
                 <div class="svg-wrapper-1">
                     <i class="fa-solid fa-rotate-right"></i>
                 </div>
-                <span>Atualizar dados</span>
-            </button>
+                 <span>Atualizar dados</span> 
+                
+            </button> -->
+<form method="get" id="forms">
+    <div class="row align-items-center justify-content-between d-flex">
+        <div class="col-md-5 d-flex align-items-center">
+            <div class="row align-items-center justify-content-between d-flex">
+              <div class="container-lista-docentes">
+                <div class="select-btn docente-list">
+                  <span class="btn-text ml-2 p-2">Selecione um ou mais docentes para filtrar</span>
+                  <span class="arrow-dwn ml-2 p-2">
+                    <i class="fa-solid fa-chevron-down"></i>
+                  </span>
+                </div>
+
+                <input type="hidden" name="nome_docente" value="{{ nome_docente }}" id="docentes-input-hidden" />
+          
+                <ul class="list-items">
+                  {% for total in docentes %}
+                    <li class="item docente-item docente-item-checkbox {{ 'checked' if total[0] in docentes_selecionados else '' }}" data-docente="{{ total[0] }}">
+                      <span class="checkbox">
+                       
+                        <i class="fa-solid fa-check check-icon"></i>
+                      </span>
+                      <span class="item-text">{{ total[0] }}</span>
+                    </li>
+                  {% endfor %}
+                </ul>
+              </div>
+            </div>
         </div>
+          
+
+        
 
         <div
             style="padding: 1rem"
-            class="section-import rounded card-link col-md-6 d-flex align-items-end justify-content-end"
+            class="section-import rounded card-link col-md-5 d-flex align-items-end justify-content-end"
         >
             <div
                 class="form-group row justify-content-between"
