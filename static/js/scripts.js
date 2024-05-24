@@ -23,6 +23,7 @@ const updateInputWithSelected = () => {
         result.push(docente);
     }
 
+    
     document.getElementById("docentes-input-hidden").value = result.join(';');
 };
 
