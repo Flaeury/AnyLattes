@@ -1,6 +1,29 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Poppins:wght@400;500&family=Rubik:wght@400;500&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
 
+.cards-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.card-h2 {
+  align-items: center;
+  justify-content: space-between;
+  text-align: left;
+  font-family: 'Circular Std', sans-serif;
+  font-weight: 500;
+  font-size: 1vw;
+  color: #172b3e;
+  margin: 0.5vw 0.3vw;
+}
+
+.card {
+  padding: 0.3vw 1vw;
+  border-color: none;
+}
+
+
 .container-lista-docentes {
   position: relative; /* Maintain relative positioning for child elements */
   width: 100%;

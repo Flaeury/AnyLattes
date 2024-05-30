@@ -7,6 +7,39 @@
 // Scripts
 // 
 
+document.addEventListener('DOMContentLoaded', function () {
+    const selectAllButton = document.getElementById('select-all');
+    const deselectAllButton = document.getElementById('deselect-all');
+    const docenteItems = document.querySelectorAll('.docente-item');
+
+    selectAllButton.addEventListener('click', function () {
+        docenteItems.forEach(item => {
+            item.classList.add('checked');
+        });
+        updateHiddenInput();
+    });
+
+    deselectAllButton.addEventListener('click', function () {
+        docenteItems.forEach(item => {
+            item.classList.remove('checked');
+        });
+        updateHiddenInput();
+    });
+
+    function updateHiddenInput() {
+        const selectedDocentes = [];
+        docenteItems.forEach(item => {
+            if (item.classList.contains('checked')) {
+                selectedDocentes.push(item.getAttribute('data-docente'));
+            }
+        });
+        document.getElementById('docentes-input-hidden').value = selectedDocentes.join(',');
+    }
+
+    // Inicializa o estado do input hidden quando a página é carregada
+    updateHiddenInput();
+});
+
 const selectBtn = document.querySelector(".select-btn"),
       items = document.querySelectorAll(".item");
 
