@@ -42,3 +42,12 @@ def lista_docente(docente):
     resultado = cursor.fetchall()
 
     return resultado
+
+
+def listar_docentes():
+    sql = """SELECT nome_docente FROM resultados GROUP BY nome_docente"""
+    cursor = db.cursor()
+    cursor.execute(sql)
+    resultados = cursor.fetchall()
+    docentes = [resultado[0] for resultado in resultados]
+    return docentes

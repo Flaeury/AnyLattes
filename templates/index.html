@@ -57,6 +57,31 @@
       </div>
     </form>
 
+    <div class="card-body mb-4 d-flex align-items-center justify-content-center">
+      <div class="rounded w-100 mx-auto d-flex align-items-center justify-content-center">
+         
+          <div class="text-center mt-2 mb-4">
+              Tabela de Docentes
+          </div>
+          
+          <div>
+              <ul class="lista-docentes-ativos">
+                  {% for docente in docentes %}
+                      <li class="item docente-item" data-docente="{{ docente }}">
+                          <span class="item-text">
+                              {{ docente }}
+                          </span>
+                      </li>
+                  {% endfor %}
+              </ul>
+                     
+          </div>
+      </div>
+  </div>
+  
+  
+
+
   </div>
 </div>
 

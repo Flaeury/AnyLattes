@@ -87,11 +87,13 @@ def handle_webdriver_error(driver):
 
 @app.route("/")
 def index():
-    return render_template('index.html')
+    docentes = listar_docentes()
+    return render_template('index.html', docentes=docentes)
 
 
 @app.route("/imports", methods=['GET', 'POST'])
 def imports():
+
     if request.method == 'POST':
         if 'lattes_id' in request.form:
             try:
@@ -281,11 +283,6 @@ def imports():
             flash("Invalid form data")
 
     return render_template('imports.html')
-
-#! O ERRO DEVE ESTA LIGADO AO BANCO, OU SEJA, OU ERA IMPORTADO OS ANOS E MOSTRAVA TUDO OU ELE JA TINHA TUDO E PEGAVA O QUE ESTAVA ENTRE AS DATAS.
-# ? SE ASSIM FOR, O PRIMEIRO CASO É O PIOR DELE, JÁ QUE EU TERIA DE MUDAR O BANCO TODA HORA, E NÃO O FRONTEND
-# *
-# TODO BUSCAR AMANHA
 
 
 @app.route("/upload", methods=['GET', 'POST'])
