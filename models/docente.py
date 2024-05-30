@@ -21,7 +21,7 @@ def todosContador(from_year, to_year, nome_docente='*'):
     if nome_docente != '*':
         sql = "select ano_evento, estratos, count(estratos) as quantidade from resultados WHERE nome_docente in('" + "','".join(nome_docente.split(
             ';')) + "') AND ano_evento >= " + from_year + " AND ano_evento <= " + to_year + " group by estratos, ano_evento order by ano_evento asc"
-        print(sql)
+        # print(sql)
     resultado = cursor.execute(sql)
 
     return resultado
