@@ -13,9 +13,9 @@
   text-align: left;
   font-family: 'Circular Std', sans-serif;
   font-weight: 500;
-  font-size: 1vw;
+  font-size: 18px;
   color: #172b3e;
-  margin: 0.5vw 0.3vw;
+  margin: 0.3vw 0.3vw;
 }
 
 .card {
@@ -23,6 +23,13 @@
   border-color: none;
 }
 
+.widthtitulos {
+  word-wrap: break-word; /* Quebra a linha quando necessário */
+  word-break: break-all; /* Permite a quebra de palavras longas */
+  max-width: 70%; /* Ajuste o valor conforme necessário */
+  white-space: normal; /* Permite quebras de linha */
+  text-align: start;
+}
 
 .container-lista-docentes {
   position: relative; /* Maintain relative positioning for child elements */
@@ -229,7 +236,7 @@ h2 {
   box-shadow: 15px 15px 30px #bebebe,
   -15px -15px 30px rgb(254, 254, 254);
   background-color: transparent;
-  margin: 3.5rem 0.1rem;
+  margin: 2rem 0.1rem;
 
 }
 

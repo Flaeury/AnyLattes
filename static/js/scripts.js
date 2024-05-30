@@ -6,77 +6,69 @@
     // 
 // Scripts
 // 
-
 document.addEventListener('DOMContentLoaded', function () {
+    const selectBtn = document.querySelector(".select-btn");
+    const items = document.querySelectorAll(".item");
     const selectAllButton = document.getElementById('select-all');
     const deselectAllButton = document.getElementById('deselect-all');
     const docenteItems = document.querySelectorAll('.docente-item');
+    const hiddenInput = document.getElementById("docentes-input-hidden");
+    const btnText = document.querySelector(".btn-text");
 
-    selectAllButton.addEventListener('click', function () {
-        docenteItems.forEach(item => {
-            item.classList.add('checked');
-        });
-        updateHiddenInput();
-    });
-
-    deselectAllButton.addEventListener('click', function () {
-        docenteItems.forEach(item => {
-            item.classList.remove('checked');
-        });
-        updateHiddenInput();
-    });
-
-    function updateHiddenInput() {
+    // Função para atualizar o input hidden com os docentes selecionados
+    const updateHiddenInput = () => {
         const selectedDocentes = [];
         docenteItems.forEach(item => {
             if (item.classList.contains('checked')) {
                 selectedDocentes.push(item.getAttribute('data-docente'));
             }
         });
-        document.getElementById('docentes-input-hidden').value = selectedDocentes.join(',');
-    }
+        hiddenInput.value = selectedDocentes.join(';');
+    };
+
+    // Alterna a classe 'open' no botão de seleção
+    selectBtn.addEventListener("click", () => {
+        selectBtn.classList.toggle("open");
+    });
+
+    // Adiciona ou remove a classe 'checked' nos itens ao clicar
+    items.forEach(item => {
+        item.addEventListener("click", () => {
+            item.classList.toggle("checked");
+            const checked = document.querySelectorAll(".docente-item-checkbox.checked");
+
+            if (checked.length > 0) {
+                btnText.innerText = `${checked.length} Selecionado${checked.length > 1 ? 's' : ''}`;
+            } else {
+                btnText.innerText = "Selecionar Docente";
+            }
+
+            updateHiddenInput();
+        });
+    });
+
+    // Selecionar todos os itens
+    selectAllButton.addEventListener('click', () => {
+        docenteItems.forEach(item => {
+            item.classList.add('checked');
+        });
+        updateHiddenInput();
+        const checked = document.querySelectorAll(".docente-item-checkbox.checked");
+        btnText.innerText = `${checked.length} Selecionado${checked.length > 1 ? 's' : ''}`;
+    });
+
+    // Deselecionar todos os itens
+    deselectAllButton.addEventListener('click', () => {
+        docenteItems.forEach(item => {
+            item.classList.remove('checked');
+        });
+        updateHiddenInput();
+        btnText.innerText = "Selecionar Docente";
+    });
 
     // Inicializa o estado do input hidden quando a página é carregada
     updateHiddenInput();
 });
-
-const selectBtn = document.querySelector(".select-btn"),
-      items = document.querySelectorAll(".item");
-
-selectBtn.addEventListener("click", () => {
-    selectBtn.classList.toggle("open");
-});
-
-const updateInputWithSelected = () => {
-    let selected = document.querySelectorAll(".docente-item-checkbox.checked"),
-        result = [];
-
-    for (const item of selected) {
-        docente = item.getAttribute('data-docente');
-        result.push(docente);
-    }
-
-    
-    document.getElementById("docentes-input-hidden").value = result.join(';');
-};
-
-items.forEach(item => {
-    item.addEventListener("click", () => {
-        item.classList.toggle("checked");
-
-        let checked = document.querySelectorAll(".checked"),
-            btnText = document.querySelector(".btn-text");
-
-        if(checked && checked.length > 0) {
-            btnText.innerText = `${checked.length} Selected`; // Correção aqui
-        } else {
-            btnText.innerText = "Select Language";
-        }
-
-        updateInputWithSelected();
-    });
-});
-
 
 // ocultar ou não a barra de navegação.
 window.addEventListener('DOMContentLoaded', event => {
