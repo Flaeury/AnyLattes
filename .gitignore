@@ -1,8 +1,13 @@
 __pycache__
 pwd.txt
 venv
+env/
 aula.py
 res.py
 querys.testes.txt
 .idea
 curriculos
+media_docentes.json
+pizza.json
+static/images/*
+todos.json

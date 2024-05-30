@@ -350,7 +350,6 @@ def resultado_total():
         anos.append(c['Ano'])
 
     anos = sorted(set(anos))
-
     names = []
     values = []
     pizza(from_year=from_year, to_year=to_year, nome_docente=nome_docente)
