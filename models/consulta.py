@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import models.connection as database
 from flask import flash
-
+import sqlite3
 
 db = database.conexao()
 
@@ -91,7 +91,8 @@ def titulos_qualis(nome_docente='*'):
     sql = ('SELECT DISTINCT titulo FROM resultados r group by titulo having COUNT(*) >1 ;')
 
     if nome_docente != '*':
-        sql = ("SELECT DISTINCT titulo FROM resultados r WHERE nome_docente in('" + "','".join(nome_docente.split(';')) + "') group by titulo having COUNT(*) >1 ;")
+        sql = ("SELECT DISTINCT titulo FROM resultados r WHERE nome_docente in('" +
+               "','".join(nome_docente.split(';')) + "') group by titulo having COUNT(*) >1 ;")
 
     cursor = db.cursor()
     cursor.execute(sql)
@@ -246,7 +247,8 @@ def perc(from_year, to_year, nome_docente='*'):
                "from (select " +
                "(select count(1) from resultados r  WHERE ano_evento >= " +
                from_year + " AND ano_evento <= " + to_year +
-               " AND nome_docente in('" + "','".join(nome_docente.split(';')) + "')) as total,"
+               " AND nome_docente in('" +
+               "','".join(nome_docente.split(';')) + "')) as total,"
                "(select count(1) from resultados r where r.documento like '%Peri%'  AND ano_evento >= " + from_year + " AND ano_evento <= " + to_year + " AND nome_docente in('" + "','".join(nome_docente.split(';')) + "')) as periodico," +
                "(select count(1) from resultados r where r.documento like '%Conf%'  AND ano_evento >= " + from_year + " AND ano_evento <= " + to_year + " AND nome_docente in('" + "','".join(nome_docente.split(';')) + "')) as conferencia from resultados);")
 
@@ -293,38 +295,58 @@ def media_docentes(from_year, to_year, nome_docente='*'):
     return resultado
 
 
-def deletar_docente(docente):
+def get_db_connection():
+    connection = sqlite3.connect('anylattes.db', timeout=10)
+    return connection
 
+
+def deletar_docente(docente):
     resultado = False
-    sql = "delete from resultados where nome_docente = '"+docente+"'; "
+    sql = "DELETE FROM resultados WHERE nome_docente = ?"
+    db = get_db_connection()
     cursor = db.cursor()
-    cursor.execute(sql)
     try:
+        cursor.execute(sql, (docente,))
+        db.commit()
         print(docente + " Removido com Sucesso!")
         flash(docente + " Removido com Sucesso!")
-        db.commit()
         resultado = True
-    except:
+    except sqlite3.OperationalError as e:
         db.rollback()
-        print("Sem Sucesso!")
+        if 'database is locked' in str(e):
+            print("Sem Sucesso! Database is locked")
+            flash("Erro ao remover docente: O banco de dados está bloqueado")
+        else:
+            print("Sem Sucesso!", e)
+            flash("Erro ao remover docente: " + str(e))
         resultado = False
+    finally:
+        db.close()
     return resultado
 
 
 def deletar_iddocente(docente):
-
     resultado = False
-    sql = "delete from iddocentes where nomedocente = '"+docente+"'; "
+    sql = "DELETE FROM iddocentes WHERE nomedocente = ?"
+    db = get_db_connection()
     cursor = db.cursor()
-    cursor.execute(sql)
     try:
-        print(docente + " Removido da tabela iddocente!")
+        cursor.execute(sql, (docente,))
         db.commit()
+        print(docente + " Removido da tabela iddocente!")
         resultado = True
-    except:
+    except sqlite3.OperationalError as e:
         db.rollback()
-        print("Sem Sucesso!")
+        if 'database is locked' in str(e):
+            print("Sem Sucesso! Database is locked")
+            flash(
+                "Erro ao remover docente da tabela iddocente: O banco de dados está bloqueado")
+        else:
+            print("Sem Sucesso!", e)
+            flash("Erro ao remover docente da tabela iddocente: " + str(e))
         resultado = False
+    finally:
+        db.close()
     return resultado
 
 

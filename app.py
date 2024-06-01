@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # import mysql.connector
-from flask import Flask, jsonify, redirect, render_template, request, flash
+from flask import Flask, render_template, request, redirect, url_for, flash, jsonify
 from flask_cors import CORS
 import glob
 import os
@@ -85,9 +85,14 @@ def handle_webdriver_error(driver):
         print(f"Erro ao fechar o WebDriver: {e}")
 
 
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in {'pdf', 'xls', 'xlsx', 'xml'}
+
+
 @app.route("/")
 def index():
     docentes = listar_docentes()
+
     return render_template('index.html', docentes=docentes)
 
 
@@ -245,25 +250,20 @@ def imports():
                 else:
                     if file and allowed_file(file.filename):
                         filename = secure_filename(file.filename)
-                        f = filename.rsplit('.', 1)[1].lower()
-                        dir = 'arquivos/'
+                        file_ext = filename.rsplit('.', 1)[1].lower()
+                        dir = app.config['UPLOAD_FOLDER']
 
                         file.save(os.path.join(dir, filename))
 
-                        if f == 'pdf' or f == 'PDF':
+                        if file_ext == 'pdf':
                             old = os.path.join(dir, filename)
                             new = os.path.join(dir, 'QUALIS_novo.pdf')
                             os.rename(old, new)
-                        elif f == 'xls' or f == 'xlsx':
+                        elif file_ext in ['xls', 'xlsx']:
                             old = os.path.join(dir, filename)
                             new = os.path.join(dir, 'QualisConferencias.xlsx')
                             os.rename(old, new)
-                        else:
-                            flash("Error in the system")
-
-                        flash('File(s) uploaded successfully')
-
-                        if f == 'xml':
+                        elif file_ext == 'xml':
                             tree = ET.parse(os.path.join(dir, filename))
                             root = tree.getroot()
                             for t in root.iter('CURRICULO-VITAE'):
@@ -272,6 +272,9 @@ def imports():
 
                             shutil.move(os.path.join(dir, filename),
                                         os.path.join(dir, numLattes + ".xml"))
+                        else:
+                            flash("Error in the system")
+                            return redirect(url_for('index'))
 
             page = "upload"
             start_date = "1800"
@@ -283,6 +286,16 @@ def imports():
             flash("Invalid form data")
 
     return render_template('imports.html')
+
+
+@app.route('/deletarDocente/<docente>', methods=['POST'])
+def deletar_docente_route(docente):
+    resultado1 = deletar_docente(docente)
+    resultado2 = deletar_iddocente(docente)
+    if resultado1 and resultado2:
+        return jsonify({"status": "success", "message": docente + " removido com sucesso!"})
+    else:
+        return jsonify({"status": "error", "message": "Erro ao remover " + docente}), 500
 
 
 @app.route("/upload", methods=['GET', 'POST'])
@@ -323,6 +336,8 @@ def resultado_total():
     totalNotas = soma_nota(from_year, to_year, nome_docente)
     contadorEstratos = total_estratos(from_year, to_year, nome_docente)
     docentes = get_nome_docente()
+
+    somaNotas = soma_nota(from_year, to_year, nome_docente)
 
     conteudo = {}
     div = []
@@ -365,6 +380,9 @@ def resultado_total():
                   nome_docente=nome_docente)
     with open('media_docentes.json', 'r') as med:
         dados = json.load(med)
+
+    mediaTotal = grafico_para_media(
+        from_year=from_year, to_year=to_year, nome_docente=nome_docente)
 
     docente = []
     media = []
@@ -413,9 +431,9 @@ def resultado_total():
     else:
         docentes_selecionados = nome_docente.split(';')
 
-    return render_template("resultados.html", anos=anos, graphJSON=graphJSON, graph=graph, medias=medias, listar=listar, totalNotas=totalNotas,
+    return render_template("resultados.html", anos=anos, graphJSON=graphJSON, graph=graph, medias=medias, listar=listar, somaNotas=somaNotas, totalNotas=totalNotas,
                            contadorEstratos=contadorEstratos, data=data, titulosRepetidos=titulosRepetidos,
-                           ano_inicio=from_year, ano_fim=to_year, docentes=docentes, docentes_selecionados=docentes_selecionados, nome_docente=nome_docente)
+                           ano_inicio=from_year, ano_fim=to_year, docentes=docentes, docentes_selecionados=docentes_selecionados, nome_docente=nome_docente, mediaTotal=mediaTotal)
 
 
 @app.route("/projetos/inicio=<inicio>&fim=<fim>", methods=['POST'])

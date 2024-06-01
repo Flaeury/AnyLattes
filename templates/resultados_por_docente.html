@@ -1,7 +1,7 @@
-{% extends 'base.html'%}
-<h1>{%block title%} Projetos {%endblock%}</h1>
+{% extends 'base.html' %}
+<h1>{% block title %} Projetos {% endblock %}</h1>
 
-{%block content%}
+{% block content %}
 
 <link
   rel="stylesheet"
@@ -14,57 +14,6 @@
   integrity="sha384-eaQ8zjYlNVseYxAW+3PpuC6a1+sp/+1/Ebx5PLv9QpDBDIi9j0v7oG2IbPXeRNEB"
   crossorigin="anonymous"
 ></script>
-
-<!-- 
-<div class="spinner-wrapper">
-    <div class="spinner-border text-primary" role="status">
-        <span class="visually-hidden">Loading...</span>
-    </div>
-</div> -->
-
-<!-- <script src="{{url_for('static',filename= 'js/plotly.min.js') }}"></script> -->
-
-
-<form method="get" id="forms">
-  <select
-    id="nome_docente"
-    name="nome_docente"
-    class="form-select form-select-sm mb-3"
-  >
-    <option value="" aria-required="true">DOCENTE</option>
-    {%if docente: %}
-    <option value="{{docente}}" selected>{{docente}}</option>
-
-    {%for total in totalNotas%}
-    <option value="{{total[0]}}">
-      {{total[0]}}<i class="fas fa-chart-simple me-1"></i>
-    </option>
-    {%endfor%} {%else%} {%for total in totalNotas%}
-    <option value="{{total[0]}}">
-      {{total[0]}}<i class="fas fa-chart-simple me-1"></i>
-    </option>
-    {%endfor%} {%endif%}
-  </select>
-
-</form>
-
-<ul class="list-items">
-  <li class="btn-group mt-3 mb-3">
-      <button id="select-all" class="btn btn-primary" type="button">Selecionar Todos</button>
-      <button id="deselect-all" class="btn btn-secondary" type="button">Desselecionar Todos</button>
-  </li>
-  {% for total in docentes|sort(attribute='0') %}
-      <li class="item docente-item docente-item-checkbox {{ 'checked' if total[0] in docentes_selecionados else '' }}" data-docente="{{ total[0] }}">
-          <span class="checkbox">
-              <i class="fa-solid fa-check check-icon"></i>
-          </span>
-          <span class="item-text">{{ total[0] }}</span>
-      </li>
-  {% endfor %}
-</ul>
-
-
-
 
 <div class="row">
   <h1>Dados</h1>
@@ -87,43 +36,32 @@
         Docente
       </div>
 
-      <input
-        type="hidden"
-        id="hidden_nome_docente"
-        name="hidden_nome_docente"
-        value="{{docente}}"
-      />
+      <input type="hidden" id="hidden_nome_docente" name="hidden_nome_docente" value="{{docente}}" />
 
       <br />
       <form method="get" id="forms">
-        <select
-          id="nome_docente"
-          name="nome_docente"
-          class="form-select form-select-sm mb-3"
-        >
+        <select id="nome_docente" name="nome_docente" class="form-select form-select-sm mb-3">
           <option value="" aria-required="true">DOCENTE</option>
-          {%if docente: %}
+          {% if docente %}
           <option value="{{docente}}" selected>{{docente}}</option>
 
-          {%for total in totalNotas%}
+          {% for total in totalNotas %}
           <option value="{{total[0]}}">
             {{total[0]}}<i class="fas fa-chart-simple me-1"></i>
           </option>
-          {%endfor%} {%else%} {%for total in totalNotas%}
+          {% endfor %}
+          {% else %}
+          {% for total in totalNotas %}
           <option value="{{total[0]}}">
             {{total[0]}}<i class="fas fa-chart-simple me-1"></i>
           </option>
-          {%endfor%} {%endif%}
+          {% endfor %}
+          {% endif %}
         </select>
 
         <label style="display: none" id="deletar">
           Remover Docente?
-          <button
-            type="button"
-            class="btn btn-outline-danger"
-            name="deletar"
-            onclick="deletarDocente();"
-          >
+          <button type="button" class="btn btn-outline-danger" name="deletar" onclick="deletarDocente();">
             Deletar Docente
           </button>
         </label>
@@ -136,16 +74,10 @@
         Tipo de Visualização
       </div>
       <br />
-      <select
-        class="form-select form-select-sm mb-3"
-        name="mostrar"
-        id="mostrar"
-        onchange="javascript:mostraAlerta(this);"
-        style="display: none"
-      > 
+      <select class="form-select form-select-sm mb-3" name="mostrar" id="mostrar" onchange="javascript:mostraAlerta(this);" style="display: none">
         <option value="todos" selected>Mostrar tudo</option>
         <option value="producaoIntelectual">Produção Intelectual</option>
-        <option value="tabelaQte" >Notas</option>
+        <option value="tabelaQte">Notas</option>
         <option value="grafico">Gráficos</option>
         <option value="nuvem">Nuvem de Palavras</option>
       </select>
@@ -230,18 +162,10 @@
     Deseja realmente remover <br />
     <strong id="docente-name"></strong>?
     <div class="mt-2 pt-2 border-top">
-      <button
-        type="button"
-        class="btn btn-primary btn-sm btn-take-action"
-        onclick="confirmarRemocao()"
-      >
+      <button type="button" class="btn btn-primary btn-sm btn-take-action" onclick="confirmarRemocao()">
         Confirmar
       </button>
-      <button
-        type="button"
-        class="btn btn-secondary btn-sm"
-        data-bs-dismiss="toast"
-      >
+      <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="toast">
         Cancelar
       </button>
     </div>
@@ -392,32 +316,52 @@
   function deletarDocente() {
     var docenteSelecionado = $("#nome_docente").val();
     if (docenteSelecionado && docenteSelecionado !== "DOCENTE") {
-      var toast = new bootstrap.Toast(
-        document.getElementById("confirmation-toast")
-      );
+      var toast = new bootstrap.Toast(document.getElementById("confirmation-toast"));
       toast.show();
     }
   }
-  // Função chamada ao confirmar a remoção do docente
+
   function confirmarRemocao() {
     var docente = $("#nome_docente").val();
 
     $.ajax({
       url: "/deletarDocente/" + docente,
       method: "POST",
-      data: { docente: docente },
       success: function (data) {
-        document.getElementById("message").innerHTML +=
-          "<div class='alert alert-success alert-dismissible fade show' role='alert'>" +
-          docente +
-          " Removido com sucesso!</div>";
+        if (data.status === "success") {
+          document.getElementById("message").innerHTML +=
+            "<div class='alert alert-success alert-dismissible fade show' role='alert'>" +
+            data.message +
+            "</div>";
+          window.setTimeout(function () {
+            location.reload(true);
+          }, 2000);
+        } else {
+          document.getElementById("message").innerHTML +=
+            "<div class='alert alert-danger alert-dismissible fade show' role='alert'>" +
+            data.message +
+            "</div>";
+        }
       },
+      error: function (jqXHR, textStatus, errorThrown) {
+        document.getElementById("message").innerHTML +=
+          "<div class='alert alert-danger alert-dismissible fade show' role='alert'>" +
+          "Erro ao remover docente: " + errorThrown +
+          "</div>";
+      }
     });
-
-    window.setTimeout(function () {
-      location.reload(true);
-    }, 2000);
   }
+
+  // Função para atualizar o botão de deletar quando o docente é selecionado
+  $("#nome_docente").change(function () {
+    var docenteSelecionado = $("#nome_docente").val();
+    if (docenteSelecionado && docenteSelecionado !== "DOCENTE") {
+      $("#deletar").show();
+      $("#docente-name").text(docenteSelecionado);
+    } else {
+      $("#deletar").hide();
+    }
+  });
 
   function nuvem_docente(valor) {
     var query = document.getElementById("hidden_value").value;

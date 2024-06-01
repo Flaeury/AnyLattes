@@ -1,45 +1,43 @@
 {% extends 'base.html' %}
-{%block content%}
+{% block content %}
 
-<input type="hidden" value="{{inicio}}" id="hidden_inicio">
-<input type="hidden" value="{{fim}}" id="hidden_fim">
-<input type="hidden" value="{{page}}" id="page">
+<input type="hidden" value="{{ inicio }}" id="hidden_inicio">
+<input type="hidden" value="{{ fim }}" id="hidden_fim">
+<input type="hidden" value="{{ page }}" id="page">
 <div id="preloader">
-    <div id="status">&nbsp</div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/2.0.2/anime.min.js"> </script>
+    <div id="status">&nbsp;</div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/2.0.2/anime.min.js"></script>
 </div>
 
-
 <script>
-    page = document.getElementById("page").value;
-    console.log(page)
-    if(page == "upload"){
-        window.onload = function(){
-            var inicio = $("#hidden_inicio").val();
-            var fim = $("#hidden_fim").val();
+    document.addEventListener("DOMContentLoaded", function() {
+        var page = document.getElementById("page").value;
+        console.log(page);
+        if (page === "upload") {
+            var inicio = document.getElementById("hidden_inicio").value;
+            var fim = document.getElementById("hidden_fim").value;
             $.ajax({
-                url: "/projetos/inicio="+inicio+"&fim="+fim,
+                url: "/projetos/inicio=" + inicio + "&fim=" + fim,
                 method: "POST",
-                data: { inicio: inicio, fim:fim },
-    
-                success: function (data) {
+                data: { inicio: inicio, fim: fim },
+                success: function(data) {
                     console.log(inicio);
                     console.log(fim);
                     window.location.replace('/resultado_total');
                 },
-                error: function(){
+                error: function() {
                     window.location.replace('/');
-                    alert('Falha ao importar currículo(s)!')
+                    alert('Falha ao importar currículo(s)!');
                 }
             });
+        } else if (page === "nuvem") {
+            window.onload = function() {
+                window.location.replace("{{ url_for('nuvem') }}");
+            }
         }
-    }else if(page == "nuvem"){
-        window.onload = function(){
-            window.location.replace("{{url_for('nuvem')}}");
-        }
-    }
+    });
 </script>
- 
+
 <style>
     #preloader {
         background-color: white;
@@ -49,7 +47,7 @@
         left: 0;
         right: 0;
     }
-    
+
     #status {
         background-image: url("/static/assets/Pacman.gif");
         background-repeat: no-repeat;
@@ -62,7 +60,6 @@
         justify-content: center;
         align-items: center;
         transition: all 0.2s;
-
-    }    
+    }
 </style>
-{%endblock%}
+{% endblock %}
