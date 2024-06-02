@@ -14,94 +14,91 @@
                  <span>Atualizar dados</span> 
                 
             </button> -->
-            <form method="get" id="forms">
+    <form method="get" id="forms">
+        <div class="row align-items-center justify-content-between d-flex">
+            <div class="col-md-5 d-flex align-items-center">
                 <div class="row align-items-center justify-content-between d-flex">
-                    <div class="col-md-5 d-flex align-items-center">
-                        <div class="row align-items-center justify-content-between d-flex">
-                            <div class="container-lista-docentes">
-                                <div class="select-btn docente-list">
-                                    <span class="btn-text ml-2 p-2">Selecione um ou mais docentes para filtrar</span>
-                                    <span class="arrow-dwn ml-2 p-2">
-                                        <i class="fa-solid fa-chevron-down"></i>
+                    <div class="container-lista-docentes">
+                        <div class="select-btn docente-list">
+                            <span class="btn-text ml-2 p-2">Selecione um ou mais docentes para filtrar</span>
+                            <span class="arrow-dwn ml-2 p-2">
+                                <i class="fa-solid fa-chevron-down"></i>
+                            </span>
+                        </div>
+
+                        <input type="hidden" name="nome_docente" value="{{ nome_docente }}" id="docentes-input-hidden" />
+
+                        <!-- Botões de selecionar e deselecionar todos -->
+                        
+                        <ul class="list-items">
+                            <li class="btn-group mt-3 mb-3">
+                                <button id="select-all" class="btn btn-primary" type="button">Selecionar Todos</button>
+                                <button id="deselect-all" class="btn btn-secondary" type="button">Desselecionar Todos</button>
+                            </li>
+                            {% for total in docentes|sort(attribute='0') %}
+                                <li class="item docente-item docente-item-checkbox {{ 'checked' if total[0] in docentes_selecionados else '' }}" data-docente="{{ total[0] }}">
+                                    <span class="checkbox">
+                                        <i class="fa-solid fa-check check-icon"></i>
                                     </span>
-                                </div>
-        
-                                <input type="hidden" name="nome_docente" value="{{ nome_docente }}" id="docentes-input-hidden" />
-        
-                                <!-- Botões de selecionar e deselecionar todos -->
-                                
-                                <ul class="list-items">
-                                    <li class="btn-group mt-3 mb-3">
-                                        <button id="select-all" class="btn btn-primary" type="button">Selecionar Todos</button>
-                                        <button id="deselect-all" class="btn btn-secondary" type="button">Desselecionar Todos</button>
-                                    </li>
-                                    {% for total in docentes|sort(attribute='0') %}
-                                        <li class="item docente-item docente-item-checkbox {{ 'checked' if total[0] in docentes_selecionados else '' }}" data-docente="{{ total[0] }}">
-                                            <span class="checkbox">
-                                                <i class="fa-solid fa-check check-icon"></i>
-                                            </span>
-                                            <span class="item-text">{{ total[0] }}</span>
-                                        </li>
-                                    {% endfor %}
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-        
-                    <div
-                        style="padding: 1rem"
-                        class="section-import rounded card-link col-md-5 d-flex align-items-end justify-content-end">
-                        <div
-                            class="form-group row justify-content-between"
-                            style="margin-right: 1rem">
-                            <label
-                                for="ano_inicio"
-                                class="col-form-label col-md-1"
-                                style="margin-right: 0.3rem">De:</label>
-                            <div class="col-md-4">
-                                <input
-                                    type="number"
-                                    class="form-control"
-                                    name="ano_inicio"
-                                    id="ano_inicio"
-                                    min="1900"
-                                    minlength="5"
-                                    maxlength="5"
-                                    value="{{ano_inicio}}"
-                                    required />
-                            </div>
-        
-                            <label
-                                for="ano_fim"
-                                class="col-form-label col-md-1"
-                                style="margin-right: 0.3rem">Até:</label>
-                            <div class="col-md-4">
-                                <input
-                                    type="number"
-                                    class="form-control"
-                                    name="ano_fim"
-                                    action="{{ url_for('resultado_total') }}"
-                                    minlength="5"
-                                    maxlength="5"
-                                    value="{{ano_fim}}"
-                                    required />
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <button
-                                type="submit"
-                                value="Enviar"
-                                class="btn w-100 b-lattes btn-success">
-                                Recarregar
-                            </button>
-                        </div>
+                                    <span class="item-text">{{ total[0] }}</span>
+                                </li>
+                            {% endfor %}
+                        </ul>
                     </div>
                 </div>
-            </form>
+            </div>
 
-<!-- <script src='https://cdn.plot.ly/plotly-latest.min.js'></script> -->
-<!-- <script src="{{url_for('static',filename= 'js/plotly.min.js') }}"></script> -->
+            <div
+                style="padding: 1rem"
+                class="section-import rounded card-link col-md-5 d-flex align-items-end justify-content-end">
+                <div
+                    class="form-group row justify-content-between"
+                    style="margin-right: 1rem">
+                    <label
+                        for="ano_inicio"
+                        class="col-form-label col-md-1"
+                        style="margin-right: 0.3rem">De:</label>
+                    <div class="col-md-4">
+                        <input
+                            type="number"
+                            class="form-control"
+                            name="ano_inicio"
+                            id="ano_inicio"
+                            min="1900"
+                            minlength="5"
+                            maxlength="5"
+                            value="{{ano_inicio}}"
+                            required />
+                    </div>
 
+                    <label
+                        for="ano_fim"
+                        class="col-form-label col-md-1"
+                        style="margin-right: 0.3rem">Até:</label>
+                    <div class="col-md-4">
+                        <input
+                            type="number"
+                            class="form-control"
+                            name="ano_fim"
+                            action="{{ url_for('resultado_total') }}"
+                            minlength="5"
+                            maxlength="5"
+                            value="{{ano_fim}}"
+                            required />
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <button
+                        type="submit"
+                        value="Enviar"
+                        class="btn w-100 b-lattes btn-success">
+                        Recarregar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </form>
+<br/>
 <div class="cards-totais">
     <div class="card-info">
         <div class="title-info">

@@ -69,11 +69,15 @@ def soma_nota(from_year, to_year, nome_docente='*'):
 
 
 def soma_nota_docente(docente):
-
-    sql = (" SELECT distinct nome_docente , round(sum(notas),3) from resultados where nome_docente in" +
-           "(select distinct(nome_docente) from resultados where nome_docente in = '"+docente+"')group by nome_docente order by ano_evento asc;")
+    sql = (
+        "SELECT DISTINCT nome_docente, ROUND(SUM(notas), 3) "
+        "FROM resultados "
+        "WHERE nome_docente IN (SELECT DISTINCT(nome_docente) FROM resultados WHERE nome_docente = ?) "
+        "GROUP BY nome_docente "
+        "ORDER BY ano_evento ASC;"
+    )
     cursor = db.cursor()
-    cursor.execute(sql)
+    cursor.execute(sql, (docente,))
     resultado = cursor.fetchall()
     return resultado
 

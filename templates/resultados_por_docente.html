@@ -323,34 +323,46 @@
 
   function confirmarRemocao() {
     var docente = $("#nome_docente").val();
+    var $btn = $("#removeBtn");
+    $btn.prop("disabled", true); // Disable button
+    $btn.html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Removing...'); // Add spinner
 
     $.ajax({
-      url: "/deletarDocente/" + docente,
-      method: "POST",
-      success: function (data) {
-        if (data.status === "success") {
-          document.getElementById("message").innerHTML +=
-            "<div class='alert alert-success alert-dismissible fade show' role='alert'>" +
-            data.message +
-            "</div>";
-          window.setTimeout(function () {
-            location.reload(true);
-          }, 2000);
-        } else {
-          document.getElementById("message").innerHTML +=
-            "<div class='alert alert-danger alert-dismissible fade show' role='alert'>" +
-            data.message +
-            "</div>";
+        url: "/deletarDocente/" + docente,
+        method: "POST",
+        success: function (data) {
+            if (data.status === "success") {
+                document.getElementById("message").innerHTML +=
+                    "<div class='alert alert-success alert-dismissible fade show' role='alert'>" +
+                    data.message +
+                    "</div>";
+                window.setTimeout(function () {
+                    location.reload(true);
+                }, 2000);
+            } else {
+                document.getElementById("message").innerHTML +=
+                    "<div class='alert alert-danger alert-dismissible fade show' role='alert'>" +
+                    data.message +
+                    "</div>";
+                window.setTimeout(function () {
+                    location.reload(true);
+                }, 2000);
+            }
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            document.getElementById("message").innerHTML +=
+                "<div class='alert alert-danger alert-dismissible fade show' role='alert'>" +
+                "An error occurred: " + errorThrown +
+                "</div>";
+        },
+        complete: function () {
+            $btn.prop("disabled", false); // Re-enable button
+            $btn.html('Remove'); // Reset button text
         }
-      },
-      error: function (jqXHR, textStatus, errorThrown) {
-        document.getElementById("message").innerHTML +=
-          "<div class='alert alert-danger alert-dismissible fade show' role='alert'>" +
-          "Erro ao remover docente: " + errorThrown +
-          "</div>";
-      }
     });
-  }
+}
+
+
 
   // Função para atualizar o botão de deletar quando o docente é selecionado
   $("#nome_docente").change(function () {
