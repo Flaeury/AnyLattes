@@ -18,3 +18,4 @@ pip install PyAutoGUI
 pip install SpeechRecognition
 pip install pydub
 pip3 install selenium
+pip install scipy

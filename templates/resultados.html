@@ -642,6 +642,10 @@
 </script>
 
 <script>
+    var from_year = '{{ano_inicio}}';
+    var to_year = '{{to_year}}';
+    var nome_docente = '{{nome_docente}}';
+
     function visualizaDados(id) {
         $.ajax({
             url: '/visualiza_dados/' + id,
@@ -672,7 +676,12 @@
         $.ajax({
             url: '/mostra_grafo',
             method: 'POST',
-            data: { query: query },
+            data: {
+                query: query,
+                ano_inicio: from_year,
+                ano_fim: to_year,
+                nome_docente
+            },
 
             success: function (data) {
                 var g = document.getElementById('colaboracao');
@@ -680,7 +689,7 @@
 
                 console.log(query);
                 document.getElementById('colaboracao').innerHTML = '';
-                document.getElementById('div-imagem').innerHTML = '';
+                document.getElementById('div-imagem').innerHTML = ''
                 if (query == 'circular') {
                     document.getElementById('div-imagem').innerHTML +=
                         "<img src='{{url_for('static', filename='images/matriz_colaboracao_circular.png')}}' id='colaboracao' alt='Matriz de Colaboração'>";

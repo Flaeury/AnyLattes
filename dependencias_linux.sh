@@ -22,6 +22,7 @@ pip3 install xlrd
 pip3 install -r requirements.txt
 pip install PyPDF2
 pip install matplotlib
+pip install scipy
 sudo apt install sqlite3 -y
 
 

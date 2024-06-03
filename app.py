@@ -649,11 +649,14 @@ def deletarDocente(docente):
 
 
 @app.route("/mostra_grafo", methods=['POST', 'GET'])
-def mostra_grafo(from_year, to_year):
+def mostra_grafo():
     if request.method == "POST":
+        from_year = request.form['ano_inicio'] if request.form['ano_inicio'] else '2010'
+        to_year = request.form['ano_fim'] if request.form['ano_fim'] else str(datetime.date.today().year)
+        nome_docente = request.form['nome_docente'] if request.form['nome_docente'] else '*'
         tipo = request.form['query']
 
-        g = grafico_colaboracao(from_year, to_year)
+        g = grafico_colaboracao(from_year, to_year, nome_docente)
         grafo = tipo_grafo(tipo, g)
         return tipo
 
