@@ -31,10 +31,11 @@ def pizza(from_year, to_year, nome_docente='*'):
     valor = perc(from_year, to_year, nome_docente)
     lista = []
     content = {}
+    print(valor)
 
     for n in valor:
         content = {'Total': n[0], 'Periodico': n[1], 'Conferencia': n[2],
-                   'PercConferencia': n[4], 'PercPeriodico': n[3]}
+                   'PercConferencia': n[4], 'PercPeriodico': n[3], 'qPeriodico': n[5], 'qConferencia': n[6]}
         lista.append(content)
         content = {}
 

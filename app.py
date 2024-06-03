@@ -365,12 +365,16 @@ def resultado_total():
     names = []
     values = []
     pizza(from_year=from_year, to_year=to_year, nome_docente=nome_docente)
+    qPeriodico = 0
+    qConferencia = 0
     with open('pizza.json', 'r') as piz:
         d = json.load(piz)
         names.append(d[0]['Conferencia'])
         names.append(d[0]['Periodico'])
         values.append(d[0]['PercConferencia'])
         values.append(d[0]['PercPeriodico'])
+        qPeriodico = d[0]['qPeriodico']
+        qConferencia = d[0]['qConferencia']
 
     figs = px.pie(names=names, values=values)
 
@@ -433,7 +437,7 @@ def resultado_total():
 
     return render_template("resultados.html", anos=anos, graphJSON=graphJSON, graph=graph, medias=medias, listar=listar, somaNotas=somaNotas, totalNotas=totalNotas,
                            contadorEstratos=contadorEstratos, data=data, titulosRepetidos=titulosRepetidos,
-                           ano_inicio=from_year, ano_fim=to_year, docentes=docentes, docentes_selecionados=docentes_selecionados, nome_docente=nome_docente, mediaTotal=mediaTotal)
+                           ano_inicio=from_year, ano_fim=to_year, docentes=docentes, docentes_selecionados=docentes_selecionados, nome_docente=nome_docente, mediaTotal=mediaTotal, nPublicacoes=len(listar), mediaPublicacaoPorDocente=len(listar) / len(docentes_selecionados), qPeriodico=qPeriodico)
 
 
 @app.route("/projetos/inicio=<inicio>&fim=<fim>", methods=['POST'])

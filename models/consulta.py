@@ -239,7 +239,7 @@ def get_nome_docente():
 
 
 def perc(from_year, to_year, nome_docente='*'):
-    sql = ("select distinct total, 'Periódico', 'Conferência', round(periodico * 100 / total,3 ) as percentual_periodico, round(conferencia * 100 / total,3 ) as percentual_conferencia " +
+    sql = ("select distinct total, 'Periódico', 'Conferência', round(periodico * 100 / total,3 ) as percentual_periodico, round(conferencia * 100 / total,3 ) as percentual_conferencia, periodico, conferencia " +
            "from (select " +
            "(select count(1) from resultados r  WHERE ano_evento >= " +
            from_year + " AND ano_evento <= " + to_year + ") as total,"
@@ -247,7 +247,7 @@ def perc(from_year, to_year, nome_docente='*'):
            "(select count(1) from resultados r where r.documento like '%Conf%'  AND ano_evento >= " + from_year + " AND ano_evento <= " + to_year + ") as conferencia from resultados);")
 
     if nome_docente != '*':
-        sql = ("select distinct total, 'Periódico', 'Conferência', round(periodico * 100 / total,3 ) as percentual_periodico, round(conferencia * 100 / total,3 ) as percentual_conferencia " +
+        sql = ("select distinct total, 'Periódico', 'Conferência', round(periodico * 100 / total,3 ) as percentual_periodico, round(conferencia * 100 / total,3 ) as percentual_conferencia, periodico, conferencia" +
                "from (select " +
                "(select count(1) from resultados r  WHERE ano_evento >= " +
                from_year + " AND ano_evento <= " + to_year +

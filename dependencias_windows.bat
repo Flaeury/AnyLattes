@@ -17,5 +17,4 @@ pip install nltk
 pip install PyAutoGUI
 pip install SpeechRecognition
 pip install pydub
-
-echo BIBLIOTECAS INSTALADAS!
+pip3 install selenium
