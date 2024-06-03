@@ -239,29 +239,48 @@ def get_nome_docente():
 
 
 def perc(from_year, to_year, nome_docente='*'):
-    sql = ("select distinct total, 'Periódico', 'Conferência', round(periodico * 100 / total,3 ) as percentual_periodico, round(conferencia * 100 / total,3 ) as percentual_conferencia, periodico, conferencia " +
-           "from (select " +
-           "(select count(1) from resultados r  WHERE ano_evento >= " +
-           from_year + " AND ano_evento <= " + to_year + ") as total,"
-           "(select count(1) from resultados r where r.documento like '%Peri%'  AND ano_evento >= " + from_year + " AND ano_evento <= " + to_year + ") as periodico," +
-           "(select count(1) from resultados r where r.documento like '%Conf%'  AND ano_evento >= " + from_year + " AND ano_evento <= " + to_year + ") as conferencia from resultados);")
+    base_query = (
+        "SELECT DISTINCT total, 'Periódico', 'Conferência', "
+        "ROUND(periodico * 100.0 / total, 3) AS percentual_periodico, "
+        "ROUND(conferencia * 100.0 / total, 3) AS percentual_conferencia, "
+        "periodico, conferencia "
+        "FROM (SELECT "
+        "(SELECT COUNT(1) FROM resultados r WHERE ano_evento >= ? AND ano_evento <= ?) AS total, "
+        "(SELECT COUNT(1) FROM resultados r WHERE r.documento LIKE '%Peri%' AND ano_evento >= ? AND ano_evento <= ?) AS periodico, "
+        "(SELECT COUNT(1) FROM resultados r WHERE r.documento LIKE '%Conf%' AND ano_evento >= ? AND ano_evento <= ?) AS conferencia "
+        "FROM resultados)"
+    )
 
     if nome_docente != '*':
-        sql = ("select distinct total, 'Periódico', 'Conferência', round(periodico * 100 / total,3 ) as percentual_periodico, round(conferencia * 100 / total,3 ) as percentual_conferencia, periodico, conferencia" +
-               "from (select " +
-               "(select count(1) from resultados r  WHERE ano_evento >= " +
-               from_year + " AND ano_evento <= " + to_year +
-               " AND nome_docente in('" +
-               "','".join(nome_docente.split(';')) + "')) as total,"
-               "(select count(1) from resultados r where r.documento like '%Peri%'  AND ano_evento >= " + from_year + " AND ano_evento <= " + to_year + " AND nome_docente in('" + "','".join(nome_docente.split(';')) + "')) as periodico," +
-               "(select count(1) from resultados r where r.documento like '%Conf%'  AND ano_evento >= " + from_year + " AND ano_evento <= " + to_year + " AND nome_docente in('" + "','".join(nome_docente.split(';')) + "')) as conferencia from resultados);")
+        docente_filter = " AND nome_docente IN ({})".format(
+            ','.join(['?'] * len(nome_docente.split(';')))
+        )
+        base_query = (
+            "SELECT DISTINCT total, 'Periódico', 'Conferência', "
+            "ROUND(periodico * 100.0 / total, 3) AS percentual_periodico, "
+            "ROUND(conferencia * 100.0 / total, 3) AS percentual_conferencia, "
+            "periodico, conferencia "
+            "FROM (SELECT "
+            "(SELECT COUNT(1) FROM resultados r WHERE ano_evento >= ? AND ano_evento <= ?"
+            + docente_filter + ") AS total, "
+            "(SELECT COUNT(1) FROM resultados r WHERE r.documento LIKE '%Peri%' AND ano_evento >= ? AND ano_evento <= ?"
+            + docente_filter + ") AS periodico, "
+            "(SELECT COUNT(1) FROM resultados r WHERE r.documento LIKE '%Conf%' AND ano_evento >= ? AND ano_evento <= ?"
+            + docente_filter + ") AS conferencia "
+            "FROM resultados)"
+        )
 
-    # print(sql)
+    params = [from_year, to_year, from_year, to_year, from_year, to_year]
+    if nome_docente != '*':
+        docentes = nome_docente.split(';')
+        params.extend(docentes * 3)
+
     cursor = db.cursor()
-    cursor.execute(sql)
+    cursor.execute(base_query, params)
     resultado = cursor.fetchall()
 
     return resultado
+
 
 
 def perc_docente(docente):
