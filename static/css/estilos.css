@@ -52,11 +52,11 @@
 }
 
 .data-info p {
-  margin-top: 1rem;
-  margin-bottom: 1rem;
+  margin-top: 0.25rem;
+  margin-bottom: 0.5rem;
   color: #1F2937;
   font-size: 1.25rem;
-  line-height: 2.5rem;
+
   font-weight: 700;
   text-align: left;
 }
