@@ -322,22 +322,22 @@ def upload():
         return render_template('loading.html', inicio=start_date, fim=end_date, page=page)
 
 
+
 @app.route('/resultado_total')
 def resultado_total():
     from_year = request.args.get('ano_inicio', '2010')
     to_year = request.args.get('ano_fim', str(datetime.date.today().year))
     nome_docente = request.args.get('nome_docente', '*')
 
-    dados = todosContador(from_year=from_year,
-                          to_year=to_year, nome_docente=nome_docente)
-
-    listar = lista(from_year=from_year, to_year=to_year,
-                   nome_docente=nome_docente)
+    dados = todosContador(from_year=from_year, to_year=to_year, nome_docente=nome_docente)
+    listar = lista(from_year=from_year, to_year=to_year, nome_docente=nome_docente)
     totalNotas = soma_nota(from_year, to_year, nome_docente)
     contadorEstratos = total_estratos(from_year, to_year, nome_docente)
     docentes = get_nome_docente()
-
     somaNotas = soma_nota(from_year, to_year, nome_docente)
+
+    # Obtendo os totais de periódicos e conferências
+    resultado_perc, total_periodicos, total_conferencias = perc(from_year=from_year, to_year=to_year, nome_docente=nome_docente)
 
     conteudo = {}
     div = []
@@ -352,16 +352,14 @@ def resultado_total():
     with open('todos.json', 'r') as file:
         data = json.load(file)
 
-    fig = px.bar(data, x='Ano', y='Quantidade',
-                 color='Estratos', barmode='stack')
-
+    fig = px.bar(data, x='Ano', y='Quantidade', color='Estratos', barmode='stack')
     graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
 
     anos = []
     for c in data:
         anos.append(c['Ano'])
-
     anos = sorted(set(anos))
+
     names = []
     values = []
     pizza(from_year=from_year, to_year=to_year, nome_docente=nome_docente)
@@ -377,16 +375,13 @@ def resultado_total():
         qConferencia = d[0]['qConferencia']
 
     figs = px.pie(names=names, values=values)
-
     graph = json.dumps(figs, cls=plotly.utils.PlotlyJSONEncoder)
 
-    grafico_media(from_year=from_year, to_year=to_year,
-                  nome_docente=nome_docente)
+    grafico_media(from_year=from_year, to_year=to_year, nome_docente=nome_docente)
     with open('media_docentes.json', 'r') as med:
         dados = json.load(med)
 
-    mediaTotal = grafico_para_media(
-        from_year=from_year, to_year=to_year, nome_docente=nome_docente)
+    mediaTotal = grafico_para_media(from_year=from_year, to_year=to_year, nome_docente=nome_docente)
 
     docente = []
     media = []
@@ -396,14 +391,11 @@ def resultado_total():
         docente.append(d['Docente'])
         media.append(d['Pontuação'])
         mediana.append(d['Mediana'])
-
     m.append(dados[-1]['Mediana'])
 
     val1 = str(m[-1])
-    figura = px.bar(dados, x='Docente', y='Pontuação',
-                    color_discrete_sequence=px.colors.qualitative.T10, template='plotly_white', text='Pontuação')
-    figura.add_scatter(x=docente, y=mediana, xaxis='x',
-                       name="Mediana: "+val1, marker=dict(color="crimson"))
+    figura = px.bar(dados, x='Docente', y='Pontuação', color_discrete_sequence=px.colors.qualitative.T10, template='plotly_white', text='Pontuação')
+    figura.add_scatter(x=docente, y=mediana, xaxis='x', name="Mediana: "+val1, marker=dict(color="crimson"))
 
     figura.update_layout(
         yaxis=dict(
@@ -418,26 +410,46 @@ def resultado_total():
 
     medias = json.dumps(figura, cls=plotly.utils.PlotlyJSONEncoder)
 
-    colaboracao = grafico_colaboracao(
-        from_year=from_year, to_year=to_year, nome_docente=nome_docente)
-
+    colaboracao = grafico_colaboracao(from_year=from_year, to_year=to_year, nome_docente=nome_docente)
     valor_padrao = 'circular'
-
     tipo_grafo(valor_padrao, colaboracao)
 
     titulosRepetidos = titulos_qualis(nome_docente)
 
     docentes_selecionados = []
-
     if (nome_docente == '*'):
         for item in docentes:
             docentes_selecionados.append(item[0])
     else:
         docentes_selecionados = nome_docente.split(';')
 
-    return render_template("resultados.html", anos=anos, graphJSON=graphJSON, graph=graph, medias=medias, listar=listar, somaNotas=somaNotas, totalNotas=totalNotas,
-                           contadorEstratos=contadorEstratos, data=data, titulosRepetidos=titulosRepetidos,
-                           ano_inicio=from_year, ano_fim=to_year, docentes=docentes, docentes_selecionados=docentes_selecionados, nome_docente=nome_docente, mediaTotal=mediaTotal, nPublicacoes=len(listar), mediaPublicacaoPorDocente=len(listar) / len(docentes_selecionados), qPeriodico=qPeriodico)
+    return render_template("resultados.html", 
+                           anos=anos, 
+                           graphJSON=graphJSON, 
+                           graph=graph, 
+                           medias=medias, 
+                           listar=listar, 
+                           somaNotas=somaNotas, 
+                           totalNotas=totalNotas,
+                           contadorEstratos=contadorEstratos, 
+                           data=data, 
+                           titulosRepetidos=titulosRepetidos,
+                           ano_inicio=from_year, 
+                           ano_fim=to_year, 
+                           docentes=docentes, 
+                           docentes_selecionados=docentes_selecionados, 
+                           nome_docente=nome_docente, 
+                           mediaTotal=mediaTotal, 
+                           nPublicacoes=len(listar), 
+                           mediaPublicacaoPorDocente=len(listar) / len(docentes_selecionados), 
+                           qPeriodico=qPeriodico, 
+                           qConferencia=qConferencia, 
+                           total_periodicos=total_periodicos, 
+                           total_conferencias=total_conferencias,
+                           media_periodicos=total_periodicos / len(docentes_selecionados),
+                           media_conferencias = total_conferencias / len(docentes_selecionados)
+                           
+                           )
 
 
 @app.route("/projetos/inicio=<inicio>&fim=<fim>", methods=['POST'])

@@ -99,55 +99,7 @@
         </div>
     </form>
 <br/>
-<div class="cards-totais">
-    <div class="card-info">
-        <div class="title-info">
-            <span>
-              
-                <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-                    <path fill-rule="evenodd" d="M12 6a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7Zm-1.5 8a4 4 0 0 0-4 4 2 2 0 0 0 2 2h7a2 2 0 0 0 2-2 4 4 0 0 0-4-4h-3Zm6.82-3.096a5.51 5.51 0 0 0-2.797-6.293 3.5 3.5 0 1 1 2.796 6.292ZM19.5 18h.5a2 2 0 0 0 2-2 4 4 0 0 0-4-4h-1.1a5.503 5.503 0 0 1-.471.762A5.998 5.998 0 0 1 19.5 18ZM4 7.5a3.5 3.5 0 0 1 5.477-2.889 5.5 5.5 0 0 0-2.796 6.293A3.501 3.501 0 0 1 4 7.5ZM7.1 12H6a4 4 0 0 0-4 4 2 2 0 0 0 2 2h.5a5.998 5.998 0 0 1 3.071-5.238A5.505 5.505 0 0 1 7.1 12Z" clip-rule="evenodd"/>
-                  </svg>
-                  
-                </span>
-            <p class="title-text-info">
-                Nº de publicações
-            </p>
-        
-        </div>
-        <div class="data-info" somaNotas="{{ mediaTotal }}">
-            <p>
-                {{ nPublicacoes }}
-            </p>
-            
-        </div>
-    </div>
 
-    <div class="card-info">
-        <div class="title-info">
-            <span>
-              
-                <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-                    <path fill-rule="evenodd" d="M12 6a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7Zm-1.5 8a4 4 0 0 0-4 4 2 2 0 0 0 2 2h7a2 2 0 0 0 2-2 4 4 0 0 0-4-4h-3Zm6.82-3.096a5.51 5.51 0 0 0-2.797-6.293 3.5 3.5 0 1 1 2.796 6.292ZM19.5 18h.5a2 2 0 0 0 2-2 4 4 0 0 0-4-4h-1.1a5.503 5.503 0 0 1-.471.762A5.998 5.998 0 0 1 19.5 18ZM4 7.5a3.5 3.5 0 0 1 5.477-2.889 5.5 5.5 0 0 0-2.796 6.293A3.501 3.501 0 0 1 4 7.5ZM7.1 12H6a4 4 0 0 0-4 4 2 2 0 0 0 2 2h.5a5.998 5.998 0 0 1 3.071-5.238A5.505 5.505 0 0 1 7.1 12Z" clip-rule="evenodd"/>
-                  </svg>
-                  
-                </span>
-            <p class="title-text-info">
-               Média Aritmética
-            </p>
-        
-        </div>
-        <div class="data-info" somaNotas="{{ mediaTotal }}">
-            <p>
-                {{ mediaTotal }}
-            </p>
-            
-        </div>
-    </div>
-   
-</div>
-
-
-<br/>
 <div class="cards">
     <div class="card-header" id="card-header">
         <i class="fas fa-chart-bar me-1"></i>
@@ -208,72 +160,61 @@
 
 <div class="cards-totais">
     <div class="card-info">
-        <div class="title-info">
-            <span>
-              
-                <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-                    <path fill-rule="evenodd" d="M12 6a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7Zm-1.5 8a4 4 0 0 0-4 4 2 2 0 0 0 2 2h7a2 2 0 0 0 2-2 4 4 0 0 0-4-4h-3Zm6.82-3.096a5.51 5.51 0 0 0-2.797-6.293 3.5 3.5 0 1 1 2.796 6.292ZM19.5 18h.5a2 2 0 0 0 2-2 4 4 0 0 0-4-4h-1.1a5.503 5.503 0 0 1-.471.762A5.998 5.998 0 0 1 19.5 18ZM4 7.5a3.5 3.5 0 0 1 5.477-2.889 5.5 5.5 0 0 0-2.796 6.293A3.501 3.501 0 0 1 4 7.5ZM7.1 12H6a4 4 0 0 0-4 4 2 2 0 0 0 2 2h.5a5.998 5.998 0 0 1 3.071-5.238A5.505 5.505 0 0 1 7.1 12Z" clip-rule="evenodd"/>
-                  </svg>
-                  
-                </span>
-            <p class="title-text-info">
-                Nº de publicações
-            </p>
-        
+        <div class="info-dados">
+            <h3 class="title-text-info">
+                Total de Publicações:
+            </h3>
+            <p> {{ nPublicacoes }} </p>
         </div>
-        <div class="data-info" somaNotas="{{ mediaTotal }}">
-            <p>
-               {{ nPublicacoes }}
-            </p>
-            
+
+        <div class="info-dados">
+            <h3 class="title-text-info">
+                Média das Publicações:
+            </h3>
+            <p> {{ mediaTotal }}</p>
         </div>
+    
     </div>
 
     <div class="card-info">
-        <div class="title-info">
-            <span>
-              
-                <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-                    <path fill-rule="evenodd" d="M12 6a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7Zm-1.5 8a4 4 0 0 0-4 4 2 2 0 0 0 2 2h7a2 2 0 0 0 2-2 4 4 0 0 0-4-4h-3Zm6.82-3.096a5.51 5.51 0 0 0-2.797-6.293 3.5 3.5 0 1 1 2.796 6.292ZM19.5 18h.5a2 2 0 0 0 2-2 4 4 0 0 0-4-4h-1.1a5.503 5.503 0 0 1-.471.762A5.998 5.998 0 0 1 19.5 18ZM4 7.5a3.5 3.5 0 0 1 5.477-2.889 5.5 5.5 0 0 0-2.796 6.293A3.501 3.501 0 0 1 4 7.5ZM7.1 12H6a4 4 0 0 0-4 4 2 2 0 0 0 2 2h.5a5.998 5.998 0 0 1 3.071-5.238A5.505 5.505 0 0 1 7.1 12Z" clip-rule="evenodd"/>
-                  </svg>
-                  
-                </span>
-            <p class="title-text-info">
-                Média Total
-            </p>
-        
+
+        <div class="info-dados">
+            <h3 class="title-text-info">
+                Total de Periódicos:
+            </h3>
+            <p> {{total_periodicos}} </p>
         </div>
-        <div class="data-info" somaNotas="{{ mediaTotal }}">
-            <p>
-                {{ mediaPublicacaoPorDocente }}
-            </p>
-            
+
+        <div class="info-dados">
+            <h3 class="title-text-info">
+                Média dos Periódicos:
+            </h3>
+            <p> {{media_periodicos}} </p>
         </div>
+       
     </div>
-   
+
     <div class="card-info">
-        <div class="title-info">
-            <span>
-              
-                <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-                    <path fill-rule="evenodd" d="M12 6a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7Zm-1.5 8a4 4 0 0 0-4 4 2 2 0 0 0 2 2h7a2 2 0 0 0 2-2 4 4 0 0 0-4-4h-3Zm6.82-3.096a5.51 5.51 0 0 0-2.797-6.293 3.5 3.5 0 1 1 2.796 6.292ZM19.5 18h.5a2 2 0 0 0 2-2 4 4 0 0 0-4-4h-1.1a5.503 5.503 0 0 1-.471.762A5.998 5.998 0 0 1 19.5 18ZM4 7.5a3.5 3.5 0 0 1 5.477-2.889 5.5 5.5 0 0 0-2.796 6.293A3.501 3.501 0 0 1 4 7.5ZM7.1 12H6a4 4 0 0 0-4 4 2 2 0 0 0 2 2h.5a5.998 5.998 0 0 1 3.071-5.238A5.505 5.505 0 0 1 7.1 12Z" clip-rule="evenodd"/>
-                  </svg>
-                  
-                </span>
-            <p class="title-text-info">
-                Total de Periódicos
-            </p>
-        
+
+        <div class="info-dados">
+            <h3 class="title-text-info">
+                Total de Conferências:
+            </h3>
+            <p> {{total_conferencias}} </p>
         </div>
-        <div class="data-info" somaNotas="{{ mediaTotal }}">
-            <p>
-                {{qPeriodico}}
-            </p>
-            
+
+        <div class="info-dados">
+            <h3 class="title-text-info">
+                Média das Conferências:
+            </h3>
+            <p> {{media_conferencias}} </p>
         </div>
+       
     </div>
 
 </div>
+
+
 
 <br/>
 
@@ -314,7 +255,7 @@
 
 <br/>
 
-
+<!--
 <div class="cards-totais">
     <div class="card-info">
         <div class="title-info">
@@ -338,7 +279,7 @@
         </div>
     </div>
 
-    <div class="card-info">
+     <div class="card-info">
         <div class="title-info">
             <span>
               
@@ -382,45 +323,10 @@
         </div>
     </div>
 
-</div>
+</div> -->
 
 <br/>
 
-<div class="cards">
-    <div class="row">
-        <!-- First Column -->
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-header" id="card-header">
-                    <i class="fas fa-table me-1"></i>
-                    Quantidade Publicações por Ano
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-sm-11" id="chart"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Second Column -->
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-header info-cards">
-                    <i class="fas fa-chart-pie me-1"></i>
-                    Periódico x Conferência
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-sm-11" id="pizza"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<br/>
 
 <div class="cards">
     <div class="card-header">

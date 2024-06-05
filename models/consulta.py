@@ -279,7 +279,14 @@ def perc(from_year, to_year, nome_docente='*'):
     cursor.execute(base_query, params)
     resultado = cursor.fetchall()
 
-    return resultado
+    if resultado:
+        total_periodicos = resultado[0][5]
+        total_conferencias = resultado[0][6]
+    else:
+        total_periodicos = 0
+        total_conferencias = 0
+
+    return resultado, total_periodicos, total_conferencias
 
 
 
@@ -293,7 +300,11 @@ def perc_docente(docente):
     cursor.execute(sql)
     resultado = cursor.fetchall()
 
-    return resultado
+    total_periodicos = resultado[0][4] if resultado else 0
+    total_conferencias = resultado[0][5] if resultado else 0
+
+    return resultado, total_periodicos, total_conferencias
+
 
 
 def busca_conferencias():
