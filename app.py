@@ -435,7 +435,6 @@ def resultado_total():
 
     
 
-
     return render_template("resultados.html", anos=anos, 
                            graphJSON=graphJSON, graph=graph, 
                            medias=medias, 
