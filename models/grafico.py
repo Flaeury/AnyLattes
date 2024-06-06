@@ -27,20 +27,20 @@ def graficos(busca):
         outfile.write(json_object)
 
 
-def pizza(from_year, to_year, nome_docente):
-    # Supondo que esta função também usa a função perc
-    resultado, total_periodicos, total_conferencias = perc(from_year, to_year, nome_docente)
-    
-    # Verificando se a consulta retornou algum resultado
-    if resultado:
-        n = resultado[0]
-        content = {'Total': n[0], 'Periodico': n[5], 'Conferencia': n[6], 'PercPeriodico': n[3], 'PercConferencia': n[4], 'qPeriodico': n[5], 'qConferencia': n[6]}
-    else:
-        content = {'Total': 0, 'Periodico': 0, 'Conferencia': 0, 'PercPeriodico': 0, 'PercConferencia': 0, 'qPeriodico': 0, 'qConferencia': 0}
-    
-    with open('pizza.json', 'w') as outfile:
-        json.dump([content], outfile)
+def pizza(from_year, to_year, nome_docente='*'):
+    valor = perc(from_year, to_year, nome_docente)
+    lista = []
+    content = {}
 
+    for n in valor:
+        content = {'Total': n[0], 'Periodico': n[1], 'Conferencia': n[2],
+                   'PercConferencia': n[4], 'PercPeriodico': n[3]}
+        lista.append(content)
+        content = {}
+
+    json_object = json.dumps(lista, indent=4)
+    with open("pizza.json", "w") as outfile:
+        outfile.write(json_object)
 
 
 def pizza_por_docente(docente):

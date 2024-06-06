@@ -239,55 +239,97 @@ def get_nome_docente():
 
 
 def perc(from_year, to_year, nome_docente='*'):
-    base_query = (
-        "SELECT DISTINCT total, 'Periódico', 'Conferência', "
-        "ROUND(periodico * 100.0 / total, 3) AS percentual_periodico, "
-        "ROUND(conferencia * 100.0 / total, 3) AS percentual_conferencia, "
-        "periodico, conferencia "
-        "FROM (SELECT "
-        "(SELECT COUNT(1) FROM resultados r WHERE ano_evento >= ? AND ano_evento <= ?) AS total, "
-        "(SELECT COUNT(1) FROM resultados r WHERE r.documento LIKE '%Peri%' AND ano_evento >= ? AND ano_evento <= ?) AS periodico, "
-        "(SELECT COUNT(1) FROM resultados r WHERE r.documento LIKE '%Conf%' AND ano_evento >= ? AND ano_evento <= ?) AS conferencia "
-        "FROM resultados)"
-    )
+    sql = ("select distinct total, 'Periódico', 'Conferência', round(periodico * 100 / total,3 ) as percentual_periodico, round(conferencia * 100 / total,3 ) as percentual_conferencia " +
+           "from (select " +
+           "(select count(1) from resultados r  WHERE ano_evento >= " +
+           from_year + " AND ano_evento <= " + to_year + ") as total,"
+           "(select count(1) from resultados r where r.documento like '%Peri%'  AND ano_evento >= " + from_year + " AND ano_evento <= " + to_year + ") as periodico," +
+           "(select count(1) from resultados r where r.documento like '%Conf%'  AND ano_evento >= " + from_year + " AND ano_evento <= " + to_year + ") as conferencia from resultados);")
 
     if nome_docente != '*':
-        docente_filter = " AND nome_docente IN ({})".format(
-            ','.join(['?'] * len(nome_docente.split(';')))
-        )
-        base_query = (
-            "SELECT DISTINCT total, 'Periódico', 'Conferência', "
-            "ROUND(periodico * 100.0 / total, 3) AS percentual_periodico, "
-            "ROUND(conferencia * 100.0 / total, 3) AS percentual_conferencia, "
-            "periodico, conferencia "
-            "FROM (SELECT "
-            "(SELECT COUNT(1) FROM resultados r WHERE ano_evento >= ? AND ano_evento <= ?"
-            + docente_filter + ") AS total, "
-            "(SELECT COUNT(1) FROM resultados r WHERE r.documento LIKE '%Peri%' AND ano_evento >= ? AND ano_evento <= ?"
-            + docente_filter + ") AS periodico, "
-            "(SELECT COUNT(1) FROM resultados r WHERE r.documento LIKE '%Conf%' AND ano_evento >= ? AND ano_evento <= ?"
-            + docente_filter + ") AS conferencia "
-            "FROM resultados)"
-        )
+        sql = ("select distinct total, 'Periódico', 'Conferência', round(periodico * 100 / total,3 ) as percentual_periodico, round(conferencia * 100 / total,3 ) as percentual_conferencia " +
+               "from (select " +
+               "(select count(1) from resultados r  WHERE ano_evento >= " +
+               from_year + " AND ano_evento <= " + to_year +
+               " AND nome_docente in('" +
+               "','".join(nome_docente.split(';')) + "')) as total,"
+               "(select count(1) from resultados r where r.documento like '%Peri%'  AND ano_evento >= " + from_year + " AND ano_evento <= " + to_year + " AND nome_docente in('" + "','".join(nome_docente.split(';')) + "')) as periodico," +
+               "(select count(1) from resultados r where r.documento like '%Conf%'  AND ano_evento >= " + from_year + " AND ano_evento <= " + to_year + " AND nome_docente in('" + "','".join(nome_docente.split(';')) + "')) as conferencia from resultados);")
 
-    params = [from_year, to_year, from_year, to_year, from_year, to_year]
-    if nome_docente != '*':
-        docentes = nome_docente.split(';')
-        params.extend(docentes * 3)
-
+    # print(sql)
     cursor = db.cursor()
-    cursor.execute(base_query, params)
+    cursor.execute(sql)
     resultado = cursor.fetchall()
 
-    if resultado:
-        total_periodicos = resultado[0][5]
-        total_conferencias = resultado[0][6]
-    else:
-        total_periodicos = 0
-        total_conferencias = 0
+    return resultado
 
-    return resultado, total_periodicos, total_conferencias
 
+def totalPeriodicos(from_year, to_year, nome_docente='*'):
+    # Consulta base para todos os registros sem filtro de docentes
+    sql = (
+        "SELECT "
+        "(SELECT COUNT(1) FROM resultados r WHERE ano_evento >= ? AND ano_evento <= ? AND r.documento LIKE '%Peri%') AS periodico "
+        "FROM resultados"
+    )
+    
+    params = [from_year, to_year]
+
+    # Ajusta a consulta se um ou mais docentes forem especificados
+    if nome_docente != '*':
+        docentes = nome_docente.split(';')
+        docente_filter = " AND nome_docente IN ({})".format(','.join(['?'] * len(docentes)))
+        
+        sql = (
+            "SELECT "
+            "(SELECT COUNT(1) FROM resultados r WHERE ano_evento >= ? AND ano_evento <= ? AND r.documento LIKE '%Peri%'"
+            + docente_filter + ") AS periodico "
+            "FROM resultados"
+        )
+        params.extend(docentes)
+
+    cursor = db.cursor()
+    cursor.execute(sql, params)
+    resultado = cursor.fetchone()
+
+  
+    total_periodicos = resultado[0] if resultado else 0
+    
+    print(f"Total de Periódicos: {total_periodicos}")
+    return total_periodicos
+
+
+def totalConferencias(from_year, to_year, nome_docente='*'):
+   
+    sql = (
+        "SELECT "
+        "(SELECT COUNT(1) FROM resultados r WHERE ano_evento >= ? AND ano_evento <= ? AND r.documento LIKE '%PConf%') AS conferencia "
+        "FROM resultados"
+    )
+    
+    params = [from_year, to_year]
+
+  
+    if nome_docente != '*':
+        docentes = nome_docente.split(';')
+        docente_filter = " AND nome_docente IN ({})".format(','.join(['?'] * len(docentes)))
+        
+        sql = (
+            "SELECT "
+            "(SELECT COUNT(1) FROM resultados r WHERE ano_evento >= ? AND ano_evento <= ? AND r.documento LIKE '%Conf%'"
+            + docente_filter + ") AS conferencia "
+            "FROM resultados"
+        )
+        params.extend(docentes)
+
+    cursor = db.cursor()
+    cursor.execute(sql, params)
+    resultado = cursor.fetchone()
+
+   
+    total_periodicos = resultado[0] if resultado else 0
+    
+    print(f"Total de Periódicos: {total_periodicos}")
+    return total_periodicos
 
 
 def perc_docente(docente):
@@ -300,11 +342,7 @@ def perc_docente(docente):
     cursor.execute(sql)
     resultado = cursor.fetchall()
 
-    total_periodicos = resultado[0][4] if resultado else 0
-    total_conferencias = resultado[0][5] if resultado else 0
-
-    return resultado, total_periodicos, total_conferencias
-
+    return resultado
 
 
 def busca_conferencias():

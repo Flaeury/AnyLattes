@@ -1,1 +1,9 @@
-[{"Total": 193, "Periodico": 0, "Conferencia": 0, "PercPeriodico": 0.0, "PercConferencia": 0.0, "qPeriodico": 0, "qConferencia": 0}]
+[
+    {
+        "Total": 723,
+        "Periodico": "Peri\u00f3dico",
+        "Conferencia": "Confer\u00eancia",
+        "PercConferencia": 65.0,
+        "PercPeriodico": 34.0
+    }
+]
