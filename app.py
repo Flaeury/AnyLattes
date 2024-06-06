@@ -324,7 +324,7 @@ def upload():
 
 @app.route('/resultado_total')
 def resultado_total():
-    from_year = request.args.get('ano_inicio', '2010')
+    from_year = request.args.get('ano_inicio', '2005')
     to_year = request.args.get('ano_fim', str(datetime.date.today().year))
     nome_docente = request.args.get('nome_docente', '*')
 

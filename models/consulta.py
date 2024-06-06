@@ -256,7 +256,6 @@ def perc(from_year, to_year, nome_docente='*'):
                "(select count(1) from resultados r where r.documento like '%Peri%'  AND ano_evento >= " + from_year + " AND ano_evento <= " + to_year + " AND nome_docente in('" + "','".join(nome_docente.split(';')) + "')) as periodico," +
                "(select count(1) from resultados r where r.documento like '%Conf%'  AND ano_evento >= " + from_year + " AND ano_evento <= " + to_year + " AND nome_docente in('" + "','".join(nome_docente.split(';')) + "')) as conferencia from resultados);")
 
-    # print(sql)
     cursor = db.cursor()
     cursor.execute(sql)
     resultado = cursor.fetchall()
@@ -302,7 +301,7 @@ def totalConferencias(from_year, to_year, nome_docente='*'):
    
     sql = (
         "SELECT "
-        "(SELECT COUNT(1) FROM resultados r WHERE ano_evento >= ? AND ano_evento <= ? AND r.documento LIKE '%PConf%') AS conferencia "
+        "(SELECT COUNT(1) FROM resultados r WHERE ano_evento >= ? AND ano_evento <= ? AND r.documento LIKE '%Conf%') AS conferencia "
         "FROM resultados"
     )
     
@@ -326,10 +325,10 @@ def totalConferencias(from_year, to_year, nome_docente='*'):
     resultado = cursor.fetchone()
 
    
-    total_periodicos = resultado[0] if resultado else 0
+    total_conferencias = resultado[0] if resultado else 0
     
-    print(f"Total de Periódicos: {total_periodicos}")
-    return total_periodicos
+    print(f"Total de Conferências: {total_conferencias}")
+    return total_conferencias
 
 
 def perc_docente(docente):
