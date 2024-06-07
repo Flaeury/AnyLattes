@@ -32,7 +32,6 @@ def nuvem_geral():
     for r in res:
         texto.append(r[4])
 
-    # print(texto)
 
     if type(texto) == list:
         for text in texto:
@@ -41,7 +40,7 @@ def nuvem_geral():
         wc = WordCloud(width=3000, height=2000, stopwords=stop, min_word_length=2,
                        random_state=1, collocations=False).generate(researchers_words)
 
-    # Remove the axis and display the data as image
+   
     plt.figure(1, figsize=(20, 15), dpi=100)
     plt.axis("off")
     plt.imshow(wc, interpolation="bilinear")
@@ -83,7 +82,6 @@ def nuvem_especifica(docente):
     for r in res:
         texto.append(r[1])
 
-    # print(texto)
 
     if type(texto) == list:
         for text in texto:

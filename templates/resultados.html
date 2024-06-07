@@ -1,6 +1,9 @@
 {% extends 'base.html'%} {%block content%}
 
-<h1>{%block title%} Resultados {%endblock%}</h1>
+<br/>
+<br/>
+
+<h4>Selecionar filtros</h4>
 <!-- <div class="spinner-wrapper">
     <div class="spinner-border text-primary" role="status">
         <span class="visually-hidden">Loading...</span>
@@ -50,14 +53,14 @@
 
             <div
                 style="padding: 1rem"
-                class="section-import rounded card-link col-md-5 d-flex align-items-end justify-content-end">
+                class="section-import2 col-md-5 align-items-center">
                 <div
-                    class="form-group row justify-content-between"
-                    style="margin-right: 1rem">
+                    class="form-group row "
+                   >
                     <label
                         for="ano_inicio"
                         class="col-form-label col-md-1"
-                        style="margin-right: 0.3rem">De:</label>
+                        style="margin-right: 0.9rem">De:</label>
                     <div class="col-md-4">
                         <input
                             type="number"
@@ -74,7 +77,7 @@
                     <label
                         for="ano_fim"
                         class="col-form-label col-md-1"
-                        style="margin-right: 0.3rem">Até:</label>
+                        style="margin-right: 0.9rem">Até:</label>
                     <div class="col-md-4">
                         <input
                             type="number"
@@ -86,12 +89,22 @@
                             value="{{ano_fim}}"
                             required />
                     </div>
+
+                    <div class="button-mobile" style="display: none;">
+                        <button
+                            type="submit"
+                            value="Enviar"
+                            class="btn w-100 btn-lattes">
+                            Recarregar
+                        </button>
+                    </div>
                 </div>
-                <div class="col-md-3">
+
+                <div class="button-pc">
                     <button
                         type="submit"
                         value="Enviar"
-                        class="btn w-100 b-lattes btn-success">
+                        class="btn w-100 btn-lattes">
                         Recarregar
                     </button>
                 </div>
@@ -100,61 +113,23 @@
     </form>
 <br/>
 
+<br/>
+
+<h4>Tabela de Pontuação por docente</h4>
+
 <div class="cards">
-    <div class="card-header" id="card-header">
-        <i class="fas fa-chart-bar me-1"></i>
-        Pontuação Por Docente
-    </div>
+   
 
     <div class="card-body">
         <div id="media" class="media"></div>
     </div>
 </div>
+<br/>
 
 <br/>
 
-<div class="cards">
-    <div class="card-header" id="card-header">
-        <div>
-            <i class="fas fa-chart-bar me-1"></i>
-            <span class="">Grafo de Colaboração entre Docentes</span>
 
-            <span class="info-cards">
-                <i class="fas fa-circle-info" style="color: #000000"></i>
-                Gráfico sobre a colaboração entre os professores em projetos
-            </span>
-        </div>
-    </div>
-    <div class="card-body">
-        <div class="row">
-            <div class="colaboracao col-sm-10">
-                <div id="div-imagem">
-                    <img
-                        src="{{url_for('static', filename='images/matriz_colaboracao_circular.png')}}"
-                        id="colaboracao"
-                        class="colaboracao"
-                        alt="Matriz de Colaboração"
-                    />
-                </div>
-            </div>
-
-            <div class="col-sm-2">
-                <label class="mb-2">Tipo de Grafo:</label>
-                <select
-                    class="form-select form-select-sm mb-3"
-                    name="tipo_grafo"
-                    id="tipo_grafo"
-                    onchange="javascript:tipoGrafo(this);"
-                >
-                    <option value="circular">Circular</option>
-                    <option value="kamada_kawai">Kamada Kawai</option>
-                    <option value="planar">Planar</option>
-                    <option value="random">Random</option>
-                </select>
-            </div>
-        </div>
-    </div>
-</div>
+<h4>Periódico e Conferência</h4>
 <br/>
 
 
@@ -255,84 +230,14 @@
 
 <br/>
 
-<!--
-<div class="cards-totais">
-    <div class="card-info">
-        <div class="title-info">
-            <span>
-              
-                <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-                    <path fill-rule="evenodd" d="M12 6a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7Zm-1.5 8a4 4 0 0 0-4 4 2 2 0 0 0 2 2h7a2 2 0 0 0 2-2 4 4 0 0 0-4-4h-3Zm6.82-3.096a5.51 5.51 0 0 0-2.797-6.293 3.5 3.5 0 1 1 2.796 6.292ZM19.5 18h.5a2 2 0 0 0 2-2 4 4 0 0 0-4-4h-1.1a5.503 5.503 0 0 1-.471.762A5.998 5.998 0 0 1 19.5 18ZM4 7.5a3.5 3.5 0 0 1 5.477-2.889 5.5 5.5 0 0 0-2.796 6.293A3.501 3.501 0 0 1 4 7.5ZM7.1 12H6a4 4 0 0 0-4 4 2 2 0 0 0 2 2h.5a5.998 5.998 0 0 1 3.071-5.238A5.505 5.505 0 0 1 7.1 12Z" clip-rule="evenodd"/>
-                  </svg>
-                  
-                </span>
-            <p class="title-text-info">
-                Média das publicações totais de periódicos
-            </p>
-        
-        </div>
-        <div class="data-info" somaNotas="{{ mediaTotal }}">
-            <p>
-               N/A
-            </p>
-            
-        </div>
-    </div>
-
-     <div class="card-info">
-        <div class="title-info">
-            <span>
-              
-                <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-                    <path fill-rule="evenodd" d="M12 6a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7Zm-1.5 8a4 4 0 0 0-4 4 2 2 0 0 0 2 2h7a2 2 0 0 0 2-2 4 4 0 0 0-4-4h-3Zm6.82-3.096a5.51 5.51 0 0 0-2.797-6.293 3.5 3.5 0 1 1 2.796 6.292ZM19.5 18h.5a2 2 0 0 0 2-2 4 4 0 0 0-4-4h-1.1a5.503 5.503 0 0 1-.471.762A5.998 5.998 0 0 1 19.5 18ZM4 7.5a3.5 3.5 0 0 1 5.477-2.889 5.5 5.5 0 0 0-2.796 6.293A3.501 3.501 0 0 1 4 7.5ZM7.1 12H6a4 4 0 0 0-4 4 2 2 0 0 0 2 2h.5a5.998 5.998 0 0 1 3.071-5.238A5.505 5.505 0 0 1 7.1 12Z" clip-rule="evenodd"/>
-                  </svg>
-                  
-                </span>
-            <p class="title-text-info">
-                Publicações totais de conferências
-            </p>
-        
-        </div>
-        <div class="data-info" somaNotas="{{ mediaTotal }}">
-            <p>
-                N/A
-            </p>
-            
-        </div>
-    </div>
-   
-    <div class="card-info">
-        <div class="title-info">
-            <span>
-              
-                <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-                    <path fill-rule="evenodd" d="M12 6a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7Zm-1.5 8a4 4 0 0 0-4 4 2 2 0 0 0 2 2h7a2 2 0 0 0 2-2 4 4 0 0 0-4-4h-3Zm6.82-3.096a5.51 5.51 0 0 0-2.797-6.293 3.5 3.5 0 1 1 2.796 6.292ZM19.5 18h.5a2 2 0 0 0 2-2 4 4 0 0 0-4-4h-1.1a5.503 5.503 0 0 1-.471.762A5.998 5.998 0 0 1 19.5 18ZM4 7.5a3.5 3.5 0 0 1 5.477-2.889 5.5 5.5 0 0 0-2.796 6.293A3.501 3.501 0 0 1 4 7.5ZM7.1 12H6a4 4 0 0 0-4 4 2 2 0 0 0 2 2h.5a5.998 5.998 0 0 1 3.071-5.238A5.505 5.505 0 0 1 7.1 12Z" clip-rule="evenodd"/>
-                  </svg>
-                  
-                </span>
-            <p class="title-text-info">
-                Média das publicações totais de conferências do intervalo
-            </p>
-        
-        </div>
-        <div class="data-info" somaNotas="{{ mediaTotal }}">
-            <p>
-                N/A
-            </p>
-            
-        </div>
-    </div>
-
-</div> -->
-
 <br/>
+
+<h4>Relação de Publicações</h4>
+
 
 
 <div class="cards">
-    <div class="card-header">
-        <i class="fas fa-table me-1"></i>
-        Relação das publicações
-    </div>
+  
     <div class="card-body container">
         <table
             id="resultados"
@@ -436,15 +341,52 @@
         </div>
     </div>
 </div>
+<br/>
 
-<!-- fim modal -->
-<br />
+<br/>
+
+<h4>Gráfico de Colaboração entre Professores</h4>
 
 <div class="cards">
-    <div class="card-header">
-        <i class="fas fa-table me-1"></i>
-        Tabela de Colaboração
+    
+    <div class="card-body">
+        <div class="row">
+            <div class="colaboracao col-sm-10">
+                <div id="div-imagem">
+                    <img
+                        src="{{url_for('static', filename='images/matriz_colaboracao_circular.png')}}"
+                        id="colaboracao"
+                        class="colaboracao"
+                        alt="Matriz de Colaboração"
+                    />
+                </div>
+            </div>
+
+            <div class="col-sm-2">
+                <label class="mb-2">Tipo de Grafo:</label>
+                <select
+                    class="form-select form-select-sm mb-3"
+                    name="tipo_grafo"
+                    id="tipo_grafo"
+                    onchange="javascript:tipoGrafo(this);"
+                >
+                    <option value="circular">Circular</option>
+                    <option value="kamada_kawai">Kamada Kawai</option>
+                    <option value="planar">Planar</option>
+                    <option value="random">Random</option>
+                </select>
+            </div>
+        </div>
     </div>
+</div>
+<br/>
+
+<br/>
+
+<h4>Projetos Colaborativos</h4>
+
+<div class="cards">
+   
     <div class="card-body container">
         <table
             id="res"

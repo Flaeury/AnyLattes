@@ -2,7 +2,8 @@
 {%block content%}
 
 <div class="container" style="text-align: center;">
-    <h1>{%block title%} Arquivos Qualis {%endblock%}</h1>
+   
+    <h3 class="lat mt-lg-4 mb-lg-4"> Arquivos Qualis</h3 style="align-items-center">
     <!-- <div class="spinner-wrapper">
         <div class="spinner-border text-primary" role="status">
             <span class="visually-hidden">Loading...</span>
@@ -10,10 +11,7 @@
     </div> -->
 
     <form action="{{url_for('imports')}}" method="post" enctype="multipart/form-data" id="forms" class="form-inline">
-        <ol class="breadcrumb mb-4">
-            <li class="breadcrumb-item"><a href="{{url_for('index')}}">Dashboard</a></li>
-            <li class="breadcrumb-item active">Arquivos Qualis</li>
-        </ol>
+       
     
         <div class="card mb-4">
             <div class="card-header">
@@ -25,7 +23,7 @@
             <div class="card-body">
                 <div class="input-group">
                     <input class="form-control" type="file" name="files[]" id="file" multiple required>
-                    <input class="btn btn-outline-success" type="submit" value="Enviar" name="enviar">
+                    <input class="btn btn-lattes" type="submit" value="Enviar" name="enviar">
                 </div>
             </div>
             
