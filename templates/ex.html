@@ -1,0 +1,48 @@
+<div
+style="padding: 1rem"
+class="section-import rounded card-link col-md-5 d-flex align-items-end justify-content-end">
+<div
+    class="form-group row justify-content-between"
+    style="margin-right: 1rem">
+    <label
+        for="ano_inicio"
+        class="col-form-label col-md-1"
+        style="margin-right: 0.3rem">De:</label>
+    <div class="col-md-4">
+        <input
+            type="number"
+            class="form-control"
+            name="ano_inicio"
+            id="ano_inicio"
+            min="1900"
+            minlength="5"
+            maxlength="5"
+            value="{{ano_inicio}}"
+            required />
+    </div>
+
+    <label
+        for="ano_fim"
+        class="col-form-label col-md-1"
+        style="margin-right: 0.3rem">Até:</label>
+    <div class="col-md-4">
+        <input
+            type="number"
+            class="form-control"
+            name="ano_fim"
+            action="{{ url_for('resultado_total') }}"
+            minlength="5"
+            maxlength="5"
+            value="{{ano_fim}}"
+            required />
+    </div>
+</div>
+<div class="col-md-3">
+    <button
+        type="submit"
+        value="Enviar"
+        class="btn w-100 btn-lattes ">
+        Recarregar
+    </button>
+</div>
+<div/>
