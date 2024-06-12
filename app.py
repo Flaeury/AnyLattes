@@ -440,11 +440,10 @@ def resultado_total():
 
     val1 = str(m[-1])
 
-    # Criando o gráfico com Plotly Express
+  
     figura = px.bar(dados, x='Docente', y='Pontuação',
                     color_discrete_sequence=px.colors.qualitative.T10, template='plotly_white', text='Pontuação')
 
-    # Adicionando a linha de média
     figura.add_shape(
         type="line",
         x0=-0.5,
@@ -453,7 +452,6 @@ def resultado_total():
         y1=mediaTotal,
         line=dict(color="orange", width=3)
     )
-
 
 
     figura.add_scatter(x=docente, y=mediana, xaxis='x',
