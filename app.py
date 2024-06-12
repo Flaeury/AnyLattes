@@ -328,7 +328,6 @@ def resultado_total():
     to_year = request.args.get('ano_fim', str(datetime.date.today().year))
     nome_docente = request.args.get('nome_docente', '*')
 
-    dados = todosContador(from_year=from_year, to_year=to_year, nome_docente=nome_docente)
 
     listar = lista(from_year=from_year,
                           to_year=to_year, nome_docente=nome_docente)
@@ -336,11 +335,13 @@ def resultado_total():
     contadorEstratos = total_estratos(from_year, to_year, nome_docente)
     docentes = get_nome_docente()
 
-    somaNotas = soma_nota(from_year, to_year, nome_docente)
-    
     total_periodicos = totalPeriodicos(from_year=from_year, to_year=to_year, nome_docente=nome_docente)
     
     total_conferencias = totalConferencias(from_year=from_year, to_year=to_year, nome_docente=nome_docente)
+    
+    somaNotas = soma_nota(from_year, to_year, nome_docente)
+    
+    dados = todosContador(from_year=from_year, to_year=to_year, nome_docente=nome_docente)
 
     conteudo = {}
     div = []
@@ -359,6 +360,46 @@ def resultado_total():
                  color='Estratos', barmode='stack')
 
     graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+    
+    dadosPeriodico = todosPeriodicos(from_year=from_year, to_year=to_year, nome_docente=nome_docente)
+    
+    conteudo = {}
+    div = []
+    for d in dadosPeriodico:
+        conteudo = {'Ano': d[0], 'Estratos': d[1], 'Quantidade': d[2]}
+        div.append(conteudo)
+        conteudo = {}
+    json_object = json.dumps(div, indent=4)
+    with open("todosPeriodico.json", "w") as outfile:
+        outfile.write(json_object)
+
+    with open('todosPeriodico.json', 'r') as file:
+        data = json.load(file)
+
+    fig = px.bar(data, x='Ano', y='Quantidade',
+                 color='Estratos', barmode='stack')
+    
+    graphJSONPeriodico = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+    
+    dadosConferencia = todosConferencias(from_year=from_year, to_year=to_year, nome_docente=nome_docente)
+    
+    conteudo = {}
+    div = []
+    for d in dadosConferencia:
+        conteudo = {'Ano': d[0], 'Estratos': d[1], 'Quantidade': d[2]}
+        div.append(conteudo)
+        conteudo = {}
+    json_object = json.dumps(div, indent=4)
+    with open("todosConferencia.json", "w") as outfile:
+        outfile.write(json_object)
+
+    with open('todosConferencia.json', 'r') as file:
+        data = json.load(file)
+
+    fig = px.bar(data, x='Ano', y='Quantidade',
+                 color='Estratos', barmode='stack')
+    
+    graphJSONConferencia = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
 
     anos = []
     for c in data:
@@ -384,8 +425,7 @@ def resultado_total():
     with open('media_docentes.json', 'r') as med:
         dados = json.load(med)
 
-    mediaTotal = grafico_para_media(
-        from_year=from_year, to_year=to_year, nome_docente=nome_docente)
+    mediaTotal = grafico_para_media(from_year=from_year, to_year=to_year, nome_docente=nome_docente)
 
     docente = []
     media = []
@@ -399,15 +439,35 @@ def resultado_total():
     m.append(dados[-1]['Mediana'])
 
     val1 = str(m[-1])
+
+    # Criando o gráfico com Plotly Express
     figura = px.bar(dados, x='Docente', y='Pontuação',
                     color_discrete_sequence=px.colors.qualitative.T10, template='plotly_white', text='Pontuação')
+
+    # Adicionando a linha de média
+    figura.add_shape(
+        type="line",
+        x0=-0.5,
+        y0=mediaTotal,
+        x1=len(docente)-0.5,
+        y1=mediaTotal,
+        line=dict(color="orange", width=3)
+    )
+
+
+
     figura.add_scatter(x=docente, y=mediana, xaxis='x',
-                       name="Mediana: "+val1, marker=dict(color="crimson"))
+                   name="Mediana: "+val1, marker=dict(color="crimson"))
+
+ 
+    figura.add_scatter(x=docente, y=[mediaTotal] * len(docente),
+                    mode='lines', name="Média: " + mediaTotal, line=dict(color="orange"))
 
     figura.update_layout(
         yaxis=dict(
             tickmode="array",
-            tickfont=dict(size=15), tickangle=0
+            tickfont=dict(size=15),
+            tickangle=0
         ),
         font=dict(size=12)
     )
@@ -416,7 +476,6 @@ def resultado_total():
     figura.update_yaxes(showticklabels=True)
 
     medias = json.dumps(figura, cls=plotly.utils.PlotlyJSONEncoder)
-
     colaboracao = grafico_colaboracao(from_year=from_year, to_year=to_year, nome_docente=nome_docente)
 
     valor_padrao = 'circular'
@@ -432,27 +491,6 @@ def resultado_total():
             docentes_selecionados.append(item[0])
     else:
         docentes_selecionados = nome_docente.split(';')
-    
-    # dadosPeriodicos = todosPeriodicos(from_year=from_year, to_year=to_year, nome_docente=nome_docente)
-        
-    # div = []
-    # for d in dadosPeriodicos:
-    #     conteudo = {'Ano': d[0], 'Estratos': d[1], 'Quantidade': d[2]}
-    #     div.append(conteudo)
-
-    # # Save to JSON file
-    # with open("todosPeriodicos.json", "w") as outfile:
-    #     json.dump(div, outfile, indent=4)
-
-    # # Load data from JSON file
-    # with open('todosPeriodicos.json', 'r') as file:
-    #     data = json.load(file)
-
-    # # Create the Plotly bar chart
-    # fig = px.bar(data, x='Ano', y='Quantidade', color='Estratos', barmode='stack')
-
-    # # Convert Plotly figure to JSON
-    # graphJSONPeriodicos graph_periodicols=plotly.utils.PlotlyJSONEncoder)
     
     
     # dadosConferencias = todosConferencias(from_year=from_year, to_year=to_year, nome_docente=nome_docente)
@@ -478,41 +516,51 @@ def resultado_total():
 
     pizzaPeriodico(from_year=from_year, to_year=to_year, nome_docente=nome_docente)
     
-    # Carrega os dados do arquivo JSON gerado pela função pizzaPeriodico
     with open('pizzaPeriodico.json', 'r') as piz:
         d = json.load(piz)
-        names_periodico = ['A1', 'A2', 'A3', 'A4', 'B1', 'B2', 'B3', 'B4', 'C', 'Não Classificado']
+        names_periodico = [
+            f"A1 - {int(d[0]['A1'])}", f"A2 - {int(d[0]['A2'])}", f"A3 - {int(d[0]['A3'])}",
+            f"A4 - {int(d[0]['A4'])}", f"B1 - {int(d[0]['B1'])}", f"B2 - {int(d[0]['B2'])}",
+            f"B3 - {int(d[0]['B3'])}", f"B4 - {int(d[0]['B4'])}", f"C - {int(d[0]['C'])}",
+            f"S/ Estrato - {int(d[0]['nao_classificado'])}"
+        ]
         values_periodico = [
             d[0]['Percentual_A1'], d[0]['Percentual_A2'], d[0]['Percentual_A3'], d[0]['Percentual_A4'],
             d[0]['Percentual_B1'], d[0]['Percentual_B2'], d[0]['Percentual_B3'], d[0]['Percentual_B4'],
             d[0]['Percentual_C'], d[0]['nao_classificado']
         ]
 
-    # Cria o gráfico de pizza para periódicos
     figs_periodico = px.pie(names=names_periodico, values=values_periodico)
     
-    # Chama a função pizzaConferencia
     pizzaConferencia(from_year=from_year, to_year=to_year, nome_docente=nome_docente)
     
-    # Carrega os dados do arquivo JSON gerado pela função pizzaConferencia
+    
     with open('pizzaConferencia.json', 'r') as piz:
         d = json.load(piz)
-        names_conferencia = ['A1', 'A2', 'A3', 'A4', 'B1', 'B2', 'B3', 'B4', 'C', 'Não Classificado']
+        names_conferencia = [
+            f"A1 - {int(d[0]['A1'])}", f"A2 - {int(d[0]['A2'])}", f"A3 - {int(d[0]['A3'])}",
+            f"A4 - {int(d[0]['A4'])}", f"B1 - {int(d[0]['B1'])}", f"B2 - {int(d[0]['B2'])}",
+            f"B3 - {int(d[0]['B3'])}", f"B4 - {int(d[0]['B4'])}", f"C - {int(d[0]['C'])}",
+            f"S/ Estrato - {int(d[0]['nao_classificado'])}"
+        ]
         values_conferencia = [
             d[0]['Percentual_A1'], d[0]['Percentual_A2'], d[0]['Percentual_A3'], d[0]['Percentual_A4'],
             d[0]['Percentual_B1'], d[0]['Percentual_B2'], d[0]['Percentual_B3'], d[0]['Percentual_B4'],
             d[0]['Percentual_C'], d[0]['nao_classificado']
         ]
 
-    # Cria o gráfico de pizza para conferências
+    # Cria o gráfico de pizza com os nomes ajustados
     figs_conferencia = px.pie(names=names_conferencia, values=values_conferencia)
     
-    # Exporta os gráficos como JSON
+    
+    
     graph_periodico = json.dumps(figs_periodico, cls=plotly.utils.PlotlyJSONEncoder)
     graph_conferencia = json.dumps(figs_conferencia, cls=plotly.utils.PlotlyJSONEncoder)
 
     return render_template("resultados.html", anos=anos, 
                            graphJSON=graphJSON, graph=graph, 
+                           graphJSONPeriodico=graphJSONPeriodico,
+                           graphJSONConferencia=graphJSONConferencia,
                            graph_periodico=graph_periodico,
                            graph_conferencia=graph_conferencia,
                            medias=medias, 

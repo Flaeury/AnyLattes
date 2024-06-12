@@ -245,7 +245,7 @@
                 </div>
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-sm-11" id="chart"></div>
+                        <div class="col-sm-11" id="todosPeriodico"></div>
                     </div>
                 </div>
             </div>
@@ -284,7 +284,7 @@
                 </div>
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-sm-11" id="chart"></div>
+                        <div class="col-sm-11" id="todosConferencia"></div>
                     </div>
                 </div>
             </div>
@@ -556,6 +556,16 @@
 <script type="text/javascript">
     var graphs = {{ graphJSON | safe}}
     Plotly.newPlot('chart', graphs, {});
+</script>
+
+<script type="text/javascript">
+    var graphs = {{ graphJSONPeriodico | safe}}
+    Plotly.newPlot('todosPeriodico', graphs, {});
+</script>
+
+<script type="text/javascript">
+    var graphs = {{ graphJSONConferencia | safe}}
+    Plotly.newPlot('todosConferencia', graphs, {});
 </script>
 
 <script type="text/javascript">

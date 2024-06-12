@@ -8,6 +8,7 @@ import statistics
 import networkx as nx
 import matplotlib
 matplotlib.use('Agg')
+
 # from wordcloud import WordCloud
 # import nltk
 # import wordcloud
@@ -54,12 +55,15 @@ def pizzaPeriodico(from_year, to_year, nome_docente='*'):
             'Total': n[0], 'Percentual_A1': n[1], 'Percentual_A2': n[2],
             'Percentual_A3': n[3], 'Percentual_A4': n[4], 'Percentual_B1': n[5],
             'Percentual_B2': n[6], 'Percentual_B3': n[7], 'Percentual_B4': n[8],
-            'Percentual_C': n[9], 'nao_classificado': n[10]
+            'Percentual_C': n[9], 'nao_classificado': n[10],
+            'A1': n[0] * n[1] / 100.0, 'A2': n[0] * n[2] / 100.0, 'A3': n[0] * n[3] / 100.0,
+            'A4': n[0] * n[4] / 100.0, 'B1': n[0] * n[5] / 100.0, 'B2': n[0] * n[6] / 100.0,
+            'B3': n[0] * n[7] / 100.0, 'B4': n[0] * n[8] / 100.0, 'C': n[0] * n[9] / 100.0,
+            'nao_classificado': n[0] * n[10] / 100.0
         }
         lista.append(content)
-        content = {}
 
-    json_object = json.dumps(lista, indent=4)
+    json_object = json.dumps(lista)
     with open("pizzaPeriodico.json", "w") as outfile:
         outfile.write(json_object)
         
@@ -73,14 +77,18 @@ def pizzaConferencia(from_year, to_year, nome_docente='*'):
             'Total': n[0], 'Percentual_A1': n[1], 'Percentual_A2': n[2],
             'Percentual_A3': n[3], 'Percentual_A4': n[4], 'Percentual_B1': n[5],
             'Percentual_B2': n[6], 'Percentual_B3': n[7], 'Percentual_B4': n[8],
-            'Percentual_C': n[9], 'nao_classificado': n[10]
+            'Percentual_C': n[9], 'nao_classificado': n[10],
+            'A1': n[0] * n[1] / 100.0, 'A2': n[0] * n[2] / 100.0, 'A3': n[0] * n[3] / 100.0,
+            'A4': n[0] * n[4] / 100.0, 'B1': n[0] * n[5] / 100.0, 'B2': n[0] * n[6] / 100.0,
+            'B3': n[0] * n[7] / 100.0, 'B4': n[0] * n[8] / 100.0, 'C': n[0] * n[9] / 100.0,
+            'nao_classificado': n[0] * n[10] / 100.0
         }
         lista.append(content)
-        content = {}
 
-    json_object = json.dumps(lista, indent=4)
+    json_object = json.dumps(lista)
     with open("pizzaConferencia.json", "w") as outfile:
         outfile.write(json_object)
+
 
 def pizza_por_docente(docente):
     valor = perc_docente(docente)
@@ -106,8 +114,8 @@ def grafico_media(from_year, to_year, nome_docente='*'):
 
     for n in nota:
         notas.append(n[1])
-    mediana = statistics.median(notas)
-    mediaTotal = statistics.mean(notas)
+    md = statistics.median(notas)
+    mediana = "{:.3f}".format(md)
     print(mediana)
 
     lista = []
@@ -133,7 +141,7 @@ def grafico_para_media(from_year, to_year, nome_docente='*'):
     for n in nota:
         notas.append(n[1])
     media = statistics.mean(notas)
-    mediaTotal = "{:.4f}".format(media)
+    mediaTotal = "{:.3f}".format(media)
 
     return mediaTotal
 

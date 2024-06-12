@@ -13,86 +13,61 @@ def contador(nome_docente):
 
     return resultado
 
-
 def todosContador(from_year, to_year, nome_docente='*'):
-    sql = "select ano_evento, estratos, count(estratos) as quantidade from resultados WHERE ano_evento >= " + \
-        from_year + " AND ano_evento <= " + to_year + \
-        " group by estratos, ano_evento order by ano_evento asc"
+    sql = ("SELECT ano_evento, estratos, COUNT(estratos) AS quantidade "
+           "FROM resultados "
+           "WHERE ano_evento >= ? AND ano_evento <= ? ")
+
+    params = [from_year, to_year]
 
     if nome_docente != '*':
-        sql = "select ano_evento, estratos, count(estratos) as quantidade from resultados WHERE nome_docente in('" + "','".join(nome_docente.split(
-            ';')) + "') AND ano_evento >= " + from_year + " AND ano_evento <= " + to_year + " group by estratos, ano_evento order by ano_evento asc"
+        docentes = nome_docente.split(';')
+        sql += "AND nome_docente IN ({}) ".format(','.join(['?'] * len(docentes)))
+        params.extend(docentes)
 
-    resultado = cursor.execute(sql)
+    sql += "GROUP BY estratos, ano_evento ORDER BY estratos ASC"
 
+    cursor = db.cursor()
+    cursor.execute(sql, params)
+    resultado = cursor.fetchall()
     return resultado
 
+def todosPeriodicos(from_year, to_year, nome_docente='*'):
+    sql = ("SELECT ano_evento, estratos, COUNT(estratos) AS quantidade "
+           "FROM resultados "
+           "WHERE documento LIKE '%Peri%' AND ano_evento >= ? AND ano_evento <= ? ")
+    
+    params = [from_year, to_year]
+    
+    if nome_docente != '*':
+        docentes = nome_docente.split(';')
+        sql += "AND nome_docente IN ({}) ".format(','.join(['?'] * len(docentes)))
+        params.extend(docentes)
+    
+    sql += "GROUP BY estratos, ano_evento ORDER BY estratos ASC"
+    
+    cursor = db.cursor()
+    cursor.execute(sql, params)
+    resultado = cursor.fetchall()
+    return resultado
 
-# def todosPeriodicos(from_year, to_year, nome_docente='*'):
-#     # Build the base SQL query
-#     sql = ("SELECT ano_evento, estratos, COUNT(estratos) AS quantidade "
-#            "FROM resultados r "
-#            "WHERE r.documento LIKE '%Peri%' "
-#            "AND r.ano_evento >= ? AND r.ano_evento <= ? ")
+def todosConferencias(from_year, to_year, nome_docente='*'):
+    sql = ("SELECT ano_evento, estratos, COUNT(estratos) AS quantidade "
+           "FROM resultados "
+           "WHERE documento LIKE '%Conf%' AND ano_evento >= ? AND ano_evento <= ? ")
     
-#     # Add condition for specific docente if provided
-#     if nome_docente != '*':
-#         docentes = "','".join(nome_docente.split(';'))
-#         sql += f"AND r.nome_docente IN ('{docentes}') "
+    params = [from_year, to_year]
     
-#     # Complete the SQL query
-#     sql += "GROUP BY estratos, ano_evento ORDER BY ano_evento ASC"
+    if nome_docente != '*':
+        docentes = nome_docente.split(';')
+        sql += "AND nome_docente IN ({}) ".format(','.join(['?'] * len(docentes)))
+        params.extend(docentes)
     
-#     # Connect to the database and execute the query
-#     conn = sqlite3.connect('database.db')  # Use the correct database file
-#     cursor = conn.cursor()
-    
-#     # Execute the query with parameters
-#     cursor.execute(sql, (from_year, to_year))
-    
-#     # Fetch all results
-#     resultado = cursor.fetchall()
-    
-#     # Close the connection
-#     conn.close()
-    
-#     return resultado
+    sql += "GROUP BY estratos, ano_evento ORDER BY estratos ASC"
 
-
-# def todosConferencias(from_year, to_year, nome_docente='*'):
-#     # Build the base SQL query
-#     sql = ("SELECT ano_evento, estratos, COUNT(estratos) AS quantidade "
-#            "FROM resultados r "
-#            "WHERE r.documento LIKE '%Conf%' "
-#            "AND r.ano_evento >= ? AND r.ano_evento <= ? ")
-    
-#     # Add condition for specific docente if provided
-#     if nome_docente != '*':
-#         docentes = "','".join(nome_docente.split(';'))
-#         sql += f"AND r.nome_docente IN ('{docentes}') "
-    
-#     # Complete the SQL query
-#     sql += "GROUP BY estratos, ano_evento ORDER BY ano_evento ASC"
-    
-#     # Connect to the database and execute the query
-#     conn = sqlite3.connect('database.db')  # Use the correct database file
-#     cursor = conn.cursor()
-    
-#     # Execute the query with parameters
-#     cursor.execute(sql, (from_year, to_year))
-    
-#     # Fetch all results
-#     resultado = cursor.fetchall()
-    
-#     # Close the connection
-#     conn.close()
-    
-#     return resultado
-
-
-def periodicos():
-    sql = "select count(1) from resultados where documento = 'Periodico' GROUP by nome_docente,documento"
-    resultado = cursor.execute(sql)
+    cursor = db.cursor()
+    cursor.execute(sql, params)
+    resultado = cursor.fetchall()
     return resultado
 
 

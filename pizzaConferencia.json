@@ -1,15 +1,1 @@
-[
-    {
-        "Total": 150,
-        "Percentual_A1": 9.333,
-        "Percentual_A2": 0.667,
-        "Percentual_A3": 5.333,
-        "Percentual_A4": 4.667,
-        "Percentual_B1": 8.0,
-        "Percentual_B2": 1.333,
-        "Percentual_B3": 4.667,
-        "Percentual_B4": 14.0,
-        "Percentual_C": 0.0,
-        "nao_classificado": 52.0
-    }
-]
+[{"Total": 58, "Percentual_A1": 8.621, "Percentual_A2": 0.0, "Percentual_A3": 3.448, "Percentual_A4": 8.621, "Percentual_B1": 6.897, "Percentual_B2": 3.448, "Percentual_B3": 8.621, "Percentual_B4": 22.414, "Percentual_C": 0.0, "nao_classificado": 21.99998, "A1": 5.00018, "A2": 0.0, "A3": 1.99984, "A4": 5.00018, "B1": 4.00026, "B2": 1.99984, "B3": 5.00018, "B4": 13.000120000000003, "C": 0.0}]

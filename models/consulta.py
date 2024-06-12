@@ -308,7 +308,7 @@ def percConferencia(from_year, to_year, nome_docente='*'):
     return resultado
 
 def percPeriodico(from_year, to_year, nome_docente='*'):
-    # Definição da query SQL base para periódicos
+
     sql = (
         "SELECT total, "
         "ROUND(A1 * 100.0 / total, 3) AS percentual_A1, "
@@ -342,8 +342,11 @@ def percPeriodico(from_year, to_year, nome_docente='*'):
 
     if nome_docente != '*':
         sql += " AND r.nome_docente in('" + "','".join(nome_docente.split(';')) + "')"
-
+    
+    
     sql += ") AS subquery;"
+    
+    
 
     cursor = db.cursor()
     cursor.execute(sql)
@@ -353,66 +356,7 @@ def percPeriodico(from_year, to_year, nome_docente='*'):
     return resultado
 
 
-def todosPeriodicos(from_year, to_year, nome_docente='*'):
-    # Build the base SQL query
-    sql = ("SELECT ano_evento, estratos, COUNT(estratos) AS quantidade "
-           "FROM resultados r "
-           "WHERE r.documento LIKE '%Peri%' "
-           "AND r.ano_evento >= ? AND r.ano_evento <= ? ")
-    
-    # Add condition for specific docente if provided
-    if nome_docente != '*':
-        docentes = "','".join(nome_docente.split(';'))
-        sql += f"AND r.nome_docente IN ('{docentes}') "
-    
-    # Complete the SQL query
-    sql += "GROUP BY estratos, ano_evento ORDER BY ano_evento ASC"
-    
-    # Connect to the database and execute the query
-    conn = sqlite3.connect('database.db')  # Use the correct database file
-    cursor = conn.cursor()
-    
-    # Execute the query with parameters
-    cursor.execute(sql, (from_year, to_year))
-    
-    # Fetch all results
-    resultado = cursor.fetchall()
-    
-    # Close the connection
-    conn.close()
-    
-    return resultado
 
-
-def todosConferencias(from_year, to_year, nome_docente='*'):
-    # Build the base SQL query
-    sql = ("SELECT ano_evento, estratos, COUNT(estratos) AS quantidade "
-           "FROM resultados r "
-           "WHERE r.documento LIKE '%Conf%' "
-           "AND r.ano_evento >= ? AND r.ano_evento <= ? ")
-    
-    # Add condition for specific docente if provided
-    if nome_docente != '*':
-        docentes = "','".join(nome_docente.split(';'))
-        sql += f"AND r.nome_docente IN ('{docentes}') "
-    
-    # Complete the SQL query
-    sql += "GROUP BY estratos, ano_evento ORDER BY ano_evento ASC"
-    
-    # Connect to the database and execute the query
-    conn = sqlite3.connect('database.db')  # Use the correct database file
-    cursor = conn.cursor()
-    
-    # Execute the query with parameters
-    cursor.execute(sql, (from_year, to_year))
-    
-    # Fetch all results
-    resultado = cursor.fetchall()
-    
-    # Close the connection
-    conn.close()
-    
-    return resultado
 
 def totalPeriodicos(from_year, to_year, nome_docente='*'):
     # Consulta base para todos os registros sem filtro de docentes
