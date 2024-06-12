@@ -432,11 +432,89 @@ def resultado_total():
             docentes_selecionados.append(item[0])
     else:
         docentes_selecionados = nome_docente.split(';')
-
     
+    # dadosPeriodicos = todosPeriodicos(from_year=from_year, to_year=to_year, nome_docente=nome_docente)
+        
+    # div = []
+    # for d in dadosPeriodicos:
+    #     conteudo = {'Ano': d[0], 'Estratos': d[1], 'Quantidade': d[2]}
+    #     div.append(conteudo)
+
+    # # Save to JSON file
+    # with open("todosPeriodicos.json", "w") as outfile:
+    #     json.dump(div, outfile, indent=4)
+
+    # # Load data from JSON file
+    # with open('todosPeriodicos.json', 'r') as file:
+    #     data = json.load(file)
+
+    # # Create the Plotly bar chart
+    # fig = px.bar(data, x='Ano', y='Quantidade', color='Estratos', barmode='stack')
+
+    # # Convert Plotly figure to JSON
+    # graphJSONPeriodicos graph_periodicols=plotly.utils.PlotlyJSONEncoder)
+    
+    
+    # dadosConferencias = todosConferencias(from_year=from_year, to_year=to_year, nome_docente=nome_docente)
+        
+    # div = []
+    # for d in dadosConferencias:
+    #     conteudo = {'Ano': d[0], 'Estratos': d[1], 'Quantidade': d[2]}
+    #     div.append(conteudo)
+
+    # # Save to JSON file
+    # with open("todosConferencias.json", "w") as outfile:
+    #     json.dump(div, outfile, indent=4)
+
+    # # Load data from JSON file
+    # with open('todosConferencias.json', 'r') as file:
+    #     data = json.load(file)
+
+    # # Create the Plotly bar chart
+    # fig = px.bar(data, x='Ano', y='Quantidade', color='Estratos', barmode='stack')
+
+    # # Convert Plotly figure to JSON
+    # graphJSONConferencias = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+
+    pizzaPeriodico(from_year=from_year, to_year=to_year, nome_docente=nome_docente)
+    
+    # Carrega os dados do arquivo JSON gerado pela função pizzaPeriodico
+    with open('pizzaPeriodico.json', 'r') as piz:
+        d = json.load(piz)
+        names_periodico = ['A1', 'A2', 'A3', 'A4', 'B1', 'B2', 'B3', 'B4', 'C', 'Não Classificado']
+        values_periodico = [
+            d[0]['Percentual_A1'], d[0]['Percentual_A2'], d[0]['Percentual_A3'], d[0]['Percentual_A4'],
+            d[0]['Percentual_B1'], d[0]['Percentual_B2'], d[0]['Percentual_B3'], d[0]['Percentual_B4'],
+            d[0]['Percentual_C'], d[0]['nao_classificado']
+        ]
+
+    # Cria o gráfico de pizza para periódicos
+    figs_periodico = px.pie(names=names_periodico, values=values_periodico)
+    
+    # Chama a função pizzaConferencia
+    pizzaConferencia(from_year=from_year, to_year=to_year, nome_docente=nome_docente)
+    
+    # Carrega os dados do arquivo JSON gerado pela função pizzaConferencia
+    with open('pizzaConferencia.json', 'r') as piz:
+        d = json.load(piz)
+        names_conferencia = ['A1', 'A2', 'A3', 'A4', 'B1', 'B2', 'B3', 'B4', 'C', 'Não Classificado']
+        values_conferencia = [
+            d[0]['Percentual_A1'], d[0]['Percentual_A2'], d[0]['Percentual_A3'], d[0]['Percentual_A4'],
+            d[0]['Percentual_B1'], d[0]['Percentual_B2'], d[0]['Percentual_B3'], d[0]['Percentual_B4'],
+            d[0]['Percentual_C'], d[0]['nao_classificado']
+        ]
+
+    # Cria o gráfico de pizza para conferências
+    figs_conferencia = px.pie(names=names_conferencia, values=values_conferencia)
+    
+    # Exporta os gráficos como JSON
+    graph_periodico = json.dumps(figs_periodico, cls=plotly.utils.PlotlyJSONEncoder)
+    graph_conferencia = json.dumps(figs_conferencia, cls=plotly.utils.PlotlyJSONEncoder)
 
     return render_template("resultados.html", anos=anos, 
                            graphJSON=graphJSON, graph=graph, 
+                           graph_periodico=graph_periodico,
+                           graph_conferencia=graph_conferencia,
                            medias=medias, 
                            listar=listar, somaNotas=somaNotas, 
                            totalNotas=totalNotas,

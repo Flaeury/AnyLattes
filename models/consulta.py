@@ -262,6 +262,157 @@ def perc(from_year, to_year, nome_docente='*'):
 
     return resultado
 
+def percConferencia(from_year, to_year, nome_docente='*'):
+    # Definição da query SQL base para conferências
+    sql = (
+        "SELECT total, "
+        "ROUND(A1 * 100.0 / total, 3) AS percentual_A1, "
+        "ROUND(A2 * 100.0 / total, 3) AS percentual_A2, "
+        "ROUND(A3 * 100.0 / total, 3) AS percentual_A3, "
+        "ROUND(A4 * 100.0 / total, 3) AS percentual_A4, "
+        "ROUND(B1 * 100.0 / total, 3) AS percentual_B1, "
+        "ROUND(B2 * 100.0 / total, 3) AS percentual_B2, "
+        "ROUND(B3 * 100.0 / total, 3) AS percentual_B3, "
+        "ROUND(B4 * 100.0 / total, 3) AS percentual_B4, "
+        "ROUND(C * 100.0 / total, 3) AS percentual_C, "
+        "ROUND(nao_classificado * 100.0 / total, 3) AS nao_classificado "
+        "FROM ("
+        "  SELECT "
+        "    COUNT(*) AS total, "
+        "    SUM(CASE WHEN estratos = 'A1' THEN 1 ELSE 0 END) AS A1, "
+        "    SUM(CASE WHEN estratos = 'A2' THEN 1 ELSE 0 END) AS A2, "
+        "    SUM(CASE WHEN estratos = 'A3' THEN 1 ELSE 0 END) AS A3, "
+        "    SUM(CASE WHEN estratos = 'A4' THEN 1 ELSE 0 END) AS A4, "
+        "    SUM(CASE WHEN estratos = 'B1' THEN 1 ELSE 0 END) AS B1, "
+        "    SUM(CASE WHEN estratos = 'B2' THEN 1 ELSE 0 END) AS B2, "
+        "    SUM(CASE WHEN estratos = 'B3' THEN 1 ELSE 0 END) AS B3, "
+        "    SUM(CASE WHEN estratos = 'B4' THEN 1 ELSE 0 END) AS B4, "
+        "    SUM(CASE WHEN estratos = 'C' THEN 1 ELSE 0 END) AS C, "
+        "    SUM(CASE WHEN estratos = '-' THEN 1 ELSE 0 END) AS nao_classificado "
+        "  FROM resultados r "
+        "  WHERE r.documento LIKE '%Conf%' "  # Filtro específico para conferências
+        "    AND r.ano_evento >= " + str(from_year) + " "
+        "    AND r.ano_evento <= " + str(to_year)
+    )
+
+    if nome_docente != '*':
+        sql += " AND r.nome_docente in('" + "','".join(nome_docente.split(';')) + "')"
+
+    sql += ") AS subquery;"
+
+    cursor = db.cursor()
+    cursor.execute(sql)
+    resultado = cursor.fetchall()
+    print(f"Resultado Conferencias: {resultado}")
+
+    return resultado
+
+def percPeriodico(from_year, to_year, nome_docente='*'):
+    # Definição da query SQL base para periódicos
+    sql = (
+        "SELECT total, "
+        "ROUND(A1 * 100.0 / total, 3) AS percentual_A1, "
+        "ROUND(A2 * 100.0 / total, 3) AS percentual_A2, "
+        "ROUND(A3 * 100.0 / total, 3) AS percentual_A3, "
+        "ROUND(A4 * 100.0 / total, 3) AS percentual_A4, "
+        "ROUND(B1 * 100.0 / total, 3) AS percentual_B1, "
+        "ROUND(B2 * 100.0 / total, 3) AS percentual_B2, "
+        "ROUND(B3 * 100.0 / total, 3) AS percentual_B3, "
+        "ROUND(B4 * 100.0 / total, 3) AS percentual_B4, "
+        "ROUND(C * 100.0 / total, 3) AS percentual_C, "
+        "ROUND(nao_classificado * 100.0 / total, 3) AS nao_classificado "
+        "FROM ("
+        "  SELECT "
+        "    COUNT(*) AS total, "
+        "    SUM(CASE WHEN estratos = 'A1' THEN 1 ELSE 0 END) AS A1, "
+        "    SUM(CASE WHEN estratos = 'A2' THEN 1 ELSE 0 END) AS A2, "
+        "    SUM(CASE WHEN estratos = 'A3' THEN 1 ELSE 0 END) AS A3, "
+        "    SUM(CASE WHEN estratos = 'A4' THEN 1 ELSE 0 END) AS A4, "
+        "    SUM(CASE WHEN estratos = 'B1' THEN 1 ELSE 0 END) AS B1, "
+        "    SUM(CASE WHEN estratos = 'B2' THEN 1 ELSE 0 END) AS B2, "
+        "    SUM(CASE WHEN estratos = 'B3' THEN 1 ELSE 0 END) AS B3, "
+        "    SUM(CASE WHEN estratos = 'B4' THEN 1 ELSE 0 END) AS B4, "
+        "    SUM(CASE WHEN estratos = 'C' THEN 1 ELSE 0 END) AS C, "
+        "    SUM(CASE WHEN estratos = '-' THEN 1 ELSE 0 END) AS nao_classificado "
+        "  FROM resultados r "
+        "  WHERE r.documento LIKE '%Peri%' "  # Filtro específico para periódicos
+        "    AND r.ano_evento >= " + str(from_year) + " "
+        "    AND r.ano_evento <= " + str(to_year)
+    )
+
+    if nome_docente != '*':
+        sql += " AND r.nome_docente in('" + "','".join(nome_docente.split(';')) + "')"
+
+    sql += ") AS subquery;"
+
+    cursor = db.cursor()
+    cursor.execute(sql)
+    resultado = cursor.fetchall()
+    print(f"Resultado Periodicos: {resultado}")
+
+    return resultado
+
+
+def todosPeriodicos(from_year, to_year, nome_docente='*'):
+    # Build the base SQL query
+    sql = ("SELECT ano_evento, estratos, COUNT(estratos) AS quantidade "
+           "FROM resultados r "
+           "WHERE r.documento LIKE '%Peri%' "
+           "AND r.ano_evento >= ? AND r.ano_evento <= ? ")
+    
+    # Add condition for specific docente if provided
+    if nome_docente != '*':
+        docentes = "','".join(nome_docente.split(';'))
+        sql += f"AND r.nome_docente IN ('{docentes}') "
+    
+    # Complete the SQL query
+    sql += "GROUP BY estratos, ano_evento ORDER BY ano_evento ASC"
+    
+    # Connect to the database and execute the query
+    conn = sqlite3.connect('database.db')  # Use the correct database file
+    cursor = conn.cursor()
+    
+    # Execute the query with parameters
+    cursor.execute(sql, (from_year, to_year))
+    
+    # Fetch all results
+    resultado = cursor.fetchall()
+    
+    # Close the connection
+    conn.close()
+    
+    return resultado
+
+
+def todosConferencias(from_year, to_year, nome_docente='*'):
+    # Build the base SQL query
+    sql = ("SELECT ano_evento, estratos, COUNT(estratos) AS quantidade "
+           "FROM resultados r "
+           "WHERE r.documento LIKE '%Conf%' "
+           "AND r.ano_evento >= ? AND r.ano_evento <= ? ")
+    
+    # Add condition for specific docente if provided
+    if nome_docente != '*':
+        docentes = "','".join(nome_docente.split(';'))
+        sql += f"AND r.nome_docente IN ('{docentes}') "
+    
+    # Complete the SQL query
+    sql += "GROUP BY estratos, ano_evento ORDER BY ano_evento ASC"
+    
+    # Connect to the database and execute the query
+    conn = sqlite3.connect('database.db')  # Use the correct database file
+    cursor = conn.cursor()
+    
+    # Execute the query with parameters
+    cursor.execute(sql, (from_year, to_year))
+    
+    # Fetch all results
+    resultado = cursor.fetchall()
+    
+    # Close the connection
+    conn.close()
+    
+    return resultado
 
 def totalPeriodicos(from_year, to_year, nome_docente='*'):
     # Consulta base para todos os registros sem filtro de docentes

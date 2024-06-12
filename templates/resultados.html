@@ -227,6 +227,86 @@
     </div>
 </div>
 
+
+<br/>
+
+
+<h4>Periódicos</h4>
+
+
+<div class="cards">
+    <div class="row">
+        <!-- First Column -->
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header" id="card-header">
+                    <i class="fas fa-table me-1"></i>
+                    Periódicos por Ano
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-11" id="chart"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Second Column -->
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header info-cards">
+                    <i class="fas fa-chart-pie me-1"></i>
+                    Periódico
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-11" id="pizzaPeriodico"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<br/>
+
+
+<h4>Conferências</h4>
+
+<div class="cards">
+    <div class="row">
+        <!-- First Column -->
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header" id="card-header">
+                    <i class="fas fa-table me-1"></i>
+                    Conferências por Ano
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-11" id="chart"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Second Column -->
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header info-cards">
+                    <i class="fas fa-chart-pie me-1"></i>
+                    Conferência
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-11" id="pizzaConferencia"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <br/>
 
 <br/>
@@ -481,6 +561,17 @@
 <script type="text/javascript">
     var graphs = {{ graph | safe}}
     Plotly.newPlot('pizza', graphs, {});
+</script>
+
+
+<script type="text/javascript">
+    var graphs = {{ graph_periodico | safe}}
+    Plotly.newPlot('pizzaPeriodico', graphs, {});
+</script>
+
+<script type="text/javascript">
+    var graphs = {{ graph_conferencia | safe}}
+    Plotly.newPlot('pizzaConferencia', graphs, {});
 </script>
 
 <script>

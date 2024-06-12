@@ -41,7 +41,46 @@ def pizza(from_year, to_year, nome_docente='*'):
     json_object = json.dumps(lista, indent=4)
     with open("pizza.json", "w") as outfile:
         outfile.write(json_object)
+        
+    
 
+def pizzaPeriodico(from_year, to_year, nome_docente='*'):
+    valor = percPeriodico(from_year, to_year, nome_docente)
+    lista = []
+    content = {}
+
+    for n in valor:
+        content = {
+            'Total': n[0], 'Percentual_A1': n[1], 'Percentual_A2': n[2],
+            'Percentual_A3': n[3], 'Percentual_A4': n[4], 'Percentual_B1': n[5],
+            'Percentual_B2': n[6], 'Percentual_B3': n[7], 'Percentual_B4': n[8],
+            'Percentual_C': n[9], 'nao_classificado': n[10]
+        }
+        lista.append(content)
+        content = {}
+
+    json_object = json.dumps(lista, indent=4)
+    with open("pizzaPeriodico.json", "w") as outfile:
+        outfile.write(json_object)
+        
+def pizzaConferencia(from_year, to_year, nome_docente='*'):
+    valor = percConferencia(from_year, to_year, nome_docente)
+    lista = []
+    content = {}
+
+    for n in valor:
+        content = {
+            'Total': n[0], 'Percentual_A1': n[1], 'Percentual_A2': n[2],
+            'Percentual_A3': n[3], 'Percentual_A4': n[4], 'Percentual_B1': n[5],
+            'Percentual_B2': n[6], 'Percentual_B3': n[7], 'Percentual_B4': n[8],
+            'Percentual_C': n[9], 'nao_classificado': n[10]
+        }
+        lista.append(content)
+        content = {}
+
+    json_object = json.dumps(lista, indent=4)
+    with open("pizzaConferencia.json", "w") as outfile:
+        outfile.write(json_object)
 
 def pizza_por_docente(docente):
     valor = perc_docente(docente)
