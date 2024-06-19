@@ -812,12 +812,6 @@ def nuvem():
     return render_template('nuvem.html', prof=prof)
 
 
-@app.route("/nuvem_docente", methods=['POST', 'GET'])
-def nuvem_docente():
-    docente = request.form['query']
-    nuvem_por_docente(docente)
-    return render_template('nuvem.html')
-
 
 @app.route("/configuracoes")
 def configuracoes():

@@ -204,7 +204,3 @@ def tipo_grafo(valor, G):
 
 def nuvem_de_palavras():
     nuvem_geral()
-
-
-def nuvem_por_docente(docente):
-    nuvem_especifica(docente)

@@ -1,48 +1,134 @@
-<div
-style="padding: 1rem"
-class="section-import rounded card-link col-md-5 d-flex align-items-end justify-content-end">
-<div
-    class="form-group row justify-content-between"
-    style="margin-right: 1rem">
-    <label
-        for="ano_inicio"
-        class="col-form-label col-md-1"
-        style="margin-right: 0.3rem">De:</label>
-    <div class="col-md-4">
-        <input
-            type="number"
-            class="form-control"
-            name="ano_inicio"
-            id="ano_inicio"
-            min="1900"
-            minlength="5"
-            maxlength="5"
-            value="{{ano_inicio}}"
-            required />
-    </div>
-
-    <label
-        for="ano_fim"
-        class="col-form-label col-md-1"
-        style="margin-right: 0.3rem">Até:</label>
-    <div class="col-md-4">
-        <input
-            type="number"
-            class="form-control"
-            name="ano_fim"
-            action="{{ url_for('resultado_total') }}"
-            minlength="5"
-            maxlength="5"
-            value="{{ano_fim}}"
-            required />
-    </div>
-</div>
-<div class="col-md-3">
-    <button
-        type="submit"
-        value="Enviar"
-        class="btn w-100 btn-lattes ">
-        Recarregar
+<label style="display: none" id="deletar">
+    Remover Docente?
+    <button type="button" class="btn btn-outline-danger" name="deletar" onclick="deletarDocente();">
+      Deletar Docente
     </button>
+  </label>
+
+  <div
+  id="confirmation-toast"
+  class="toast slide-in-card"
+  role="alert"
+  aria-live="assertive"
+  aria-atomic="true"
+  style="position: fixed; top: 10%; right: 10px; min-width: 300px"
+>
+  <div class="toast-body text-center">
+    Deseja realmente remover <br />
+    <strong id="docente-name"></strong>?
+    <div class="mt-2 pt-2 border-top">
+      <button type="button" class="btn btn-primary btn-sm btn-take-action" onclick="confirmarRemocao()">
+        Confirmar
+      </button>
+      <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="toast">
+        Cancelar
+      </button>
+    </div>
+  </div>
 </div>
-<div/>
+
+<script>
+    function deletarDocente() {
+        var docenteSelecionado = $("#nome_docente").val();
+        if (docenteSelecionado && docenteSelecionado !== "DOCENTE") {
+          var toast = new bootstrap.Toast(document.getElementById("confirmation-toast"));
+          toast.show();
+        }
+      }
+
+
+      function confirmarRemocao() {
+        var docente = $("#nome_docente").val();
+        var $btn = $("#removeBtn");
+        $btn.prop("disabled", true); // Disable button
+        $btn.html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Removing...'); // Add spinner
+    
+        $.ajax({
+            url: "/deletarDocente/" + docente,
+            method: "POST",
+            success: function (data) {
+                if (data.status === "success") {
+                    document.getElementById("message").innerHTML +=
+                        "<div class='alert alert-success alert-dismissible fade show' role='alert'>" +
+                        data.message +
+                        "</div>";
+                    window.setTimeout(function () {
+                        location.reload(true);
+                    }, 2000);
+                } else {
+                    document.getElementById("message").innerHTML +=
+                        "<div class='alert alert-danger alert-dismissible fade show' role='alert'>" +
+                        data.message +
+                        "</div>";
+                    window.setTimeout(function () {
+                        location.reload(true);
+                    }, 2000);
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                document.getElementById("message").innerHTML +=
+                    "<div class='alert alert-danger alert-dismissible fade show' role='alert'>" +
+                    "An error occurred: " + errorThrown +
+                    "</div>";
+            },
+            complete: function () {
+                $btn.prop("disabled", false); // Re-enable button
+                $btn.html('Remove'); // Reset button text
+            }
+        });
+    }
+    
+
+
+    
+    
+      // Função para atualizar o botão de deletar quando o docente é selecionado
+      $("#nome_docente").change(function () {
+        var docenteSelecionado = $("#nome_docente").val();
+        if (docenteSelecionado && docenteSelecionado !== "DOCENTE") {
+          $("#deletar").show();
+          $("#docente-name").text(docenteSelecionado);
+        } else {
+          $("#deletar").hide();
+        }
+      });
+
+      
+  $("#nome_docente").change(function () {
+    atualizarBotaoDeletar();
+    var docenteSelecionado = $("#nome_docente").val();
+
+    if (docenteSelecionado && docenteSelecionado !== "DOCENTE") {
+      $("#deletar").show();
+      $("#docente-name").text(docenteSelecionado);
+      $("#hidden_value").val(docenteSelecionado); // Set the hidden value
+    } else {
+      $("#deletar").hide();
+      $("#hidden_value").val(""); // Clear the hidden value
+    }
+
+    var query = $("#hidden_value").val();
+    $("#mostrar").show();
+
+    var mostrar = document.getElementById("mostrar");
+    document.getElementById("mostrar").innerHTML = "";
+    document.getElementById("mostrar").innerHTML +=
+      "<select class='form-select form-select-sm mb-3' name='mostrar' id='mostrar'";
+    mostrar.innerHTML +=
+      "onchange='javascript:mostraAlerta(this);' style='display: none;'>";
+    mostrar.innerHTML +=
+      "<option value='producaoIntelectual'>Produção Intelectual</option>";
+    mostrar.innerHTML += "<option value='tabelaQte' selected>Notas</option>";
+    mostrar.innerHTML += "<option value='grafico'>Gráficos</option>";
+    mostrar.innerHTML += "<option value='nuvem'>Nuvem de Palavras</option>";
+    mostrar.innerHTML += "</select>";
+
+    ocultar(query);
+    $("#deletar").show();
+    $("#deletar").val("");
+    document.getElementById("nuvem").style.display = "None";
+    document.getElementById("div-nuvem").innerHTML =
+      "<img id='nuvem_especifica'>";
+  });
+    
+</script> 
