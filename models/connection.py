@@ -11,6 +11,27 @@ def conexao():
 
 conn = conexao()
 
+def tabela_iddocentes():
+    cursor = conn.cursor()
+    cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='iddocentes';")
+    if cursor.fetchone() is not None:
+        cursor.execute("PRAGMA table_info(iddocentes);")
+        columns = [col[1] for col in cursor.fetchall()]
+        if 'dataatualizacao' not in columns:
+            cursor.execute("ALTER TABLE iddocentes ADD COLUMN dataatualizacao TEXT;")
+    else:
+        create_db = """ CREATE TABLE IF NOT EXISTS iddocentes(
+                        id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+                        idlattes TEXT NOT NULL,
+                        nomedocente VARCHAR NOT NULL,
+                        dataatualizacao TEXT,
+                        dataanylattes TEXT
+                    );"""
+        cursor.execute(create_db)
+    conn.commit()
+
+    
+    
 def tabela_resultados():
     create_db = """
                 CREATE TABLE IF NOT EXISTS resultados(
@@ -37,7 +58,7 @@ def tabela_resultados():
     except Exception as e:
         print(e)
     # conn.close()
-    
+
 def tabela_pontuacoes():
     create_db = """ CREATE TABLE IF NOT EXISTS pontuacoes(
                     id INTEGER NOT NULL primary key autoincrement,

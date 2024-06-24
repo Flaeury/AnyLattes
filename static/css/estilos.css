@@ -232,6 +232,25 @@
   color: white;
 }
 
+.tabelaDocentes {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+.tabelaDocentes th, td {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+.tabelaDocentes th {
+  background-color: #f2f2f2;
+}
+.update-icon {
+  cursor: pointer;
+  color: blue;
+  text-decoration: underline;
+}
+
 .section-import2 {
   background-color: #ffffff;
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);

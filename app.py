@@ -92,9 +92,8 @@ def allowed_file(filename):
 @app.route("/")
 def index():
     docentes = listar_docentes()
-
     return render_template('index.html', docentes=docentes)
-
+    
 
 @app.route("/imports", methods=['GET', 'POST'])
 def imports():
@@ -102,31 +101,27 @@ def imports():
     if request.method == 'POST':
         if 'lattes_id' in request.form:
             try:
-                lattes = ",".join(request.form.get(
-                    'lattes_id', "").split(";")).split(",")
-
+                lattes = ",".join(request.form.get('lattes_id', "").split(";")).split(",")
                 if len(lattes) == 0:
                     flash("Lattes ID is required.")
                     return redirect(url_for('index'))
 
-                path_to_download = os.getcwd() + '/outputs'
+                path_to_download = os.path.join(os.getcwd(), 'outputs')
+                if not os.path.exists(path_to_download):
+                    os.makedirs(path_to_download)
+
                 options = Options()
                 options.set_preference('browser.download.folderList', 2)
-                options.set_preference(
-                    'browser.download.dir', path_to_download)
-                options.set_preference(
-                    'browser.helperApps.alwaysAsk.force', False)
-                options.set_preference(
-                    'browser.download.manager.showWhenStarting', False)
-                options.set_preference(
-                    'browser.helperApps.neverAsk.saveToDisk', 'application/zip')
+                options.set_preference('browser.download.dir', path_to_download)
+                options.set_preference('browser.helperApps.alwaysAsk.force', False)
+                options.set_preference('browser.download.manager.showWhenStarting', False)
+                options.set_preference('browser.helperApps.neverAsk.saveToDisk', 'application/zip')
 
                 driver = webdriver.Firefox(options=options)
                 width = height = 800
                 ss_w, ss_h = pyautogui.size()
                 driver.set_window_size(width, height)
-                driver.set_window_position(
-                    ss_w / 2 - width / 2, ss_h / 2 - height / 2)
+                driver.set_window_position(ss_w / 2 - width / 2, ss_h / 2 - height / 2)
 
                 lattes_url = 'http://buscatextual.cnpq.br/buscatextual/download.do?metodo=apresentar&idcnpq='
 
@@ -138,8 +133,7 @@ def imports():
                     frames = driver.find_elements(By.TAG_NAME, 'iframe')
                     driver.switch_to.frame(frames[0])
 
-                    driver.find_element(
-                        By.CLASS_NAME, 'recaptcha-checkbox-border').click()
+                    driver.find_element(By.CLASS_NAME, 'recaptcha-checkbox-border').click()
                     driver.switch_to.default_content()
 
                     button = driver.find_element(By.ID, 'submitBtn')
@@ -148,26 +142,22 @@ def imports():
                     time.sleep(1)
                     if not button.is_enabled():
                         time.sleep(1)
-                        frames = driver.find_element(
-                            By.XPATH, '/html/body/div[2]/div[4]').find_elements(By.TAG_NAME, 'iframe')
+                        frames = driver.find_element(By.XPATH, '/html/body/div[2]/div[4]').find_elements(By.TAG_NAME, 'iframe')
                         driver.switch_to.frame(frames[0])
 
                         time.sleep(random.randint(1, 2))
-                        driver.find_element(
-                            By.ID, 'recaptcha-audio-button').click()
+                        driver.find_element(By.ID, 'recaptcha-audio-button').click()
                         driver.switch_to.default_content()
 
                         frames = driver.find_elements(By.TAG_NAME, 'iframe')
                         driver.switch_to.frame(frames[-1])
 
                         time.sleep(1)
-                        driver.find_element(
-                            By.XPATH, '/html/body/div/div/div[3]/div/button').click()
+                        driver.find_element(By.XPATH, '/html/body/div/div/div[3]/div/button').click()
                         time.sleep(1)
-                        src = driver.find_element(
-                            By.ID, 'audio-source').get_attribute('src')
+                        src = driver.find_element(By.ID, 'audio-source').get_attribute('src')
                         time.sleep(1)
-                        file_name = path_to_download + '/sample.mp3'
+                        file_name = os.path.join(path_to_download, 'sample.mp3')
                         urllib.request.urlretrieve(src, file_name)
                         time.sleep(1)
                         sound = pydub.AudioSegment.from_mp3(file_name)
@@ -182,20 +172,18 @@ def imports():
 
                         key = r.recognize_google(audio)
 
-                        driver.find_element(
-                            By.ID, 'audio-response').send_keys(key.lower())
-                        driver.find_element(
-                            By.ID, 'audio-response').send_keys(Keys.ENTER)
+                        driver.find_element(By.ID, 'audio-response').send_keys(key.lower())
+                        driver.find_element(By.ID, 'audio-response').send_keys(Keys.ENTER)
                         driver.switch_to.default_content()
 
                         time.sleep(1)
                         driver.find_element(By.ID, 'submitBtn').click()
 
-                        shutil.move(str(Path.home()) + "/Downloads/" + idcnpq +
-                                    ".zip", os.getcwd() + "/arquivos/" + idcnpq + ".zip")
+                        shutil.move(os.path.join(str(Path.home()), "Downloads", idcnpq + ".zip"),
+                                    os.path.join(os.getcwd(), "arquivos", idcnpq + ".zip"))
 
-                        path_to_zipfile = os.getcwd() + "/arquivos/" + idcnpq + ".zip"
-                        destino_arquivo = "arquivos/"
+                        path_to_zipfile = os.path.join(os.getcwd(), "arquivos", idcnpq + ".zip")
+                        destino_arquivo = os.path.join(os.getcwd(), "arquivos")
 
                         if os.path.exists(path_to_zipfile):
                             with zipfile.ZipFile(path_to_zipfile, 'r') as zip_ref:
@@ -208,11 +196,11 @@ def imports():
                         time.sleep(1)
                         button.click()
 
-                        shutil.move(str(Path.home()) + "/Downloads/" + idcnpq +
-                                    ".zip", os.getcwd() + "/arquivos/" + idcnpq + ".zip")
+                        shutil.move(os.path.join(str(Path.home()), "Downloads", idcnpq + ".zip"),
+                                    os.path.join(os.getcwd(), "arquivos", idcnpq + ".zip"))
 
-                        path_to_zipfile = os.getcwd() + "/arquivos/" + idcnpq + ".zip"
-                        destino_arquivo = "arquivos/"
+                        path_to_zipfile = os.path.join(os.getcwd(), "arquivos", idcnpq + ".zip")
+                        destino_arquivo = os.path.join(os.getcwd(), "arquivos")
 
                         if os.path.exists(path_to_zipfile):
                             with zipfile.ZipFile(path_to_zipfile, 'r') as zip_ref:
@@ -224,19 +212,19 @@ def imports():
                     if not worked:
                         continue
 
-                    shutil.move(os.getcwd() + "/arquivos/curriculo.xml",
-                                os.getcwd() + "/arquivos/" + idcnpq + ".xml")
+                    shutil.move(os.path.join(os.getcwd(), "arquivos", "curriculo.xml"),
+                                os.path.join(os.getcwd(), "arquivos", idcnpq + ".xml"))
 
                 driver.quit()
                 page = "upload"
                 start_date = "1800"
                 end_date = str(datetime.date.today().year)
-                return render_template('loading.html', inicio=start_date, fim=end_date, page=page)
+                data_atual = str(datetime.date.today())
+                return render_template('loading.html', inicio=start_date, fim=end_date, page=page, data_atual=data_atual)
 
             except Exception as e:
                 print(f"Erro geral: {e}")
-                flash(
-                    "Ocorreu um erro durante a importação. Consulte os logs para mais detalhes.")
+                flash("Ocorreu um erro durante a importação. Consulte os logs para mais detalhes.")
                 return render_template('index.html')
 
             finally:
@@ -279,8 +267,10 @@ def imports():
             page = "upload"
             start_date = "1800"
             end_date = str(datetime.date.today().year)
+            data_atual = str(datetime.date.today())
+            
 
-            return render_template('loading.html', inicio=start_date, fim=end_date, page=page)
+            return render_template('loading.html', inicio=start_date, fim=end_date, page=page,  data_atual=data_atual)
 
         else:
             flash("Invalid form data")
@@ -489,28 +479,7 @@ def resultado_total():
             docentes_selecionados.append(item[0])
     else:
         docentes_selecionados = nome_docente.split(';')
-    
-    
-    # dadosConferencias = todosConferencias(from_year=from_year, to_year=to_year, nome_docente=nome_docente)
-        
-    # div = []
-    # for d in dadosConferencias:
-    #     conteudo = {'Ano': d[0], 'Estratos': d[1], 'Quantidade': d[2]}
-    #     div.append(conteudo)
 
-    # # Save to JSON file
-    # with open("todosConferencias.json", "w") as outfile:
-    #     json.dump(div, outfile, indent=4)
-
-    # # Load data from JSON file
-    # with open('todosConferencias.json', 'r') as file:
-    #     data = json.load(file)
-
-    # # Create the Plotly bar chart
-    # fig = px.bar(data, x='Ano', y='Quantidade', color='Estratos', barmode='stack')
-
-    # # Convert Plotly figure to JSON
-    # graphJSONConferencias = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
 
     pizzaPeriodico(from_year=from_year, to_year=to_year, nome_docente=nome_docente)
     
@@ -859,6 +828,7 @@ def recalcula_notas():
 
 
 if __name__ == "__main__":
+    database.tabela_iddocentes()
     database.tabela_resultados()
     database.tabela_pontuacoes()
     database.insert_pontuacoes()

@@ -14,7 +14,7 @@ from models.consulta import *  # qualis_repetidos,update_qualis_repetido
 from openpyxl import Workbook, load_workbook
 from models.crud import *
 db = database.conexao()
-
+import datetime
 
 def import_project(anos):
 
@@ -88,15 +88,17 @@ def import_project(anos):
 
         for t in root.iter('CURRICULO-VITAE'):
             idLattes = str(t.attrib['NUMERO-IDENTIFICADOR'])
+            dataAtualizacao = str(t.attrib['DATA-ATUALIZACAO'])
 
         for t in root.iter('DADOS-GERAIS'):  # Imprimir nome do professor
             nomeProf = str(t.attrib['NOME-COMPLETO']).upper()
             print('Analisando publicações de {}'.format(nomeProf))
             x = x + 2
-
+        data_atual = str(datetime.date.today())
+        
         searchId = findIdLattes(idLattes)
         if searchId == 0:
-            saveID(idLattes, nomeProf)
+            saveID(idLattes, nomeProf, dataAtualizacao, data_atual)
         x = x + 1
 
         for trabalhos in root.iter('TRABALHO-EM-EVENTOS'):  # Varre currículo

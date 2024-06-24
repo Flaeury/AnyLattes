@@ -67,19 +67,22 @@
               Tabela de Docentes
           </div>
           
-          <div>
-              <ul class="lista-docentes-ativos">
-                  {% for docente in docentes %}
-                      <li class="item docente-item" data-docente="{{ docente }}">
-                          <span class="item-text">
-                              {{ docente }}
-                          </span>
-                      </li>
-                  {% endfor %}
-              </ul>
-                     
-            </div>
-          </div>
+          <table class="tabelaDocentes">
+            <tr>
+                <th>Nome do Docente</th>
+                <th>Última atualização do Lattes</th>
+                <th>Último upload no AnyLattes</th>
+                <th>Ações</th>
+            </tr>
+            {% for docente in docentes %}
+            <tr class="item docente-item" data-docente="{{ docente[0] }}">
+                <td>{{ docente[0] }}</td>
+                <td>{{ docente[1] }}</td>
+                <td>{{ docente[2] }}</td>
+                <td><span class="update-icon" onclick="updateData('{{ docente[0] }}')">Atualizar</span></td>
+            </tr>
+            {% endfor %}
+        </table>
         </div>
       </div>
   </div>

@@ -13,15 +13,26 @@ def zera_banco():
     except:
         flash("Erro de conexão com o banco de dados")
 
-
-def saveID(idlattes, nomedocente):
-
+def saveID(idlattes, nomedocente, dataatualizacao, dataanylattes):
     if idlattes is not None:
         db = database.conexao()
         cursor = db.cursor()
-        sql = """ insert into iddocentes (idlattes, nomedocente) values (?, ?);"""
-        cursor.execute(sql, (idlattes, nomedocente))
+        sql = """INSERT INTO iddocentes (idlattes, nomedocente, dataatualizacao, dataanylattes) VALUES (?, ?, ?, ?);"""
+        cursor.execute(sql, (idlattes, nomedocente, dataatualizacao, dataanylattes))
         db.commit()
+        
+# def saveDate(ultimaAtualizacao, nomedocente):
+#     if ultimaAtualizacao is not None:
+#         db = database.conexao()
+#         cursor = db.cursor()
+#         sql = """ insert into dataatualizacao (dataatualizacao, nomedocente)"""
+ 
+def get_docentes():
+    db = database.conexao()
+    cursor = db.cursor()
+    cursor.execute("SELECT nomedocente, dataatualizacao, dataanylattes FROM iddocentes;")
+    docentes = cursor.fetchall()
+    return docentes
 
 
 def findIdLattes(idlattes):

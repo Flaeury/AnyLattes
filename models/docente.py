@@ -83,9 +83,15 @@ def lista_docente(docente):
 
 
 def listar_docentes():
-    sql = """SELECT nome_docente FROM resultados GROUP BY nome_docente"""
     cursor = db.cursor()
-    cursor.execute(sql)
-    resultados = cursor.fetchall()
-    docentes = [resultado[0] for resultado in resultados]
-    return docentes
+    cursor.execute("SELECT nomedocente, dataatualizacao, dataanylattes FROM iddocentes")
+    docentes = cursor.fetchall()
+    
+    return [(docente[0], formatar_data(docente[1])) for docente in docentes]
+
+def formatar_data(data):
+    data_str = str(data)
+    dia = data_str[:-6].zfill(2)
+    mes = data_str[-6:-4].zfill(2)
+    ano = data_str[-4:]
+    return f"{dia}/{mes}/{ano}"
