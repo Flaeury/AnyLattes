@@ -1,22 +1,52 @@
 [
     {
+        "Docente": "ALDEBARO BARRETO DA ROCHA KLAUTAU J\u00daNIOR",
+        "Pontua\u00e7\u00e3o": 61.85,
+        "Mediana": "17.938"
+    },
+    {
+        "Docente": "ANDR\u00c9 FIGUEIRA RIKER",
+        "Pontua\u00e7\u00e3o": 18.375,
+        "Mediana": "17.938"
+    },
+    {
+        "Docente": "BENEDITO DE JESUS PINHEIRO FERREIRA",
+        "Pontua\u00e7\u00e3o": 9.25,
+        "Mediana": "17.938"
+    },
+    {
+        "Docente": "CARLOS RENATO LISBOA FRANC\u00caS",
+        "Pontua\u00e7\u00e3o": 58.8,
+        "Mediana": "17.938"
+    },
+    {
+        "Docente": "DENIS LIMA DO ROS\u00c1RIO",
+        "Pontua\u00e7\u00e3o": 103.825,
+        "Mediana": "17.938"
+    },
+    {
         "Docente": "DIONNE CAVALCANTE MONTEIRO",
         "Pontua\u00e7\u00e3o": 6.625,
-        "Mediana": "11.188"
+        "Mediana": "17.938"
     },
     {
         "Docente": "JEFFERSON MAGALH\u00c3ES DE MORAIS",
         "Pontua\u00e7\u00e3o": 17.5,
-        "Mediana": "11.188"
+        "Mediana": "17.938"
+    },
+    {
+        "Docente": "JOSIVALDO DE SOUZA ARA\u00daJO",
+        "Pontua\u00e7\u00e3o": 11.6,
+        "Mediana": "17.938"
     },
     {
         "Docente": "L\u00cdDIO MAURO LIMA DE CAMPOS",
         "Pontua\u00e7\u00e3o": 6.925,
-        "Mediana": "11.188"
+        "Mediana": "17.938"
     },
     {
         "Docente": "MARCELLE PEREIRA MOTA",
-        "Pontua\u00e7\u00e3o": 15.45,
-        "Mediana": "11.188"
+        "Pontua\u00e7\u00e3o": 19.05,
+        "Mediana": "17.938"
     }
 ]

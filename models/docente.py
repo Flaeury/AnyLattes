@@ -84,10 +84,10 @@ def lista_docente(docente):
 
 def listar_docentes():
     cursor = db.cursor()
-    cursor.execute("SELECT nomedocente, dataatualizacao, dataanylattes FROM iddocentes")
+    cursor.execute("SELECT nomedocente, dataatualizacao, dataanylattes, idlattes FROM iddocentes")
     docentes = cursor.fetchall()
     
-    return [(docente[0], formatar_data(docente[1])) for docente in docentes]
+    return [(docente[0], formatar_data(docente[1]), docente[2], docente[3] ) for docente in docentes]
 
 def formatar_data(data):
     data_str = str(data)

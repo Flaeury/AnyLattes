@@ -15,6 +15,7 @@ def zera_banco():
 
 def saveID(idlattes, nomedocente, dataatualizacao, dataanylattes):
     if idlattes is not None:
+        
         db = database.conexao()
         cursor = db.cursor()
         sql = """INSERT INTO iddocentes (idlattes, nomedocente, dataatualizacao, dataanylattes) VALUES (?, ?, ?, ?);"""

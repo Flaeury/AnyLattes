@@ -232,24 +232,143 @@
   color: white;
 }
 
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.body {
+  align-items: center;
+  color: #222;
+  display: flex;
+  height: 100vh;
+  justify-content: center;
+  padding: 30px;
+  width: 100vw;
+}
+
 .tabelaDocentes {
+  font-weight: 400;
+  min-width: 420px;
   width: 100%;
-  border-collapse: collapse;
-  margin-bottom: 20px;
 }
-.tabelaDocentes th, td {
-  border: 1px solid #dddddd;
-  text-align: left;
-  padding: 8px;
+
+.tabelaDocentes thead {
+  display: none;
+  background: #eee;
 }
-.tabelaDocentes th {
-  background-color: #f2f2f2;
+
+.tabelaDocentes tbody tr {
+  border: 1px solid #dad6eb;
+  border-radius: 7px;
+  display: block;
+  padding: 30px;
+  margin-bottom: 30px;
 }
-.update-icon {
+
+.tabelaDocentes tbody td {
+  display: block;
+  padding: 4px;
+  position: relative;
+  text-align: right;
+}
+
+.tabelaDocentes tbody td button {
+  background: #6184e3;
+  border: none;
+  border-radius: 5px;
+  box-shadow: 0 2px 3px rgba(77, 77, 77, 0.8);
+  bottom: -30px;
+  color: #fff;
+  font-weight: 700;
+  left: 50%;
+  padding: 10px 0;
+  position: absolute;
+  transform: translate(-50%, 50%);
+  transition: .12s ease-out;
+  width: 50%;
+}
+
+.tabelaDocentes tbody td button:hover,
+.tabelaDocentes tbody td button:focus {
+  background: #5576d3;
   cursor: pointer;
-  color: blue;
-  text-decoration: underline;
 }
+
+
+
+.tabelaDocentes tbody td:before {
+  color: #8a8a87; 
+  content: attr(data-label);
+  font-weight: 400;
+ 
+  left: 5px;
+  position: absolute;
+}
+
+@media screen and (min-width: 992px) {
+  .docente-td {
+    max-width: 255px;
+    word-wrap: break-word;
+  }
+}
+
+
+@media all and (min-width: 768px) {
+  .tabelaDocentes {
+    border: 1px solid #eee;
+    border-collapse: collapse;
+    max-width: 992px;
+    text-align: left;
+    width: 100%;
+ 
+  }
+
+  .tabelaDocentes thead {
+    display: table-header-group;
+    font-weight: 500;
+  }
+
+  .tabelaDocentes th {
+    padding: 10px;
+  }
+
+  .tabelaDocentes tbody {
+    font-size: .875em;
+  }
+
+  .tabelaDocentes tbody tr {
+    border: none;
+    display: table-row;
+    background: none;
+  }
+
+  .tabelaDocentes tbody td {
+    display: table-cell;
+   
+    padding: 10px;
+    text-align: left;
+  }
+
+  .tabelaDocentes tbody td button {
+    display: inline-block;
+    padding: 10px 15px;
+    position: initial;
+    transform: translate(0);
+    width: auto;
+  }
+
+  .tabelaDocentes tbody td:before {
+    display: none;
+  }
+
+  .tabelaDocentes tbody td:last-child {
+    text-align: right;
+  }
+}
+
 
 .section-import2 {
   background-color: #ffffff;

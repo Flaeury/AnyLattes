@@ -25,10 +25,6 @@ import os
 import time
 import random
 import pyautogui
-from selenium import webdriver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.firefox.options import Options
 import speech_recognition as sr
 import urllib
 import pydub
@@ -37,6 +33,7 @@ import xml.etree.ElementTree as ET
 import shutil
 from pathlib import Path
 import datetime
+from main import fazer_automacao
 
 app = Flask(__name__)
 CORS(app)
@@ -50,12 +47,12 @@ ALLOWED_EXTENSIONS = {'xml', 'XML', 'pdf', 'xls',
                       'xlsx', 'zip', 'ZIP'}  # extensões validas
 
 # verifica se pasta existe
-if os.path.isdir('curriculos'):
-    UPLOAD_FOLDER = 'curriculos'
+if os.path.isdir('arquivos'):
+    UPLOAD_FOLDER = 'arquivos'
     print('Currículos')
 else:
-    os.mkdir('curriculos')
-    UPLOAD_FOLDER = 'curriculos'
+    os.mkdir('arquivos')
+    UPLOAD_FOLDER = 'arquivos'
 
 if os.path.isdir('arquivos'):
     print('Arquivos')
@@ -67,7 +64,7 @@ if os.path.isdir('static/images'):
 else:
     os.mkdir('static/images')
     os.mkdir('static/images/nuvem_docente')
-
+    
 
 app.secret_key = 'lattes4web'
 
@@ -76,13 +73,6 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
-
-
-def handle_webdriver_error(driver):
-    try:
-        driver.quit()
-    except Exception as e:
-        print(f"Erro ao fechar o WebDriver: {e}")
 
 
 def allowed_file(filename):
@@ -99,137 +89,17 @@ def index():
 def imports():
 
     if request.method == 'POST':
+        
         if 'lattes_id' in request.form:
             try:
-                lattes = ",".join(request.form.get('lattes_id', "").split(";")).split(",")
-                if len(lattes) == 0:
-                    flash("Lattes ID is required.")
-                    return redirect(url_for('index'))
-
-                path_to_download = os.path.join(os.getcwd(), 'outputs')
-                if not os.path.exists(path_to_download):
-                    os.makedirs(path_to_download)
-
-                options = Options()
-                options.set_preference('browser.download.folderList', 2)
-                options.set_preference('browser.download.dir', path_to_download)
-                options.set_preference('browser.helperApps.alwaysAsk.force', False)
-                options.set_preference('browser.download.manager.showWhenStarting', False)
-                options.set_preference('browser.helperApps.neverAsk.saveToDisk', 'application/zip')
-
-                driver = webdriver.Firefox(options=options)
-                width = height = 800
-                ss_w, ss_h = pyautogui.size()
-                driver.set_window_size(width, height)
-                driver.set_window_position(ss_w / 2 - width / 2, ss_h / 2 - height / 2)
-
-                lattes_url = 'http://buscatextual.cnpq.br/buscatextual/download.do?metodo=apresentar&idcnpq='
-
-                for idcnpq in lattes:
-                    idcnpq = idcnpq.strip()
-                    location = lattes_url + idcnpq
-                    driver.get(location)
-
-                    frames = driver.find_elements(By.TAG_NAME, 'iframe')
-                    driver.switch_to.frame(frames[0])
-
-                    driver.find_element(By.CLASS_NAME, 'recaptcha-checkbox-border').click()
-                    driver.switch_to.default_content()
-
-                    button = driver.find_element(By.ID, 'submitBtn')
-                    time.sleep(random.randint(1, 2))
-                    worked = True
-                    time.sleep(1)
-                    if not button.is_enabled():
-                        time.sleep(1)
-                        frames = driver.find_element(By.XPATH, '/html/body/div[2]/div[4]').find_elements(By.TAG_NAME, 'iframe')
-                        driver.switch_to.frame(frames[0])
-
-                        time.sleep(random.randint(1, 2))
-                        driver.find_element(By.ID, 'recaptcha-audio-button').click()
-                        driver.switch_to.default_content()
-
-                        frames = driver.find_elements(By.TAG_NAME, 'iframe')
-                        driver.switch_to.frame(frames[-1])
-
-                        time.sleep(1)
-                        driver.find_element(By.XPATH, '/html/body/div/div/div[3]/div/button').click()
-                        time.sleep(1)
-                        src = driver.find_element(By.ID, 'audio-source').get_attribute('src')
-                        time.sleep(1)
-                        file_name = os.path.join(path_to_download, 'sample.mp3')
-                        urllib.request.urlretrieve(src, file_name)
-                        time.sleep(1)
-                        sound = pydub.AudioSegment.from_mp3(file_name)
-                        time.sleep(1)
-                        file_name = file_name.replace('.mp3', '.wav')
-                        sound.export(file_name, format='wav')
-
-                        sample_audio = sr.AudioFile(file_name)
-                        r = sr.Recognizer()
-                        with sample_audio as source:
-                            audio = r.record(source)
-
-                        key = r.recognize_google(audio)
-
-                        driver.find_element(By.ID, 'audio-response').send_keys(key.lower())
-                        driver.find_element(By.ID, 'audio-response').send_keys(Keys.ENTER)
-                        driver.switch_to.default_content()
-
-                        time.sleep(1)
-                        driver.find_element(By.ID, 'submitBtn').click()
-
-                        shutil.move(os.path.join(str(Path.home()), "Downloads", idcnpq + ".zip"),
-                                    os.path.join(os.getcwd(), "arquivos", idcnpq + ".zip"))
-
-                        path_to_zipfile = os.path.join(os.getcwd(), "arquivos", idcnpq + ".zip")
-                        destino_arquivo = os.path.join(os.getcwd(), "arquivos")
-
-                        if os.path.exists(path_to_zipfile):
-                            with zipfile.ZipFile(path_to_zipfile, 'r') as zip_ref:
-                                zip_ref.extractall(destino_arquivo)
-                            os.remove(path_to_zipfile)
-                        else:
-                            worked = False
-
-                    else:
-                        time.sleep(1)
-                        button.click()
-
-                        shutil.move(os.path.join(str(Path.home()), "Downloads", idcnpq + ".zip"),
-                                    os.path.join(os.getcwd(), "arquivos", idcnpq + ".zip"))
-
-                        path_to_zipfile = os.path.join(os.getcwd(), "arquivos", idcnpq + ".zip")
-                        destino_arquivo = os.path.join(os.getcwd(), "arquivos")
-
-                        if os.path.exists(path_to_zipfile):
-                            with zipfile.ZipFile(path_to_zipfile, 'r') as zip_ref:
-                                zip_ref.extractall(destino_arquivo)
-                            os.remove(path_to_zipfile)
-                        else:
-                            worked = False
-
-                    if not worked:
-                        continue
-
-                    shutil.move(os.path.join(os.getcwd(), "arquivos", "curriculo.xml"),
-                                os.path.join(os.getcwd(), "arquivos", idcnpq + ".xml"))
-
-                driver.quit()
+                fazer_automacao() 
                 page = "upload"
-                start_date = "1800"
-                end_date = str(datetime.date.today().year)
-                data_atual = str(datetime.date.today())
-                return render_template('loading.html', inicio=start_date, fim=end_date, page=page, data_atual=data_atual)
-
             except Exception as e:
                 print(f"Erro geral: {e}")
                 flash("Ocorreu um erro durante a importação. Consulte os logs para mais detalhes.")
                 return render_template('index.html')
-
-            finally:
-                handle_webdriver_error(driver)
-
+            
+                
         elif 'files[]' in request.files:
             files = request.files.getlist('files[]')
             for file in files:
@@ -264,18 +134,18 @@ def imports():
                             flash("Error in the system")
                             return redirect(url_for('index'))
 
-            page = "upload"
-            start_date = "1800"
-            end_date = str(datetime.date.today().year)
-            data_atual = str(datetime.date.today())
             
-
-            return render_template('loading.html', inicio=start_date, fim=end_date, page=page,  data_atual=data_atual)
 
         else:
             flash("Invalid form data")
+        page = "upload"
+        start_date = "1800"
+        end_date = str(datetime.date.today().year)
+        data_atual = str(datetime.date.today())
+        
 
-    return render_template('imports.html')
+        return render_template('loading.html', inicio=start_date, fim=end_date, page=page,  data_atual=data_atual)
+
 
 
 @app.route('/deletarDocente/<docente>', methods=['POST'])
@@ -323,7 +193,7 @@ def resultado_total():
                           to_year=to_year, nome_docente=nome_docente)
     totalNotas = soma_nota(from_year, to_year, nome_docente)
     contadorEstratos = total_estratos(from_year, to_year, nome_docente)
-    docentes = get_nome_docente()
+    
 
     total_periodicos = totalPeriodicos(from_year=from_year, to_year=to_year, nome_docente=nome_docente)
     
@@ -472,6 +342,8 @@ def resultado_total():
 
     titulosRepetidos = titulos_qualis(nome_docente)
 
+    docentes = get_nome_docente()
+    
     docentes_selecionados = []
 
     if (nome_docente == '*'):
@@ -832,6 +704,7 @@ if __name__ == "__main__":
     database.tabela_resultados()
     database.tabela_pontuacoes()
     database.insert_pontuacoes()
+    listar_docentes()
 
     app.run(debug=True)
     app.run(host='0.0.0.0')

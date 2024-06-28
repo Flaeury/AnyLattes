@@ -14,7 +14,7 @@ from models.consulta import *  # qualis_repetidos,update_qualis_repetido
 from openpyxl import Workbook, load_workbook
 from models.crud import *
 db = database.conexao()
-import datetime
+from datetime import datetime
 
 def import_project(anos):
 
@@ -94,7 +94,10 @@ def import_project(anos):
             nomeProf = str(t.attrib['NOME-COMPLETO']).upper()
             print('Analisando publicações de {}'.format(nomeProf))
             x = x + 2
-        data_atual = str(datetime.date.today())
+        data_agora = datetime.now()
+        # Converte a data para string no formato DD/MM/AAAA
+        data_atual = data_agora.strftime('%d/%m/%Y')
+        
         
         searchId = findIdLattes(idLattes)
         if searchId == 0:

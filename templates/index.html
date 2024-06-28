@@ -21,12 +21,14 @@
                   </p>
                 </div>
                 <div class="col-md-8 col-11 mb-2 w-75 align-items-center">
+
                   <label class="d-none" for="lattes_id"></label>
                   <input type="text" class="form-control b-lattes" id="lattes_id" name="lattes_id" required>
                 </div>
                 <div class="col-md-3 col-11">
                   <button type="submit" class="btn btn-md btn-lattes w-100">Enviar id</button>
                 </div>
+
               </div>
             </div>
           </div>
@@ -61,36 +63,65 @@
     <div class="card-body mb-4 d-flex align-items-center justify-content-center">
       <div class="rounded w-100 mx-auto d-flex align-items-center justify-content-center">
         <div class="col section-import h-100 p-3 rounded card-link d-flex flex-column align-items-center">
-          <div class="card-body w-100">
+          <div class="card-body w-100 .body">
          
-          <div class="text-center mt-2 mb-4">
-              Tabela de Docentes
-          </div>
+         
           
           <table class="tabelaDocentes">
-            <tr>
-                <th>Nome do Docente</th>
-                <th>Última atualização do Lattes</th>
-                <th>Último upload no AnyLattes</th>
-                <th>Ações</th>
-            </tr>
-            {% for docente in docentes %}
-            <tr class="item docente-item" data-docente="{{ docente[0] }}">
-                <td>{{ docente[0] }}</td>
-                <td>{{ docente[1] }}</td>
-                <td>{{ docente[2] }}</td>
-                <td><span class="update-icon" onclick="updateData('{{ docente[0] }}')">Atualizar</span></td>
-            </tr>
-            {% endfor %}
+            <thead>
+              <tr>
+                  <th>Docente</th>
+                  <th>Atualização Lattes</th>
+                  <th>Upload AnyLattes</th>
+                  <th>Ações</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for docente in docentes %}
+              <tr class="item docente-item" data-docente="{{ docente.0 }}">
+                <td data-label="Docente" class="docente-td">{{ docente.0 }}</td>
+                <td data-label="Atualização Lattes">{{ docente.1 }}</td>
+                <td data-label="Upload AnyLattes">{{ docente.2 }}</td>
+                <td><button class="update-icon" style="text-decoration: none;" onclick="updateData('{{ docente.3 }}')">Atualizar</button></td>
+              </tr>
+              <input type="hidden" name="nome_docente" value="{{ docente.3 }}" id="docentes-input-hidden" />
+              {% endfor %}
+            </tbody>
         </table>
         </div>
       </div>
   </div>
   
   
-
-
-  </div>
+  
+  
+</div>
 </div>
 
+
+<script>
+  function updateData(docenteId) {
+    // Cria um novo formulário
+    let form = document.createElement('form');
+    form.method = 'POST';
+    form.action = "{{ url_for('imports') }}";
+
+    // Cria um campo de entrada oculto para o ID do Lattes
+    let input = document.createElement('input');
+    input.type = 'hidden';
+    input.name = 'lattes_id';
+    input.value = docenteId;
+
+    // Adiciona o campo de entrada ao formulário
+    form.appendChild(input);
+
+    // Adiciona o formulário ao corpo e o envia
+    document.body.appendChild(form);
+    form.submit();
+  }
+</script>
+
+
 {% endblock %}
+
+
