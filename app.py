@@ -87,9 +87,7 @@ def index():
 
 @app.route("/imports", methods=['GET', 'POST'])
 def imports():
-
     if request.method == 'POST':
-        
         if 'lattes_id' in request.form:
             try:
                 fazer_automacao() 
@@ -99,7 +97,6 @@ def imports():
                 flash("Ocorreu um erro durante a importação. Consulte os logs para mais detalhes.")
                 return render_template('index.html')
             
-                
         elif 'files[]' in request.files:
             files = request.files.getlist('files[]')
             for file in files:
@@ -125,27 +122,24 @@ def imports():
                             tree = ET.parse(os.path.join(dir, filename))
                             root = tree.getroot()
                             for t in root.iter('CURRICULO-VITAE'):
-                                numLattes = str(
-                                    t.attrib['NUMERO-IDENTIFICADOR'])
+                                numLattes = str(t.attrib['NUMERO-IDENTIFICADOR'])
 
                             shutil.move(os.path.join(dir, filename),
                                         os.path.join(dir, numLattes + ".xml"))
                         else:
                             flash("Error in the system")
+                            print("DEU ERRO AQUI")
                             return redirect(url_for('index'))
-
-            
-
-        else:
-            flash("Invalid form data")
+            else:
+                flash("Invalid form data")
+                
         page = "upload"
         start_date = "1800"
         end_date = str(datetime.date.today().year)
         data_atual = str(datetime.date.today())
-        
+        return render_template('loading.html', inicio=start_date, fim=end_date, page=page, data_atual=data_atual)
 
-        return render_template('loading.html', inicio=start_date, fim=end_date, page=page,  data_atual=data_atual)
-
+    return render_template('imports.html')
 
 
 @app.route('/deletarDocente/<docente>', methods=['POST'])

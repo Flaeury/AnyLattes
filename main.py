@@ -79,6 +79,7 @@ def fazer_automacao():
         location = lattes_url + idcnpq
         driver.get(location)
         print('[INFO] Firefox: page loaded OK')
+        time.sleep(1)
 
         frames = driver.find_elements(By.TAG_NAME, 'iframe')
         driver.switch_to.frame(frames[0])
@@ -171,5 +172,6 @@ def fazer_automacao():
 
         shutil.move(os.path.join(os.getcwd(), "arquivos", "curriculo.xml"),
                     os.path.join(os.getcwd(), "arquivos", idcnpq + ".xml"))
-
+        
+    time.sleep(1)
     driver.quit()

@@ -1,6 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Poppins:wght@400;500&family=Rubik:wght@400;500&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
 
+.form-files {
+  border: 0.125rem dashed hsla(223,10%,50%,0.4);
+}
+
 .cards-totais {
   display: flex;
   align-items: center;
@@ -264,7 +268,7 @@
   border: 1px solid #dad6eb;
   border-radius: 7px;
   display: block;
-  padding: 30px;
+  padding: 25px;
   margin-bottom: 30px;
 }
 
@@ -308,15 +312,25 @@
   position: absolute;
 }
 
-@media screen and (min-width: 992px) {
+@media screen and (min-width: 952px) {
   .docente-td {
     max-width: 255px;
     word-wrap: break-word;
   }
+
+  .tabelaDocentes tbody tr {
+    padding: 15px;
+    margin-bottom: 20px;
+  }
+
+  .tabelaDocentes tbody {
+    font-size: .765rem;
+ 
+  }
 }
 
 
-@media all and (min-width: 768px) {
+@media all and (min-width: 868px) {
   .tabelaDocentes {
     border: 1px solid #eee;
     border-collapse: collapse;
@@ -325,6 +339,7 @@
     width: 100%;
  
   }
+  
 
   .tabelaDocentes thead {
     display: table-header-group;
@@ -336,7 +351,7 @@
   }
 
   .tabelaDocentes tbody {
-    font-size: .875em;
+    font-size: .875rem;
   }
 
   .tabelaDocentes tbody tr {
@@ -387,7 +402,7 @@
 }
 
 .b-lattes {
-  box-shadow: 15px 15px 30px #ededed,
+  box-shadow: 5px 10px 25px #ededed,
   -15px -15px 30px rgb(254, 254, 254);
 
 }
@@ -431,6 +446,7 @@ body {
 
 .card-link {
   max-width: 50vw !important;
+  
 }
 
 #layoutSidenav_content {

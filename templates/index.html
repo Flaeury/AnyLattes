@@ -46,8 +46,10 @@
                 <div class="text-center mt-2 mb-4">
                   <i class="fas fa-upload me-1"></i> Importe o currículo no formato XML
                 </div>
+                
                 <div class="col-md-8 col-11 mb-2 w-75 align-items-center">
-                  <input class="form-control b-lattes" type="file" name="files[]" id="file" multiple required>
+                  <input class="form-control form-files b-lattes" type="file" name="files[]" id="file" multiple required>
+                  <div id="file-info" class="mt-2"></div>
                 </div>
                 <div class="col-md-3 col-11">
                   <button type="submit" value="Enviar" class="btn btn-md btn-lattes w-100">Receber XML</button>
@@ -98,6 +100,23 @@
 </div>
 </div>
 
+<script>
+  document.getElementById('file').addEventListener('change', function() {
+    var fileInput = document.getElementById('file');
+   
+    var fileInfo = document.getElementById('file-info');
+    
+    if (fileInput.files.length > 0) {
+      var fileName = fileInput.files[0].name;
+      fileInfo.innerHTML = `Arquivo selecionado: ${fileName} <button type="button" class="btn btn-sm btn-danger ml-2" id="remove-file">Remover</button>`;
+    }
+
+    document.getElementById('remove-file').addEventListener('click', function() {
+      fileInput.value = '';
+      fileInfo.innerHTML = '';
+    });
+  });
+</script>
 
 <script>
   function updateData(docenteId) {
