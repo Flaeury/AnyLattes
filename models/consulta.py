@@ -136,10 +136,12 @@ def titulos_repetidos(from_year, to_year, nome_docente='*'):
         "' group by titulo,nome_docente  order by titulo;"
 
     if nome_docente != '*':
+        titulos = get_nome_titulos(from_year, to_year, nome_docente)
         sql = "SELECT distinct titulo, nome_docente FROM resultados r WHERE titulo in (SELECT DISTINCT titulo FROM resultados r group by titulo having COUNT(*) >1) AND ano_evento >= '" + \
             from_year+"'  AND ano_evento <= '"+to_year + \
-            "' AND nome_docente in('" + "','".join(nome_docente.split(';')) + "')" + \
-            " group by titulo,nome_docente  order by titulo;"
+            "' AND (nome_docente in('" + "','".join(nome_docente.split(';')) + "')" + \
+            "OR titulo in('" + "','".join(titulos) + "'))" + \
+            " group by titulo,nome_docente order by titulo;"
     cursor = db.cursor()
     cursor.execute(sql)
     resultado = cursor.fetchall()
@@ -156,16 +158,35 @@ def titulo_repetidos(titulo):
     return resultado
 
 
+def get_nome_titulos(from_year, to_year, nome_docente):
+    sql = "SELECT distinct titulo FROM resultados r WHERE titulo in (SELECT DISTINCT titulo FROM resultados r group by titulo having COUNT(*) >1) AND ano_evento >= '" + \
+        from_year+"'  AND ano_evento <= '"+to_year + \
+        "' AND nome_docente in('" + "','".join(nome_docente.split(';')) + "')" + \
+        " group by titulo,nome_docente"
+
+    cursor = db.cursor()
+    cursor.execute(sql)
+    resultado = cursor.fetchall()
+
+    nome_titulos = []
+    for i in range(0, len(resultado)):
+        nome_titulos.append(resultado[i][0])
+    return nome_titulos
+
 def docente_titulos_repetidos(from_year, to_year, nome_docente='*'):
     sql = "SELECT distinct nome_docente FROM resultados r WHERE titulo in (SELECT DISTINCT titulo FROM resultados r group by titulo having COUNT(*) >1) AND ano_evento >= '" + \
         from_year+"'  AND ano_evento <= '"+to_year + \
         "' group by titulo,nome_docente order by titulo;"
 
     if nome_docente != '*':
+        titulos = get_nome_titulos(from_year, to_year, nome_docente='*')
         sql = "SELECT distinct nome_docente FROM resultados r WHERE titulo in (SELECT DISTINCT titulo FROM resultados r group by titulo having COUNT(*) >1) AND ano_evento >= '" + \
             from_year+"'  AND ano_evento <= '"+to_year + \
-            "' AND nome_docente in('" + "','".join(nome_docente.split(';')) + "')" + \
+            "' AND (nome_docente in('" + "','".join(nome_docente.split(';')) + "')" + \
+            "OR titulo in('" + "','".join(titulos) + "'))" + \
             " group by titulo,nome_docente order by titulo;"
+        
+        print(sql)
 
     cursor = db.cursor()
     cursor.execute(sql)
