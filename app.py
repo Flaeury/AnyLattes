@@ -334,7 +334,7 @@ def resultado_total():
 
     tipo_grafo(valor_padrao, colaboracao)
 
-    titulosRepetidos = titulos_qualis(nome_docente)
+    titulosRepetidos = titulos_qualis(from_year=from_year, to_year=to_year, nome_docente=nome_docente)
 
     docentes = get_nome_docente()
     

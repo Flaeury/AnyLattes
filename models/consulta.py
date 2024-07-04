@@ -91,7 +91,28 @@ def contador_estratos():
     return resultado
 
 
-def titulos_qualis(nome_docente='*'):
+def titulos_qualis(from_year, to_year, nome_docente='*'):
+    titulos = get_nome_titulos(from_year, to_year, nome_docente='*')
+    
+    sql = ('SELECT DISTINCT titulo FROM resultados r group by titulo having COUNT(*) >1 ;')
+
+    if nome_docente != '*':
+        titulos = get_nome_titulos(from_year, to_year, nome_docente='*')
+        sql = "SELECT distinct titulo FROM resultados r WHERE titulo in (SELECT DISTINCT titulo FROM resultados r group by titulo having COUNT(*) >1) AND ano_evento >= '" + \
+            from_year+"'  AND ano_evento <= '"+to_year + \
+            "' AND (nome_docente in('" + "','".join(nome_docente.split(';')) + "')" + \
+            "OR titulo in('" + "','".join(titulos) + "'))" + \
+            " group by titulo,nome_docente order by titulo;"
+    
+    cursor = db.cursor()
+    cursor.execute(sql)
+    resultado = cursor.fetchall()
+
+    return resultado
+
+
+def titulos_qualis1(nome_docente='*'):
+    
     sql = ('SELECT DISTINCT titulo FROM resultados r group by titulo having COUNT(*) >1 ;')
 
     if nome_docente != '*':
@@ -186,7 +207,7 @@ def docente_titulos_repetidos(from_year, to_year, nome_docente='*'):
             "OR titulo in('" + "','".join(titulos) + "'))" + \
             " group by titulo,nome_docente order by titulo;"
         
-        print(sql)
+       
 
     cursor = db.cursor()
     cursor.execute(sql)
