@@ -95,7 +95,7 @@ def imports():
             except Exception as e:
                 print(f"Erro geral: {e}")
                 flash("Ocorreu um erro durante a importação. Consulte os logs para mais detalhes.")
-                return render_template('index.html')
+                return render_template('loading.html')
             
         elif 'files[]' in request.files:
             files = request.files.getlist('files[]')
@@ -147,9 +147,18 @@ def deletar_docente_route(docente):
     resultado1 = deletar_docente(docente)
     resultado2 = deletar_iddocente(docente)
     if resultado1 and resultado2:
-        return jsonify({"status": "success", "message": docente + " removido com sucesso!"})
+        return jsonify({"status": "success", "message": f"{docente} removido com sucesso!"})
     else:
-        return jsonify({"status": "error", "message": "Erro ao remover " + docente}), 500
+        return jsonify({"status": "error", "message": f"Erro ao remover {docente}"}), 500
+
+
+@app.route("/deletarDocente/<docente>", methods=['POST'])
+def deletarDocente(docente):
+    deletar_docente(docente),
+    deletar_iddocente(docente)
+
+    return render_template('resultados_por_docente.html')
+
 
 
 @app.route("/upload", methods=['GET', 'POST'])
@@ -616,13 +625,6 @@ def resultado_editado(docente):
     return render_template("resultados_por_docente.html", docente=docente, listar=listar, totalNotas=totalNotas, contadorEstratos=contadorEstratos)
 
 
-@app.route("/deletarDocente/<docente>", methods=['POST'])
-def deletarDocente(docente):
-    deletar_docente(docente),
-    deletar_iddocente(docente)
-
-    return render_template('resultados_por_docente.html')
-
 
 @app.route("/mostra_grafo", methods=['POST', 'GET'])
 def mostra_grafo(from_year, to_year):
@@ -650,8 +652,10 @@ def nuvem():
 
 @app.route("/configuracoes")
 def configuracoes():
+    nome_docente = request.args.get('nome_docente', '*')
     valor = lista_pontuacoes()
-    return render_template('notas.html', valor=valor)
+    docentes = get_nome_docente()
+    return render_template('notas.html', valor=valor, docentes=docentes, nome_docente=nome_docente)
 
 
 @app.route("/tabela_qualis", methods=['POST'])

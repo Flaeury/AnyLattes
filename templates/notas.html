@@ -1,13 +1,76 @@
-{% extends 'base.html'%}
-<h1>{%block title%}Configurações{%endblock%}</h1>
-{%block content%}
+{% extends 'base.html' %}
+<h1>{% block title %}Configurações{% endblock %}</h1>
+{% block content %}
 
 <br/>
-<h3 class="lat mt-lg-4 mb-lg-4">Pontuações Qualis</h3 style="align-items-center">
+<h4>Deletar Docentes</h4>
 
 <div class="col-md-8">
   
 </div>
+
+<div class="container cards">
+    <div class="row">
+        <div class="col d-flex justify-content-center align-items-center">
+            <form method="get" id="forms" class="w-100">
+                <div class="row align-items-center justify-content-between">
+                    <div class="col-md-5">
+                        <div class="container-lista-docentes">
+                            <div class="select-btn docente-list d-flex align-items-center justify-content-between">
+                                <span class="btn-text ml-2 p-2">Selecione um docente para filtrar</span>
+                                <span class="arrow-dwn ml-2 p-2">
+                                    <i class="fa-solid fa-chevron-down"></i>
+                                </span>
+                            </div>
+
+                            <input type="hidden" name="nome_docente" id="docentes-input-hidden" />
+
+                            <ul class="list-items mt-3">
+                                {% for total in docentes|sort(attribute='0') %}
+                                    <li class="item docente-item docente-item-radio" data-docente="{{ total[0] }}">
+                                        <input type="radio" id="docente-{{ total[0] }}" name="docente" value="{{ total[0] }}" style="margin-right: 0.4rem;">
+                                        <label for="docente-{{ total[0] }}" class="item-text">{{ total[0] }}</label>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-5 text-right">
+                        <label id="deletar" style="display:none;">
+                            <button type="button" class="btn btn-outline-danger" name="deletar" onclick="deletarDocente();">
+                                Deletar Docente
+                            </button>
+                        </label>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div
+  id="confirmation-toast"
+  class="toast slide-in-card"
+  role="alert"
+  aria-live="assertive"
+  aria-atomic="true"
+  style="position: fixed; top: 10%; right: 10px; min-width: 300px">
+  <div class="toast-body text-center">
+    Deseja realmente remover <br />
+    <strong id="docente-name"></strong>?
+    <div class="mt-2 pt-2 border-top">
+      <button type="button" class="btn btn-primary btn-sm btn-take-action" onclick="confirmarRemocao()">
+        Confirmar
+      </button>
+      <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="toast">
+        Cancelar
+      </button>
+    </div>
+  </div>
+</div>
+
+<h4>Pontuações Qualis</h4>
+
 <div class="cards">
     <div class="card mb-4">
         <div class="row">
@@ -16,9 +79,9 @@
                     <i class="fas fa-table"></i>
                     Pontuações Qualis
                 </div>
-                <form action="{{url_for('tabela_qualis')}}" method="post">
+                <form action="{{ url_for('tabela_qualis') }}" method="post">
                     <div class="container" style="text-align: center; width: 200px" valign="left">
-                        <table id="valores_qualis" class="table table-bordered table-sm ">
+                        <table id="valores_qualis" class="table table-bordered table-sm">
                             <thead class="table-dark">
                                 <tr>
                                     <th>Estratos</th>
@@ -26,13 +89,12 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                {%for val in valor%}
+                                {% for val in valor %}
                                 <tr>
-                                    <td><input class="form-control" value="{{val[1]}}" style="width: 120px;" disabled><input type="hidden" name="estrato" value="{{val[1]}}"></td>
-                                    <td><input class="form-control" type="text" name="nota" id="nota" style="width: 100px;" id="{{val[2]}}"
-                                            value="{{val[2]}}"></td>
+                                    <td><input class="form-control" value="{{ val[1] }}" style="width: 120px;" disabled><input type="hidden" name="estrato" value="{{ val[1] }}"></td>
+                                    <td><input class="form-control" type="text" name="nota" id="nota" style="width: 100px;" value="{{ val[2] }}"></td>
                                 </tr>
-                                {%endfor%}
+                                {% endfor %}
         
                             </tbody>
                         </table>
@@ -45,12 +107,12 @@
                     <i class="fas fa-table"></i>
                     Correção de Notas
                 </div>
-                <form action="{{url_for('corrige_notas')}}" method="post">
+                <form action="{{ url_for('corrige_notas') }}" method="post">
                     <div class="alert alert-info fade-show-out" role="alert">
                         <p>A correção é aplicada em títulos que estão presentes em mais de um Currículo</p>
                     </div>
                     <div class="form-group">
-                        <button type="submit" class="btn btn-outline-danger" name="corrigir" onclick="confirm('Deseja Aplicar a Correção de Notas? ')" >Corrigir Títulos</button>
+                        <button type="submit" class="btn btn-outline-danger" name="corrigir" onclick="confirm('Deseja Aplicar a Correção de Notas?')">Corrigir Títulos</button>
                     </div>
                 </form>
             </div>
@@ -58,5 +120,62 @@
     </div>
 </div>
 
+<script>
+    function deletarDocente() {
+        var docenteSelecionado = $("#docentes-input-hidden").val();
+        if (docenteSelecionado) {
+            var toast = new bootstrap.Toast(document.getElementById("confirmation-toast"));
+            $("#docente-name").text(docenteSelecionado);
+            toast.show();
+        }
+    }
 
-{%endblock%}
+    function confirmarRemocao() {
+        var docente = $("#docentes-input-hidden").val();
+        $.ajax({
+            url: "/deletarDocente/" + docente,
+            method: "POST",
+            success: function(data) {
+                if (data.status === "success") {
+                    alert(data.message);
+                    location.reload();
+                } else {
+                    alert(data.message);
+                }
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                alert("An error occurred: " + errorThrown);
+            }
+        });
+    }
+
+    $(document).ready(function() {
+        $(".item").click(function() {
+            var docenteSelecionado = $(this).data("docente");
+            $("#docentes-input-hidden").val(docenteSelecionado);
+            $("#deletar").show();
+            $("#docente-name").text(docenteSelecionado);
+        });
+
+        $("#select-all").click(function() {
+            $(".item").each(function() {
+                var docente = $(this).data("docente");
+                $(this).addClass("checked");
+                $("#docentes-input-hidden").val(docente);
+                $("#deletar").show();
+                $("#docente-name").text(docente);
+            });
+        });
+
+        $("#deselect-all").click(function() {
+            $(".item").each(function() {
+                $(this).removeClass("checked");
+            });
+            $("#docentes-input-hidden").val("");
+            $("#deletar").hide();
+            $("#docente-name").text("");
+        });
+    });
+</script>
+
+{% endblock %}

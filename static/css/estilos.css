@@ -256,6 +256,7 @@
 .tabelaDocentes {
   font-weight: 400;
   min-width: 420px;
+  max-width: auto;
   width: 100%;
 }
 
@@ -334,7 +335,7 @@
   .tabelaDocentes {
     border: 1px solid #eee;
     border-collapse: collapse;
-    max-width: 992px;
+    max-width: auto;
     text-align: left;
     width: 100%;
  
