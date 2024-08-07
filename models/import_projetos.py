@@ -100,9 +100,12 @@ def import_project(anos):
         
         
         searchId = findIdLattes(idLattes)
+        # saveDate(idLattes, data_atual)
         if searchId == 0:
-            saveID(idLattes, nomeProf, dataAtualizacao, data_atual)
+            saveID(idLattes, nomeProf, dataAtualizacao, data_atual)     
         x = x + 1
+       
+        
 
         for trabalhos in root.iter('TRABALHO-EM-EVENTOS'):  # Varre currículo
             autores = ''

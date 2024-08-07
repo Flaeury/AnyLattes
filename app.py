@@ -126,6 +126,11 @@ def imports():
 
                             shutil.move(os.path.join(dir, filename),
                                         os.path.join(dir, numLattes + ".xml"))
+                            
+                            
+                            data_agora = datetime.now()
+                            data_atual = data_agora.strftime('%d/%m/%Y')
+                            saveDate(numLattes, data_atual)
                         else:
                             flash("Error in the system")
                             print("DEU ERRO AQUI")
@@ -138,7 +143,7 @@ def imports():
         end_date = str(datetime.date.today().year)
         data_atual = str(datetime.date.today())
         return render_template('loading.html', inicio=start_date, fim=end_date, page=page, data_atual=data_atual)
-
+    
     return render_template('imports.html')
 
 
@@ -704,5 +709,5 @@ if __name__ == "__main__":
     database.insert_pontuacoes()
     listar_docentes()
 
-    app.run(debug=True)
+    #app.run(debug=True)
     app.run(host='0.0.0.0')

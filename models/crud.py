@@ -22,11 +22,17 @@ def saveID(idlattes, nomedocente, dataatualizacao, dataanylattes):
         cursor.execute(sql, (idlattes, nomedocente, dataatualizacao, dataanylattes))
         db.commit()
         
-# def saveDate(ultimaAtualizacao, nomedocente):
-#     if ultimaAtualizacao is not None:
-#         db = database.conexao()
-#         cursor = db.cursor()
-#         sql = """ insert into dataatualizacao (dataatualizacao, nomedocente)"""
+def saveDate(iddocente, dataanylattes):
+    db = database.conexao()
+    cursor = db.cursor()
+    sql = "UPDATE iddocentes SET dataanylattes = ? WHERE idlattes = ?"
+
+    cursor.execute(sql, (dataanylattes, iddocente))
+    db.commit()
+    return dataanylattes, iddocente
+
+
+
  
 def get_docentes():
     db = database.conexao()
