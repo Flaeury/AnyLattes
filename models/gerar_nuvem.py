@@ -11,7 +11,7 @@ matplotlib.use('Agg')
 
 def nuvem_geral():
     texto = []
-    res = lista('1500', str(datetime.date.today().year))
+    res = lista('1500', str(datetime.now().year))
 
     nltk.download('stopwords')
 

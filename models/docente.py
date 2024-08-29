@@ -14,6 +14,17 @@ def contador(nome_docente):
     return resultado
 
 def todosContador(from_year, to_year, nome_docente='*'):
+    # Obter os anos e estratos possíveis
+    sql_anos = "SELECT DISTINCT ano_evento FROM resultados WHERE ano_evento >= ? AND ano_evento <= ?"
+    cursor = db.cursor()
+    cursor.execute(sql_anos, [from_year, to_year])
+    anos_disponiveis = [row[0] for row in cursor.fetchall()]
+
+    sql_estratos = "SELECT DISTINCT estratos FROM resultados"
+    cursor.execute(sql_estratos)
+    estratos_disponiveis = [row[0] for row in cursor.fetchall()]
+
+    # Obter os resultados existentes
     sql = ("SELECT ano_evento, estratos, COUNT(estratos) AS quantidade "
            "FROM resultados "
            "WHERE ano_evento >= ? AND ano_evento <= ? ")
@@ -25,12 +36,24 @@ def todosContador(from_year, to_year, nome_docente='*'):
         sql += "AND nome_docente IN ({}) ".format(','.join(['?'] * len(docentes)))
         params.extend(docentes)
 
-    sql += "GROUP BY estratos, ano_evento ORDER BY estratos ASC"
-
-    cursor = db.cursor()
+    sql += "GROUP BY estratos, ano_evento ORDER BY estratos ASC, ano_evento ASC"
+    
     cursor.execute(sql, params)
     resultado = cursor.fetchall()
-    return resultado
+
+    # Criar um dicionário para armazenar os resultados com contagens 0
+    resultado_completo = {(ano, estrato): 0 for ano in anos_disponiveis for estrato in estratos_disponiveis}
+
+    # Atualizar o dicionário com os resultados obtidos
+    for (ano_evento, estrato, quantidade) in resultado:
+        resultado_completo[(ano_evento, estrato)] = quantidade
+
+    # Converter o dicionário em uma lista de tuplas para retornar
+    resultado_final = [(ano, estrato, quantidade) for (ano, estrato), quantidade in resultado_completo.items()]
+    
+    return resultado_final
+
+
 
 def todosPeriodicos(from_year, to_year, nome_docente='*'):
     sql = ("SELECT ano_evento, estratos, COUNT(estratos) AS quantidade "

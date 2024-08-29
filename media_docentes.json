@@ -1,167 +1,62 @@
 [
     {
-        "Docente": "ADELAINE BRAND\u00c3O SOARES",
-        "Pontua\u00e7\u00e3o": 0.0,
-        "Mediana": "15.150"
-    },
-    {
-        "Docente": "ALDEBARO BARRETO DA ROCHA KLAUTAU J\u00daNIOR",
-        "Pontua\u00e7\u00e3o": 61.85,
-        "Mediana": "15.150"
-    },
-    {
-        "Docente": "ANDR\u00c9 FIGUEIRA RIKER",
-        "Pontua\u00e7\u00e3o": 18.375,
-        "Mediana": "15.150"
-    },
-    {
-        "Docente": "ANTONIO JORGE GOMES ABEL\u00c9M",
-        "Pontua\u00e7\u00e3o": 43.725,
-        "Mediana": "15.150"
-    },
-    {
-        "Docente": "BENEDITO DE JESUS PINHEIRO FERREIRA",
-        "Pontua\u00e7\u00e3o": 9.25,
-        "Mediana": "15.150"
-    },
-    {
         "Docente": "BIANCHI SERIQUE MEIGUINS",
-        "Pontua\u00e7\u00e3o": 33.85,
-        "Mediana": "15.150"
-    },
-    {
-        "Docente": "CARLA ALESSANDRA LIMA REIS",
-        "Pontua\u00e7\u00e3o": 6.375,
-        "Mediana": "15.150"
-    },
-    {
-        "Docente": "CARLOS GUSTAVO RESQUE DOS SANTOS",
-        "Pontua\u00e7\u00e3o": 22.55,
-        "Mediana": "15.150"
-    },
-    {
-        "Docente": "CARLOS RENATO LISBOA FRANC\u00caS",
-        "Pontua\u00e7\u00e3o": 58.8,
-        "Mediana": "15.150"
-    },
-    {
-        "Docente": "CASSIA MARIA CARNEIRO KAHWAGE",
-        "Pontua\u00e7\u00e3o": 0.05,
-        "Mediana": "15.150"
+        "Pontua\u00e7\u00e3o": 0.75,
+        "Mediana": "0.225"
     },
     {
         "Docente": "CLAUDOMIRO DE SOUZA DE SALES JUNIOR",
-        "Pontua\u00e7\u00e3o": 31.4,
-        "Mediana": "15.150"
+        "Pontua\u00e7\u00e3o": 0.0,
+        "Mediana": "0.225"
     },
     {
         "Docente": "CLEIDSON RONALD BOTELHO DE SOUZA",
-        "Pontua\u00e7\u00e3o": 66.575,
-        "Mediana": "15.150"
+        "Pontua\u00e7\u00e3o": 3.25,
+        "Mediana": "0.225"
     },
     {
         "Docente": "DENIS LIMA DO ROS\u00c1RIO",
-        "Pontua\u00e7\u00e3o": 103.825,
-        "Mediana": "15.150"
-    },
-    {
-        "Docente": "DIONNE CAVALCANTE MONTEIRO",
-        "Pontua\u00e7\u00e3o": 6.625,
-        "Mediana": "15.150"
+        "Pontua\u00e7\u00e3o": 7.1,
+        "Mediana": "0.225"
     },
     {
         "Docente": "FABIOLA PANTOJA OLIVEIRA ARA\u00daJO",
-        "Pontua\u00e7\u00e3o": 14.1,
-        "Mediana": "15.150"
-    },
-    {
-        "Docente": "FILIPE DE OLIVEIRA SARAIVA",
-        "Pontua\u00e7\u00e3o": 15.15,
-        "Mediana": "15.150"
-    },
-    {
-        "Docente": "GUSTAVO HENRIQUE LIMA PINTO",
-        "Pontua\u00e7\u00e3o": 69.25,
-        "Mediana": "15.150"
-    },
-    {
-        "Docente": "JEFFERSON MAGALH\u00c3ES DE MORAIS",
-        "Pontua\u00e7\u00e3o": 17.5,
-        "Mediana": "15.150"
-    },
-    {
-        "Docente": "JORGE AMARO DE SARGES CARDOSO",
-        "Pontua\u00e7\u00e3o": 1.05,
-        "Mediana": "15.150"
+        "Pontua\u00e7\u00e3o": 0.1,
+        "Mediana": "0.225"
     },
     {
         "Docente": "JOSIVALDO DE SOUZA ARA\u00daJO",
-        "Pontua\u00e7\u00e3o": 11.6,
-        "Mediana": "15.150"
-    },
-    {
-        "Docente": "L\u00cdDIO MAURO LIMA DE CAMPOS",
-        "Pontua\u00e7\u00e3o": 7.55,
-        "Mediana": "15.150"
+        "Pontua\u00e7\u00e3o": 0.1,
+        "Mediana": "0.225"
     },
     {
         "Docente": "MARCELLE PEREIRA MOTA",
-        "Pontua\u00e7\u00e3o": 19.05,
-        "Mediana": "15.150"
-    },
-    {
-        "Docente": "MARIANNE KOGUT ELIASQUEVICI",
-        "Pontua\u00e7\u00e3o": 6.2,
-        "Mediana": "15.150"
+        "Pontua\u00e7\u00e3o": 1.275,
+        "Mediana": "0.225"
     },
     {
         "Docente": "NELSON CRUZ SAMPAIO NETO",
-        "Pontua\u00e7\u00e3o": 15.725,
-        "Mediana": "15.150"
-    },
-    {
-        "Docente": "RAIMUNDO VI\u00c9GAS JUNIOR",
-        "Pontua\u00e7\u00e3o": 5.575,
-        "Mediana": "15.150"
-    },
-    {
-        "Docente": "REGIANE SILVA KAWASAKI FRANC\u00caS",
-        "Pontua\u00e7\u00e3o": 2.775,
-        "Mediana": "15.150"
+        "Pontua\u00e7\u00e3o": 0.0,
+        "Mediana": "0.225"
     },
     {
         "Docente": "REGINALDO CORDEIRO DOS SANTOS FILHO",
-        "Pontua\u00e7\u00e3o": 15.575,
-        "Mediana": "15.150"
+        "Pontua\u00e7\u00e3o": 0.35,
+        "Mediana": "0.225"
     },
     {
         "Docente": "RENATO HIDAKA TORRES",
-        "Pontua\u00e7\u00e3o": 5.9,
-        "Mediana": "15.150"
-    },
-    {
-        "Docente": "ROBERTO SAMARONE DOS SANTOS ARA\u00daJO",
-        "Pontua\u00e7\u00e3o": 17.025,
-        "Mediana": "15.150"
+        "Pontua\u00e7\u00e3o": 0.0,
+        "Mediana": "0.225"
     },
     {
         "Docente": "RODRIGO QUITES REIS",
-        "Pontua\u00e7\u00e3o": 8.875,
-        "Mediana": "15.150"
+        "Pontua\u00e7\u00e3o": 0.0,
+        "Mediana": "0.225"
     },
     {
         "Docente": "SANDRO RONALDO BEZERRA OLIVEIRA",
-        "Pontua\u00e7\u00e3o": 89.775,
-        "Mediana": "15.150"
-    },
-    {
-        "Docente": "VICTOR HUGO SANTIAGO COSTA PINTO",
-        "Pontua\u00e7\u00e3o": 9.55,
-        "Mediana": "15.150"
-    },
-    {
-        "Docente": "VINICIUS AUGUSTO CARVALHO DE ABREU",
-        "Pontua\u00e7\u00e3o": 14.95,
-        "Mediana": "15.150"
+        "Pontua\u00e7\u00e3o": 1.7,
+        "Mediana": "0.225"
     }
 ]

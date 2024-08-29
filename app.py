@@ -32,8 +32,12 @@ import PyPDF2
 import xml.etree.ElementTree as ET
 import shutil
 from pathlib import Path
-import datetime
+from datetime import datetime
 from main import fazer_automacao
+import csv
+from io import StringIO
+from flask import make_response
+
 
 app = Flask(__name__)
 CORS(app)
@@ -140,11 +144,35 @@ def imports():
                 
         page = "upload"
         start_date = "1800"
-        end_date = str(datetime.date.today().year)
-        data_atual = str(datetime.date.today())
+        end_date = str(datetime.now().year)  
+        data_atual = str(datetime.now())
         return render_template('loading.html', inicio=start_date, fim=end_date, page=page, data_atual=data_atual)
     
     return render_template('imports.html')
+
+
+@app.route('/exportar_csv')
+def exportar_csv():
+    from_year = request.args.get('ano_inicio', '2005')
+    to_year = request.args.get('ano_fim', str(datetime.now().year))
+    nome_docente = request.args.get('nome_docente', '*')
+
+    listar = lista(from_year=from_year, to_year=to_year, nome_docente=nome_docente)
+
+    si = StringIO()
+    cw = csv.writer(si)
+
+    cw.writerow(["Docente", "Tipo", "Ano", "Título", "Estratos", "Notas", "DOI"])
+
+    for item in listar:
+        docente_nome = f"{item[1].split()[0]} {item[1].split()[-1]}"
+        cw.writerow([docente_nome, item[2], item[3], item[4], item[9], item[10], item[5]])
+
+    output = make_response(si.getvalue())
+    output.headers["Content-Disposition"] = "attachment; filename=publicacoes.csv"
+    output.headers["Content-type"] = "text/csv"
+    
+    return output
 
 
 @app.route('/deletarDocente/<docente>', methods=['POST'])
@@ -193,7 +221,7 @@ def upload():
 @app.route('/resultado_total')
 def resultado_total():
     from_year = request.args.get('ano_inicio', '2005')
-    to_year = request.args.get('ano_fim', str(datetime.date.today().year))
+    to_year = request.args.get('ano_fim', str(datetime.now().year))
     nome_docente = request.args.get('nome_docente', '*')
 
 
@@ -453,9 +481,9 @@ def gerar_tabela_qualis():
 @app.route('/resultado_por_docente')
 def resultado_por_docente():
 
-    listar = listar = lista('1500', str(datetime.date.today().year))
+    listar = listar = lista('1500', str(datetime.now().year))
     # prof = busca_prof()
-    totalNotas = soma_nota('1500', str(datetime.date.today().year))
+    totalNotas = soma_nota('1500', str(datetime.now().year))
     contadorEstratos = contador_estratos()
     return render_template("resultados_por_docente.html", listar=listar, totalNotas=totalNotas, contadorEstratos=contadorEstratos)
 
@@ -463,7 +491,7 @@ def resultado_por_docente():
 @app.route('/listar')
 def listar():
     contadorEstratos = contador_estratos()
-    listar = lista('1500', str(datetime.date.today().year))
+    listar = lista('1500', str(datetime.now().year))
     totalNotas = soma_nota()
     return render_template("resultados_por_docente.html", listar=listar, totalNotas=totalNotas, contadorEstratos=contadorEstratos)
 
@@ -623,7 +651,7 @@ def resultado_docente(docente):
 
 def resultado_editado(docente):
 
-    listar = lista('1500', str(datetime.date.today().year))
+    listar = lista('1500', str(datetime.now().year))
     # prof = busca_prof()
     totalNotas = soma_nota()
     contadorEstratos = contador_estratos()
@@ -681,7 +709,7 @@ def tabela_qualis():
 
 
 def recalcula_notas():
-    titulos = lista('1500', str(datetime.date.today().year))
+    titulos = lista('1500', str(datetime.now().year))
 
     for t in titulos:
         estratos = t[9]
@@ -709,5 +737,5 @@ if __name__ == "__main__":
     database.insert_pontuacoes()
     listar_docentes()
 
-    #app.run(debug=True)
+    app.run(debug=True)
     app.run(host='0.0.0.0')
