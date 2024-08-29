@@ -134,6 +134,13 @@ def qualis_repetidos(titulo):
     resultado = cursor.fetchall()
     return resultado
 
+def get_colaboradores_por_titulo(titulo):
+    # Função para buscar os colaboradores relacionados a um título específico
+    cursor = db.cursor()
+    cursor.execute("SELECT nome_docente FROM resultados WHERE titulo = ?", (titulo,))
+    resultado = cursor.fetchall()
+    colaboradores = [row[0] for row in resultado]
+    return colaboradores
 
 def titulo_repetido(titulo):
     sql = "select distinct titulo, notas, estratos, count(*), nome_docente, doi from resultados r where titulo LIKE '%" + \
@@ -146,9 +153,6 @@ def titulo_repetido(titulo):
         return resultado
     else:
         return 0
-
-# verificar quais titulos se repetem e quais docentes publicaram
-
 
 def titulos_repetidos(from_year, to_year, nome_docente='*'):
     # sql = ("select nome_docente, titulo from resultados r where titulo like '%"+titulo+"%' GROUP by titulo HAVING count(*)>1")

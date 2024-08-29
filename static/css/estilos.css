@@ -330,7 +330,9 @@
   }
 }
 
-
+#resultados a {
+  text-decoration: none;
+}
 @media all and (min-width: 868px) {
   .tabelaDocentes {
     border: 1px solid #eee;

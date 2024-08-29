@@ -150,6 +150,37 @@ def imports():
     
     return render_template('imports.html')
 
+@app.route('/exportar_csv_projetos')
+def exportar_csv_projetos():
+    from_year = request.args.get('ano_inicio', '2005')
+    to_year = request.args.get('ano_fim', str(datetime.now().year))
+    nome_docente = request.args.get('nome_docente', '*')
+
+    # Obtenha os projetos colaborativos
+    projetos = titulos_qualis(from_year=from_year, to_year=to_year, nome_docente=nome_docente)
+
+    si = StringIO()
+    cw = csv.writer(si)
+
+    cw.writerow(["Colaboradores", "Título"])
+
+    for projeto in projetos:
+        titulo = projeto[0]
+        
+        # Obtenha colaboradores relacionados ao título do projeto
+        colaboradores = get_colaboradores_por_titulo(titulo)
+        
+        # Formate a lista de colaboradores para aparecer entre aspas e separada por vírgulas
+        colaboradores_formatados = ', '.join([colaborador for colaborador in colaboradores])
+        
+        # Escreva no CSV: "colaborador 1", "colaborador 2": título do projeto
+        cw.writerow([colaboradores_formatados, titulo])
+
+    output = make_response(si.getvalue())
+    output.headers["Content-Disposition"] = "attachment; filename=projetos_colaborativos.csv"
+    output.headers["Content-type"] = "text/csv"
+    
+    return output
 
 @app.route('/exportar_csv')
 def exportar_csv():

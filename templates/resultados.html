@@ -314,7 +314,7 @@
 <div class="button-pc">
     <a href="{{ url_for('exportar_csv', ano_inicio=ano_inicio, ano_fim=ano_fim, nome_docente=nome_docente) }}" 
        class="btn w-20 btn-lattes">
-       Importar para CSV
+       Exportar Relação de Publicações para CSV
     </a>
 </div>
 
@@ -469,6 +469,18 @@
     </div>
 </div>
 <br/>
+
+<br/>
+
+<div class="button-pc">
+    <a href="{{ url_for('exportar_csv_projetos', ano_inicio=ano_inicio, ano_fim=ano_fim, nome_docente=nome_docente) }}" 
+       class="btn w-20 btn-lattes">
+       Exportar Projetos Colaborativos para CSV
+    </a>
+</div>
+
+
+
 
 <br/>
 
